@@ -3,6 +3,31 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.2.7] - 2026-10-15
+
+### Sécurité & Isolation des Secrets
+- **Protection des clés API dans les en-têtes HTTP (`mvs-providers.js`)** : Migration de la clé API Gemini de la chaîne de requête (`?key=`) vers l'en-tête standard sécurisé `x-goog-api-key` sur l'ensemble des appels REST (`transcrireViaGemini` et `testerConnexion`).
+- **Cloisonnement strict cross-domain STT / LLM (`mvs-providers.js`, `options/options.js`)** : Les clés STT et LLM ne sont plus partagées que si les deux serveurs partagent rigoureusement la même origine, empêchant toute fuite d'une clé Mistral/OpenAI vers un tiers (ex: Groq). Prise en charge automatique des origines multiples dans la demande de permissions d'hôtes (`obtenirPatternsOrigines`).
+- **Protection anti-SSRF & Validation d'expéditeur (`background.js`, `compose/compose-injected.js`)** : Verrouillage de l'action privilégiée `testProvider` (rejet si appelée depuis un onglet web) et filtrage strict `expediteur.id === api.runtime.id` sur tous les écouteurs de messages.
+
+### Robustesse & Cycle de Vie Audio (Event Page MV3)
+- **Éradication de la troncature finale Gemini Live (`background.js`)** : Passage par un état tampon `STOPPING` avec attente de la confirmation serveur (`turnComplete` / `generationComplete`) ou d'un silence glissant de 800 ms avant fermeture, et protection intégrale `try/catch` sur `socketLive.send(...)`.
+- **Libération intégrale des ressources audio (`background.js`)** : Déconnexion complète de l'arbre WebAudio (`noeudSource`, `onaudioprocess = null`), arrêt sécurisé de `mediaRecorder` et vidange des buffers PCM.
+- **Gestion des flux microphone tardifs (`background.js`)** : Capture de la promesse microphone en cas de dépassement du timeout de 1,8 s pour stopper immédiatement tout flux orphelin (`Bugzilla #2080573`).
+- **Écouteur de fermeture d'onglet (`background.js`)** : Surveillance `tabs.onRemoved` libérant automatiquement la capture microphone si la fenêtre de rédaction est fermée en cours d'enregistrement.
+- **KeepAlive permanent en pause (`compose/compose-injected.js`)** : Maintien des pings `keepAliveAudioSession` toutes les 4 s y compris à l'état `PAUSED`, évitant la suspension prématurée de l'Event Page Gecko après 30 s.
+
+### Accessibilité & Ergonomie Clavier Hybride (WCAG 2.1 AA)
+- **Mode clavier hybride intelligent (`compose/compose-injected.js`)** : Les touches Espace (Pause/Reprise) et Entrée (Arrêt/Insertion) s'effacent automatiquement devant la saisie manuelle si l'utilisateur tape du texte (< 1,5 s), préservant la fluidité de rédaction sans conflit.
+- **Accessibilité pour lecteurs d'écran NVDA / VoiceOver (`compose/compose-injected.js`)** : Zones d'annonces dédiées (`role="status"`, `role="alert"`), masquage du chronomètre vocal (`aria-hidden="true"`) pour éviter toute interférence audio avec le micro, et gestion dynamique de `aria-pressed`.
+- **Calcul géométrique passif du curseur (`compose/compose-injected.js`)** : Suppression du nœud `<span>` temporaire au profit d'un calcul de boîte englobante 100 % passif en lecture seule.
+- **Mode réduction de mouvement & focus visible (`compose/compose-injected.js`, `options/options.css`)** : Prise en charge de `@media (prefers-reduced-motion)` et mise en place d'anneaux de focus contrastés conformes WCAG.
+
+### Identité Visuelle & Nettoyage
+- **Harmonisation graphique Magic-Softs (`options/options.css`, `compose/compose-injected.js`)** : Palette officielle orange chaud (`#ea6512`) et contour sombre (`#85270b`), badges d'options à contraste renforcé.
+- **Icônes d'application officielles (`icon.png`, `icons/*.png`)** : Mise à jour de toutes les dimensions d'icônes avec bordure foncée épaisse contrastée.
+- **Nettoyage du code mort orphelin** : Suppression définitive des fichiers non utilisés `compose.html`, `compose.css` et `compose.js`.
+
 ---
 
 ## [1.2.6] - 2026-10-14

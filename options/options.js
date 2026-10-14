@@ -64,6 +64,10 @@ function appliquerI18n() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  if (api && api.i18n && typeof api.i18n.getUILanguage === "function") {
+    const lang = api.i18n.getUILanguage().slice(0, 2);
+    document.documentElement.lang = lang;
+  }
   appliquerI18n();
 
   // ── Références DOM ─────────────────────────────────────────────────────────
@@ -249,13 +253,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function verifierPermissionOrigine() {
     if (!globalThis.MVSProviders) return;
     const config = lireConfigFormulaire();
-    const origine = globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config);
+    const origines = globalThis.MVSProviders.obtenirPatternsOrigines
+      ? globalThis.MVSProviders.obtenirPatternsOrigines(config.provider, config)
+      : [globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config)];
 
     try {
       if (api && api.permissions && api.permissions.contains) {
-        const accorde = await api.permissions.contains({ origins: [origine] });
+        const accorde = await api.permissions.contains({ origins: origines });
         if (!accorde) {
-          permissionDomainCode.textContent = origine;
+          permissionDomainCode.textContent = origines.join(", ");
           permissionBanner.classList.remove("mvs-hidden");
           return;
         }
@@ -273,8 +279,11 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   function lierBoutonVisibiliteCle(bouton, champ) {
     if (!bouton || !champ) return;
+    bouton.setAttribute("aria-pressed", "false");
     bouton.addEventListener("click", () => {
-      champ.type = champ.type === "password" ? "text" : "password";
+      const estMasque = champ.type === "password";
+      champ.type = estMasque ? "text" : "password";
+      bouton.setAttribute("aria-pressed", estMasque ? "true" : "false");
     });
   }
 
@@ -345,10 +354,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (btnGrantPermission) {
     btnGrantPermission.addEventListener("click", async () => {
       const config = lireConfigFormulaire();
-      const origine = globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config);
+      const origines = globalThis.MVSProviders.obtenirPatternsOrigines
+        ? globalThis.MVSProviders.obtenirPatternsOrigines(config.provider, config)
+        : [globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config)];
       try {
         if (api.permissions && api.permissions.request) {
-          const accorde = await api.permissions.request({ origins: [origine] });
+          const accorde = await api.permissions.request({ origins: origines });
           if (accorde) {
             permissionBanner.classList.add("mvs-hidden");
           }
@@ -363,11 +374,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (btnTest) {
     btnTest.addEventListener("click", async () => {
       const config = lireConfigFormulaire();
-      const origine = globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config);
+      const origines = globalThis.MVSProviders.obtenirPatternsOrigines
+        ? globalThis.MVSProviders.obtenirPatternsOrigines(config.provider, config)
+        : [globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config)];
 
       try {
         if (api.permissions && api.permissions.request) {
-          await api.permissions.request({ origins: [origine] });
+          await api.permissions.request({ origins: origines });
           await verifierPermissionOrigine();
         }
       } catch {
@@ -399,11 +412,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const config = lireConfigFormulaire();
-    const origine = globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config);
+    const origines = globalThis.MVSProviders.obtenirPatternsOrigines
+      ? globalThis.MVSProviders.obtenirPatternsOrigines(config.provider, config)
+      : [globalThis.MVSProviders.obtenirPatternOrigine(config.provider, config)];
 
     try {
       if (api.permissions && api.permissions.request) {
-        await api.permissions.request({ origins: [origine] });
+        await api.permissions.request({ origins: origines });
         await verifierPermissionOrigine();
       }
     } catch {

@@ -5,10 +5,10 @@
 
 ## 1. Pièges Connus & Anti-Patterns
 
-- **Capture microphone hors contexte DOM** : Ne jamais appeler `navigator.mediaDevices.getUserMedia` depuis `background.js` (Event Page MV3). L'accès au microphone doit impérativement s'effectuer dans `compose/compose.js`.
-- **Match patterns WebExtension avec numéro de port** : Les patterns d'origine WebExtension (`browser.permissions.contains` / `request`) rejettent les numéros de port (`http://localhost:11434/*` est invalide). Toujours utiliser `http://localhost/*` ou `http://127.0.0.1/*` via `MVSProviders.obtenirPatternOrigine()`.
+- **Capture microphone centralisée dans l'Event Page** : Dans Thunderbird 128+ ESR (Gecko MV3), l'accès à `navigator.mediaDevices.getUserMedia` et `AudioContext` est centralisé dans `background.js`. Le content script (`compose/compose-injected.js`) orchestre les états visuels au curseur et communique via `browser.runtime.sendMessage()`.
+- **Match patterns WebExtension sans numéro de port** : Les patterns d'origine WebExtension (`browser.permissions.contains` / `request`) rejettent les numéros de port (`http://localhost:11434/*` est invalide). Toujours utiliser `http://localhost/*` ou `http://127.0.0.1/*` via `MVSProviders.obtenirPatternsOrigines()`.
 - **Requêtes CORS vers `localhost`** : Ne jamais exécuter `fetch()` vers `http://localhost:11434` ou `http://localhost:8000` directement depuis un script non privilégié. Toujours faire transiter les requêtes HTTP par `background.js` via `browser.runtime.sendMessage()`.
-- **Perte du canal asynchrone `onMessage`** : L'écouteur `browser.runtime.onMessage.addListener` ne doit pas être une fonction `async` directe ; il doit appeler une promesse avec `.then(sendResponse)` et retourner `true` de façon synchrone.
+- **Perte du canal asynchrone `onMessage`** : Tout écouteur `browser.runtime.onMessage.addListener` effectuant un traitement asynchrone doit impérativement retourner `true` de manière synchrone.
 
 ---
 

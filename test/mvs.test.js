@@ -134,10 +134,12 @@ describe("2. MVSProviders — Pipelines Gemini, OpenAI/Mistral & Local (Mock Fet
   it("exécute le pipeline Gemini 3.5 Transcribe en une passe avec mode SMART (sans prompt texte ni temperature)", async () => {
     const fetchOriginal = globalThis.fetch;
     let urlAppelee = "";
+    let optionsAppelees = null;
     let corpsEnvoye = null;
 
     globalThis.fetch = async (url, options) => {
       urlAppelee = url;
+      optionsAppelees = options;
       corpsEnvoye = JSON.parse(options.body);
       return {
         ok: true,
@@ -171,6 +173,8 @@ describe("2. MVSProviders — Pipelines Gemini, OpenAI/Mistral & Local (Mock Fet
       assert.equal(res.success, true);
       assert.equal(res.text, "Bonjour, voici le rapport final.");
       assert.ok(urlAppelee.includes("models/gemini-3.5-transcribe:generateContent"));
+      assert.equal(urlAppelee.includes("?key="), false, "La clé API ne doit plus être dans l'URL");
+      assert.equal(optionsAppelees.headers["x-goog-api-key"], "AIzaTestKey", "x-goog-api-key doit être dans les headers");
       assert.equal(corpsEnvoye.generationConfig.audioTranscriptionConfig.mode, "SMART");
       assert.equal(corpsEnvoye.generationConfig.temperature, undefined);
       assert.equal(corpsEnvoye.contents[0].parts.length, 1);
@@ -178,6 +182,31 @@ describe("2. MVSProviders — Pipelines Gemini, OpenAI/Mistral & Local (Mock Fet
     } finally {
       globalThis.fetch = fetchOriginal;
     }
+  });
+
+  it("calcule les patterns d'origines multiples et protège contre les fuites de clés cross-domain", () => {
+    const patternsMistral = MVSProviders.obtenirPatternsOrigines("openai", { openaiPreset: "mistral" });
+    assert.deepEqual(patternsMistral.sort(), [
+      "https://api.groq.com/*",
+      "https://api.mistral.ai/*"
+    ]);
+
+    // Si origines différentes (ex: Groq STT + Mistral LLM), les 2 clés sont requises
+    const configIncomplete = {
+      provider: "openai",
+      openaiPreset: "mistral",
+      llmBaseUrl: "https://api.mistral.ai",
+      llmApiKey: "mistral-secret-key",
+      sttBaseUrl: "https://api.groq.com",
+      sttApiKey: ""
+    };
+    assert.equal(MVSProviders.estConfigure(configIncomplete), false);
+
+    const configComplete = {
+      ...configIncomplete,
+      sttApiKey: "groq-secret-key"
+    };
+    assert.equal(MVSProviders.estConfigure(configComplete), true);
   });
 
   it("parse correctement le format ASR dédié de gemini-3.5-transcribe (part.audioTranscription.text)", async () => {
@@ -349,12 +378,11 @@ describe("3. Internationalisation (Parité des 6 langues & Zéro texte en dur)",
     }
   });
 
-  it("couvre tous les attributs data-i18n* utilisés dans compose.html et options.html", () => {
+  it("couvre tous les attributs data-i18n* utilisés dans options.html", () => {
     const dicEn = JSON.parse(
       fs.readFileSync(path.join(RACINE, "_locales/en/messages.json"), "utf8")
     );
     const fichiersHtml = [
-      path.join(RACINE, "compose/compose.html"),
       path.join(RACINE, "options/options.html")
     ];
 
@@ -378,7 +406,6 @@ describe("4. Sécurité DOM, CSP & Garde-fou DEBUG (Règles 11, 12, 14)", () => 
     "background.js",
     "mvs-providers.js",
     "compose/compose-injected.js",
-    "compose/compose.js",
     "options/options.js"
   ];
 

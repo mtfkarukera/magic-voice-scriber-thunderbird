@@ -44,15 +44,12 @@ magic-voice-scriber-thunderbird/
 ├── background.js                  # Event Page : capture micro, 5 barres d'ondes, streaming Live, KeepAlive
 ├── mvs-providers.js               # Orchestrateur des 3 familles de moteurs IA + prompts Rambler
 ├── compose/
-│   ├── compose-injected.js        # La Goutte Vocale (14 px) flottante sous le curseur avec Ghost Mode (Shadow DOM)
-│   ├── compose.html               # Structure de la capsule
-│   ├── compose.css                # Styles glassmorphism
-│   └── compose.js                 # Logique du widget
+│   └── compose-injected.js        # La Goutte Vocale (14 px) flottante sous le curseur avec Ghost Mode (Closed Shadow DOM)
 ├── options/
 │   ├── options.html               # Interface de paramétrage multi-fournisseurs
 │   ├── options.css                # Styles de la page d'options
 │   └── options.js                 # Logique de configuration, presets et test de connexion
-├── icons/                         # Icônes PNG détourées Alpha (16, 32, 48, 64, 128)
+├── icons/                         # Icônes PNG officielles avec bordure foncée (16, 32, 48, 64, 128)
 ├── _locales/                      # Dictionnaires i18n (en, fr, es, pt, de, vi)
 ├── test/
 │   └── mvs.test.js                # Suite de tests unitaires automatisés (Node.js test runner)
@@ -62,22 +59,23 @@ magic-voice-scriber-thunderbird/
 
 ---
 
-## 3. Machine à États de la Capsule (`compose/compose.js`)
+## 3. Machine à États de la Goutte Vocale In-Situ (`compose/compose-injected.js`)
 
 ```mermaid
 stateDiagram-v2
-    [*] --> INIT : Ouverture (Alt+Shift+S / Clic)
-    INIT --> ONBOARDING : Clé API Cloud manquante
-    INIT --> RECORDING : Configuration valide & Micro autorisé
-    RECORDING --> PAUSED : Touche Espace / Bouton Pause
-    PAUSED --> RECORDING : Touche Espace / Bouton Reprendre
-    RECORDING --> THINKING : Bouton Terminer / Entrée / Plafond 5 min
-    PAUSED --> THINKING : Bouton Terminer / Entrée
-    RECORDING --> [*] : Touche Échap (Annulation propre)
-    PAUSED --> [*] : Touche Échap (Annulation propre)
-    THINKING --> INSERTING : Texte nettoyé reçu
+    [*] --> IDLE_FLOATING : Injection au curseur (14 px, Ghost Mode)
+    IDLE_FLOATING --> ONBOARDING : Clé API Cloud manquante (Alt+Shift+S / Clic)
+    IDLE_FLOATING --> RECORDING : Configuration valide & Micro autorisé
+    RECORDING --> PAUSED : Touche Espace / Bouton Pause ⏸
+    PAUSED --> RECORDING : Touche Espace / Bouton Reprendre ▶
+    RECORDING --> THINKING : Bouton Stop / Touche Entrée / Plafond 5 min
+    PAUSED --> THINKING : Bouton Stop / Touche Entrée
+    RECORDING --> IDLE_FLOATING : Touche Échap / Bouton Annuler (Annulation propre)
+    PAUSED --> IDLE_FLOATING : Touche Échap / Bouton Annuler
+    THINKING --> DONE : Texte nettoyé reçu & inséré
     THINKING --> ERROR : Échec réseau / Quota / Auth
-    INSERTING --> [*] : Insertion au curseur + Fermeture douce (350ms)
+    DONE --> IDLE_FLOATING : Repli fluide vers la micro-pastille (450 ms)
+    ERROR --> IDLE_FLOATING : Touche Échap / Clic repli
 ```
 
 ---
@@ -87,11 +85,12 @@ stateDiagram-v2
 ### 4.1 Pipeline 1 : Google Gemini (Par défaut)
 - **`gemini-3.5-transcribe` (REST)** :
   - Envoie le blob audio encodé en Base64 dans `contents[0].parts[0].inlineData` accompagné de l'instruction du mode de voix (`natural`, `pro`, `bullets`) et de `generationConfig.audioTranscriptionConfig.mode = "SMART"`.
+  - Authentification sécurisée via en-tête standard `x-goog-api-key`.
   - Avantage : Traitement en **une seule passe** (transcription + suppression des hésitations + auto-corrections + structuration).
 - **`gemini-3.5-transcribe-live` (WebSocket)** :
-  - Établit une session WebSocket sur `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent`.
+  - Établit une session WebSocket Bidi sur `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent`.
   - Envoie le message initial `setup` avec `model: "models/gemini-3.5-transcribe-live"`, `responseModalities: ["TEXT"]` et `inputAudioTranscription: { mode: "SMART" }`.
-  - Diffuse des tranches audio PCM 16 kHz (`audio/pcm;rate=16000`) et affiche les fragments transcrits en temps réel.
+  - Diffuse des tranches audio PCM 16 kHz (`audio/pcm;rate=16000`) et affiche les fragments transcrits en temps réel sans jamais détruire le texte intermédiaire.
 
 ### 4.2 Pipeline 2 : OpenAI / Tiers Cloud (Mistral, Groq, OpenAI)
 1. **Étape STT** : Requête `POST` en `multipart/form-data` vers `/v1/audio/transcriptions` (OpenAI `whisper-1` ou Groq `whisper-large-v3-turbo`).
@@ -104,12 +103,13 @@ stateDiagram-v2
 
 ---
 
-## 5. Insertion Chirurgicale et Pagination dans l'Éditeur Thunderbird
+## 5. Insertion Chirurgicale In-Situ dans l'Éditeur Thunderbird
 
-Lors de l'état `INSERTING`, `compose.js` exécute un script dans l'onglet de rédaction via `browser.scripting.executeScript` :
-1. Redonne le focus à l'éditeur `body[contenteditable='true']`.
+L'insertion s'effectue directement depuis `compose/compose-injected.js` dans le contexte DOM du compositeur :
+1. Restaure la position mémorisée du curseur dans `body[contenteditable='true']`.
 2. Convertit et insère le texte nettoyé à la position exacte du curseur via `document.execCommand("insertText", false, texte)` afin de conserver l'historique d'annulation natif (`Ctrl+Z`).
 3. En cas d'indisponibilité de `execCommand`, utilise un repli basé sur `window.getSelection().getRangeAt(0)` en générant des nœuds DOM sûrs (`createTextNode` et `<br>`).
+4. Replie doucement l'interface vers la micro-pastille 14 px après 450 ms de confirmation visuelle.
 
 ---
 

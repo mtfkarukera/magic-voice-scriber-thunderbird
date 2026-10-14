@@ -49,6 +49,8 @@ const DEBUG = false;
   let ciblesBarres = [0.22, 0.35, 0.5, 0.35, 0.22];
   let hauteursBarres = [0.22, 0.35, 0.5, 0.35, 0.22];
   let dernierRangeCurseur = null;
+  let timestampDerniereFrappeTexte = 0;
+  let demarrageEnCours = false;
 
   // Éléments de transcription en direct dans le corps du mail (gemini-3.5-transcribe-live)
   let conteneurTexteLiveEl = null;
@@ -60,6 +62,8 @@ const DEBUG = false;
   let hoteShadow = null;
   let racineShadow = null;
   let conteneurFlottant = null;
+  let zoneStatutA11y = null;
+  let zoneAlerteA11y = null;
   let vueCapsule = null;
   let vueOnboarding = null;
   let txtOnboardingEl = null;
@@ -73,6 +77,18 @@ const DEBUG = false;
   let labelModeEl = null;
   let btnPause = null;
   let btnAnnuler = null;
+
+  /**
+   * Vocalise un message d'état accessible pour les lecteurs d'écran (B3).
+   * @param {string} message
+   */
+  function annoncerA11y(message) {
+    if (!zoneStatutA11y || !message) return;
+    zoneStatutA11y.textContent = "";
+    setTimeout(() => {
+      if (zoneStatutA11y) zoneStatutA11y.textContent = message;
+    }, 50);
+  }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 1. INTERNATIONALISATION (i18n — Zéro texte codé en dur)
@@ -211,24 +227,23 @@ const DEBUG = false;
         }
       }
 
-      // Repli sur ligne vide : insertion furtive d'un marqueur sans jamais muter la sélection active
-      if (document.body && document.body.contains(clone.startContainer)) {
-        const sonde = document.createElement("span");
-        sonde.textContent = "\u200b";
-        clone.insertNode(sonde);
-        const rectSonde = sonde.getBoundingClientRect();
-        const parentSonde = sonde.parentNode;
-        sonde.remove();
-        if (parentSonde) {
-          parentSonde.normalize();
-        }
-        if (rectSonde && (rectSonde.top > 0 || rectSonde.left > 0)) {
+      // Repli en lecture seule sur ligne vide sans jamais muter l'arbre DOM (M8)
+      const elementParent = clone.startContainer.nodeType === Node.ELEMENT_NODE
+        ? clone.startContainer
+        : clone.startContainer.parentElement;
+
+      if (elementParent && typeof elementParent.getBoundingClientRect === "function") {
+        const rParent = elementParent.getBoundingClientRect();
+        if (rParent && (rParent.top > 0 || rParent.left > 0 || rParent.height > 0)) {
+          const styleParent = window.getComputedStyle(elementParent);
+          const padLeft = parseFloat(styleParent.paddingLeft) || 0;
+          const lineH = parseFloat(styleParent.lineHeight) || 18;
           return {
-            left: rectSonde.left,
-            right: rectSonde.right,
-            top: rectSonde.top,
-            bottom: rectSonde.bottom,
-            height: rectSonde.height || 18
+            left: rParent.left + padLeft,
+            right: rParent.left + padLeft,
+            top: rParent.top,
+            bottom: rParent.top + lineH,
+            height: lineH
           };
         }
       }
@@ -303,7 +318,7 @@ const DEBUG = false;
     hoteShadow.id = "mvs-caret-floating-host";
     (document.documentElement || document.body).appendChild(hoteShadow);
 
-    racineShadow = hoteShadow.attachShadow({ mode: "open" });
+    racineShadow = hoteShadow.attachShadow({ mode: "closed" });
 
     const styleEl = document.createElement("style");
     styleEl.textContent = `
@@ -374,13 +389,14 @@ const DEBUG = false;
                     height 0.18s ease;
         flex-shrink: 0;
       }
-      /* En état de veille permanente sous le curseur : Goutte Vocale (14x14 px) */
+      /* En état de veille permanente sous le curseur : Goutte Vocale (14x14 px) avec liseré de marque (M11) */
       .mvs-red-wave-btn.state-idle {
         width: 14px;
         height: 14px;
-        opacity: 0.85;
-        background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
-        box-shadow: 0 2px 6px rgba(239, 68, 68, 0.40);
+        opacity: 0.90;
+        background: linear-gradient(135deg, #f97316 0%, #ea6512 100%);
+        border: 1.5px solid #85270b;
+        box-shadow: 0 2px 6px rgba(133, 39, 11, 0.40);
       }
       /* Hitbox magnétique invisible de 28x28 px pour un clic sans effort (Loi de Fitts) */
       .mvs-red-wave-btn.state-idle::before {
@@ -450,13 +466,16 @@ const DEBUG = false;
       .mvs-red-wave-btn.state-idle .mvs-wave-bar {
         display: none !important;
       }
-      /* Les 5 barres verticales blanches à l'intérieur du bouton */
+      /* Les 5 barres verticales blanches à l'intérieur du bouton (GPU scaleY - P2.1) */
       .mvs-wave-bar {
         width: 2.4px;
-        height: 6px;
+        height: 18px;
         border-radius: 999px;
         background: #ffffff;
-        transition: height 0.05s ease-out, opacity 0.15s ease;
+        transform: scaleY(0.25);
+        transform-origin: bottom center;
+        will-change: transform;
+        transition: transform 0.06s ease-out, opacity 0.15s ease;
         pointer-events: none;
       }
       /* ── Chronomètre & Statut compact ── */
@@ -567,12 +586,55 @@ const DEBUG = false;
         cursor: pointer;
         padding: 0 10px;
       }
+      /* Visibilité du focus clavier WCAG 2.1 AA */
+      button:focus-visible,
+      .mvs-red-wave-btn:focus-visible,
+      .mvs-mode-btn:focus-visible,
+      .mvs-mini-btn:focus-visible,
+      .mvs-onboarding-btn:focus-visible {
+        outline: 2px solid #ea6512 !important;
+        outline-offset: 2px !important;
+      }
+      /* Masquage visuel accessible aux lecteurs d'écran (B3) */
+      .mvs-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      /* Respect de prefers-reduced-motion (M13) */
+      @media (prefers-reduced-motion: reduce) {
+        .mvs-floating-root,
+        .mvs-wave-bar,
+        .mvs-red-wave-btn,
+        .mvs-mini-btn,
+        .mvs-mode-btn {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
     `;
 
     conteneurFlottant = document.createElement("div");
     conteneurFlottant.className = "mvs-floating-root";
     conteneurFlottant.setAttribute("role", "region");
-    conteneurFlottant.setAttribute("aria-live", "polite");
+    conteneurFlottant.setAttribute("aria-label", t("composeActionLabel"));
+
+    zoneStatutA11y = document.createElement("div");
+    zoneStatutA11y.className = "mvs-sr-only";
+    zoneStatutA11y.setAttribute("role", "status");
+    zoneStatutA11y.setAttribute("aria-live", "polite");
+    conteneurFlottant.appendChild(zoneStatutA11y);
+
+    zoneAlerteA11y = document.createElement("div");
+    zoneAlerteA11y.className = "mvs-sr-only";
+    zoneAlerteA11y.setAttribute("role", "alert");
+    conteneurFlottant.appendChild(zoneAlerteA11y);
 
     // ⚠️ RÈGLE CRITIQUE : Empêcher toute perte du focus / curseur lors d'un clic sur le widget !
     conteneurFlottant.addEventListener("mousedown", (e) => {
@@ -593,7 +655,7 @@ const DEBUG = false;
     btnOndeRouge.type = "button";
     btnOndeRouge.className = "mvs-red-wave-btn state-idle";
     btnOndeRouge.setAttribute("title", t("composeActionTitle"));
-    btnOndeRouge.setAttribute("aria-label", t("composeActionTitle"));
+    btnOndeRouge.setAttribute("aria-label", t("composeActionLabel"));
 
     // Micro-icône SVG miniature pour la Goutte Vocale en veille (Règle 11 : Zéro innerHTML)
     const nsSvg = "http://www.w3.org/2000/svg";
@@ -623,12 +685,12 @@ const DEBUG = false;
 
     btnOndeRouge.appendChild(svgMic);
 
-    const hauteursRepos = [5, 9, 13, 9, 5];
+    const hauteursRepos = [0.28, 0.50, 0.72, 0.50, 0.28];
     barresBlanchesEls = [];
     for (let i = 0; i < 5; i++) {
       const barre = document.createElement("span");
       barre.className = "mvs-wave-bar";
-      barre.style.height = `${hauteursRepos[i]}px`;
+      barre.style.transform = `scaleY(${hauteursRepos[i]})`;
       btnOndeRouge.appendChild(barre);
       barresBlanchesEls.push(barre);
     }
@@ -643,10 +705,11 @@ const DEBUG = false;
       }
     });
 
-    // Compteur temporel (00:00)
+    // Compteur temporel (00:00) — masqué au lecteur d'écran (B3)
     timerEl = document.createElement("span");
     timerEl.className = "mvs-timer";
     timerEl.textContent = "00:00";
+    timerEl.setAttribute("aria-hidden", "true");
     timerEl.style.display = "none";
 
     // Texte court d'état (affiché pendant la réflexion ou en cas d'erreur)
@@ -677,6 +740,7 @@ const DEBUG = false;
     btnPause.className = "mvs-mini-btn";
     btnPause.textContent = "⏸";
     btnPause.style.display = "none";
+    btnPause.setAttribute("aria-pressed", "false");
     btnPause.setAttribute("title", t("btnPauseTitle"));
     btnPause.setAttribute("aria-label", t("btnPauseTitle"));
     btnPause.addEventListener("click", (e) => {
@@ -741,6 +805,8 @@ const DEBUG = false;
     btnFermerOnboarding.type = "button";
     btnFermerOnboarding.className = "mvs-mini-btn";
     btnFermerOnboarding.textContent = "✕";
+    btnFermerOnboarding.setAttribute("aria-label", t("btnCancelLabel"));
+    btnFermerOnboarding.setAttribute("title", t("btnCancelLabel"));
     btnFermerOnboarding.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -834,9 +900,9 @@ const DEBUG = false;
       }
 
       hauteursBarres[i] += (cible - hauteursBarres[i]) * 0.38;
-      const px = Math.round(4 + hauteursBarres[i] * 15); // Hauteur entre 4 px et 19 px
+      const facteurEchelle = Math.max(0.18, Math.min(1.0, hauteursBarres[i]));
       if (barresBlanchesEls[i]) {
-        barresBlanchesEls[i].style.height = `${px}px`;
+        barresBlanchesEls[i].style.transform = `scaleY(${facteurEchelle.toFixed(3)})`;
       }
     }
 
@@ -991,20 +1057,26 @@ const DEBUG = false;
   // 6. CYCLE DE DICTÉE (DÉPLOIEMENT SUR PLACE, PAUSE, FINALISATION & REPLI)
   // ═══════════════════════════════════════════════════════════════════════════
 
+  let ticksChrono = 0;
+
   function demarrerChrono() {
     arreterChrono();
     secondesEcoulees = 0;
+    ticksChrono = 0;
     actualiserChronoUI();
 
     idIntervalleChrono = setInterval(() => {
+      ticksChrono += 1;
+
+      // Garde-fou MV3 : émettre un keepAlive toutes les 4 secondes (y compris en PAUSE)
+      // pour empêcher Gecko de suspendre l'Event Page après 30s d'inactivité
+      if (ticksChrono % 4 === 0) {
+        api.runtime.sendMessage({ action: "keepAliveAudioSession" }).catch(() => {});
+      }
+
       if (etatCourant !== "RECORDING") return;
       secondesEcoulees += 1;
       actualiserChronoUI();
-
-      // Garde-fou MV3 : émettre un keepAlive toutes les 4 secondes pour empêcher Gecko de suspendre l'Event Page
-      if (secondesEcoulees % 4 === 0) {
-        api.runtime.sendMessage({ action: "keepAliveAudioSession" }).catch(() => {});
-      }
 
       if (secondesEcoulees >= DUREE_OPTIMALE_MAX_SEC) {
         arreterEtInsererTexte();
@@ -1033,78 +1105,91 @@ const DEBUG = false;
    * Déploie sur place le bouton flottant en pilule d'enregistrement et démarre l'écoute microphone.
    */
   async function demarrerSessionFlottante() {
-    construireInterfaceShadowDom();
-    restaurerPositionCurseur();
-    reinitialiserAttenuatonFrappe();
-    nettoyerConteneurLiveDOM();
+    if (demarrageEnCours || etatCourant === "RECORDING" || etatCourant === "STARTING") return;
+    demarrageEnCours = true;
+    etatCourant = "STARTING";
 
-    vueOnboarding.classList.add("mvs-hidden");
-    vueCapsule.classList.remove("mvs-hidden", "mvs-pill-idle");
-
-    btnOndeRouge.className = "mvs-red-wave-btn";
-    btnOndeRouge.setAttribute("title", t("btnStopTitle"));
-    btnOndeRouge.setAttribute("aria-label", t("btnStopLabel"));
-
-    timerEl.style.display = "inline";
-    statutCourtEl.style.display = "none";
-    statutCourtEl.classList.remove("is-error");
-    btnPause.style.display = "inline-flex";
-    btnPause.textContent = "⏸";
-    btnAnnuler.style.display = "inline-flex";
-
-    positionnerPresDuCurseur();
-
-    let reponse;
     try {
-      reponse = await api.runtime.sendMessage({ action: "startAudioSession" });
-    } catch {
-      reponse = { success: false, error: "SERVICE_UNAVAILABLE" };
-    }
+      construireInterfaceShadowDom();
+      restaurerPositionCurseur();
+      reinitialiserAttenuatonFrappe();
+      nettoyerConteneurLiveDOM();
 
-    if (reponse && reponse.provider) {
-      fournisseurActif = reponse.provider;
-    }
-    if (reponse && reponse.activeVoiceMode) {
-      appliquerVisuelModeVoix(reponse.activeVoiceMode, false);
-    }
+      vueOnboarding.classList.add("mvs-hidden");
+      vueCapsule.classList.remove("mvs-hidden", "mvs-pill-idle");
 
-    // Les 3 modes (🎙️/👔/📋) ne sont affichés que pour les moteurs hors Gemini (OpenAI/Tiers & Local)
-    if (fournisseurActif === "gemini") {
-      btnModeMorphing.style.display = "none";
-    } else {
-      btnModeMorphing.style.display = "inline-flex";
-    }
+      btnOndeRouge.className = "mvs-red-wave-btn";
+      btnOndeRouge.setAttribute("title", t("btnStopTitle"));
+      btnOndeRouge.setAttribute("aria-label", t("btnStopLabel"));
 
-    if (!reponse || !reponse.success) {
-      if (reponse && reponse.error === "NOT_CONFIGURED") {
-        etatCourant = "ONBOARDING";
-        txtOnboardingEl.textContent = t("onboardingMessage");
-        btnActionOnboardingEl.textContent = t("btnOpenSettings");
-        vueCapsule.classList.add("mvs-hidden");
-        vueOnboarding.classList.remove("mvs-hidden");
-        positionnerPresDuCurseur();
+      timerEl.style.display = "inline";
+      statutCourtEl.style.display = "none";
+      statutCourtEl.classList.remove("is-error");
+      statutCourtEl.removeAttribute("title");
+      btnPause.style.display = "inline-flex";
+      btnPause.textContent = "⏸";
+      btnPause.setAttribute("aria-pressed", "false");
+      btnAnnuler.style.display = "inline-flex";
+
+      positionnerPresDuCurseur();
+
+      let reponse;
+      try {
+        reponse = await api.runtime.sendMessage({ action: "startAudioSession" });
+      } catch {
+        reponse = { success: false, error: "SERVICE_UNAVAILABLE" };
+      }
+
+      if (reponse && reponse.provider) {
+        fournisseurActif = reponse.provider;
+      }
+      if (reponse && reponse.activeVoiceMode) {
+        appliquerVisuelModeVoix(reponse.activeVoiceMode, false);
+      }
+
+      // Les 3 modes (🎙️/👔/📋) ne sont affichés que pour les moteurs hors Gemini (OpenAI/Tiers & Local)
+      if (fournisseurActif === "gemini") {
+        btnModeMorphing.style.display = "none";
+      } else {
+        btnModeMorphing.style.display = "inline-flex";
+      }
+
+      if (!reponse || !reponse.success) {
+        if (reponse && reponse.error === "NOT_CONFIGURED") {
+          etatCourant = "ONBOARDING";
+          txtOnboardingEl.textContent = t("onboardingMessage");
+          btnActionOnboardingEl.textContent = t("btnOpenSettings");
+          vueCapsule.classList.add("mvs-hidden");
+          vueOnboarding.classList.remove("mvs-hidden");
+          positionnerPresDuCurseur();
+          annoncerA11y(t("onboardingMessage"), true);
+          return;
+        }
+        if (reponse && reponse.error === "MIC_PREF_REQUIRED") {
+          etatCourant = "MIC_PREF_GUIDE";
+          txtOnboardingEl.textContent = t("micPrefRequiredMessage");
+          btnActionOnboardingEl.textContent = t("btnCopyMicPref");
+          vueCapsule.classList.add("mvs-hidden");
+          vueOnboarding.classList.remove("mvs-hidden");
+          positionnerPresDuCurseur();
+          annoncerA11y(t("micPrefRequiredMessage"), true);
+          return;
+        }
+        afficherErreurDansCapsule((reponse && reponse.error) || "MIC_DENIED");
         return;
       }
-      if (reponse && reponse.error === "MIC_PREF_REQUIRED") {
-        etatCourant = "MIC_PREF_GUIDE";
-        txtOnboardingEl.textContent = t("micPrefRequiredMessage");
-        btnActionOnboardingEl.textContent = t("btnCopyMicPref");
-        vueCapsule.classList.add("mvs-hidden");
-        vueOnboarding.classList.remove("mvs-hidden");
-        positionnerPresDuCurseur();
-        return;
+
+      etatCourant = "RECORDING";
+      annoncerA11y(t("statusRecording") || "Enregistrement en cours", false);
+      ciblesBarres = [0.25, 0.45, 0.65, 0.45, 0.25];
+      demarrerChrono();
+      positionnerPresDuCurseur();
+
+      if (!idBoucleAnimation) {
+        idBoucleAnimation = requestAnimationFrame(animerBarresBouton);
       }
-      afficherErreurDansCapsule((reponse && reponse.error) || "MIC_DENIED");
-      return;
-    }
-
-    etatCourant = "RECORDING";
-    ciblesBarres = [0.25, 0.45, 0.65, 0.45, 0.25];
-    demarrerChrono();
-    positionnerPresDuCurseur();
-
-    if (!idBoucleAnimation) {
-      idBoucleAnimation = requestAnimationFrame(animerBarresBouton);
+    } finally {
+      demarrageEnCours = false;
     }
   }
 
@@ -1120,10 +1205,14 @@ const DEBUG = false;
           etatCourant = "PAUSED";
           btnOndeRouge.classList.add("state-paused");
           btnPause.textContent = "▶";
+          btnPause.setAttribute("aria-pressed", "true");
+          annoncerA11y(t("statusPaused") || "Enregistrement en pause", false);
         } else {
           etatCourant = "RECORDING";
           btnOndeRouge.classList.remove("state-paused");
           btnPause.textContent = "⏸";
+          btnPause.setAttribute("aria-pressed", "false");
+          annoncerA11y(t("statusRecording") || "Reprise de l'enregistrement", false);
         }
       }
     } catch {
@@ -1146,7 +1235,10 @@ const DEBUG = false;
     btnPause.style.display = "none";
     statutCourtEl.style.display = "inline";
     statutCourtEl.classList.remove("is-error");
-    statutCourtEl.textContent = t("statusThinking");
+    statutCourtEl.removeAttribute("title");
+    const msgPensee = t("statusThinking");
+    statutCourtEl.textContent = msgPensee;
+    annoncerA11y(msgPensee, false);
     positionnerPresDuCurseur();
 
     // Mémorisation du texte en direct déjà présent dans l'éditeur (politique Zero Data Loss)
@@ -1173,7 +1265,9 @@ const DEBUG = false;
         figerConteneurLiveDOM();
         etatCourant = "DONE";
         btnOndeRouge.className = "mvs-red-wave-btn state-done";
-        statutCourtEl.textContent = t("statusInserted");
+        const msgInsere = t("statusInserted");
+        statutCourtEl.textContent = msgInsere;
+        annoncerA11y(msgInsere, false);
         positionnerPresDuCurseur();
 
         setTimeout(() => {
@@ -1199,7 +1293,9 @@ const DEBUG = false;
     // Confirmation brève puis repli fluide vers le petit bouton flottant permanent près du curseur
     etatCourant = "DONE";
     btnOndeRouge.className = "mvs-red-wave-btn state-done";
-    statutCourtEl.textContent = t("statusInserted");
+    const msgInsere = t("statusInserted");
+    statutCourtEl.textContent = msgInsere;
+    annoncerA11y(msgInsere, false);
     positionnerPresDuCurseur();
 
     setTimeout(() => {
@@ -1287,6 +1383,8 @@ const DEBUG = false;
     };
 
     const cle = correspondances[codeErreur] || "errorServiceUnavailable";
+    const msgErreur = t(cle);
+
     vueOnboarding.classList.add("mvs-hidden");
     vueCapsule.classList.remove("mvs-hidden", "mvs-pill-idle");
     btnOndeRouge.className = "mvs-red-wave-btn state-paused";
@@ -1296,7 +1394,9 @@ const DEBUG = false;
     btnAnnuler.style.display = "inline-flex";
     statutCourtEl.style.display = "inline";
     statutCourtEl.classList.add("is-error");
-    statutCourtEl.textContent = t(cle);
+    statutCourtEl.textContent = msgErreur;
+    statutCourtEl.setAttribute("title", msgErreur);
+    annoncerA11y(msgErreur, true);
     positionnerPresDuCurseur();
   }
 
@@ -1323,10 +1423,10 @@ const DEBUG = false;
       idBoucleAnimation = null;
     }
 
-    const hauteursRepos = [5, 9, 13, 9, 5];
+    const facteursRepos = [0.28, 0.5, 0.72, 0.5, 0.28];
     for (let i = 0; i < 5; i++) {
       if (barresBlanchesEls[i]) {
-        barresBlanchesEls[i].style.height = `${hauteursRepos[i]}px`;
+        barresBlanchesEls[i].style.transform = `scaleY(${facteursRepos[i]})`;
       }
     }
 
@@ -1343,9 +1443,15 @@ const DEBUG = false;
       btnOndeRouge.setAttribute("aria-label", t("composeActionTitle"));
     }
     if (timerEl) timerEl.style.display = "none";
-    if (statutCourtEl) statutCourtEl.style.display = "none";
+    if (statutCourtEl) {
+      statutCourtEl.style.display = "none";
+      statutCourtEl.removeAttribute("title");
+    }
     if (btnModeMorphing) btnModeMorphing.style.display = "none";
-    if (btnPause) btnPause.style.display = "none";
+    if (btnPause) {
+      btnPause.style.display = "none";
+      btnPause.setAttribute("aria-pressed", "false");
+    }
     if (btnAnnuler) btnAnnuler.style.display = "none";
 
     restaurerPositionCurseur();
@@ -1409,6 +1515,7 @@ const DEBUG = false;
   });
 
   document.addEventListener("input", () => {
+    timestampDerniereFrappeTexte = Date.now();
     planifierPositionnementCurseur();
     gererAttenuatonFrappe();
   });
@@ -1463,14 +1570,22 @@ const DEBUG = false;
       }
 
       if (etatCourant === "RECORDING" || etatCourant === "PAUSED") {
+        // Mode clavier hybride : si l'utilisateur est en train de taper du texte (< 1.5s),
+        // on ne capture pas Space ou Enter pour ne pas bloquer sa saisie manuelle dans l'e-mail.
+        const saisieEnCours = Date.now() - timestampDerniereFrappeTexte < 1500;
+
         if (e.code === "Space" && !e.ctrlKey && !e.metaKey && !e.altKey) {
-          e.preventDefault();
-          e.stopPropagation();
-          basculerPauseReprise();
+          if (!saisieEnCours) {
+            e.preventDefault();
+            e.stopPropagation();
+            basculerPauseReprise();
+          }
         } else if (e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          e.stopPropagation();
-          arreterEtInsererTexte();
+          if (!saisieEnCours) {
+            e.preventDefault();
+            e.stopPropagation();
+            arreterEtInsererTexte();
+          }
         }
       }
     },
@@ -1495,7 +1610,12 @@ const DEBUG = false;
 
   // Réception des messages depuis background.js (toggleVoicePill, updateVoiceBars, updateLiveTranscript)
   if (api && api.runtime && api.runtime.onMessage) {
-    api.runtime.onMessage.addListener((message, _expediteur, sendResponse) => {
+    api.runtime.onMessage.addListener((message, expediteur, sendResponse) => {
+      // Filtrer les messages externes : accepter uniquement l'extension elle-même
+      if (expediteur && expediteur.id && expediteur.id !== api.runtime.id) {
+        return false;
+      }
+
       if (!message || typeof message.action !== "string") {
         return false;
       }

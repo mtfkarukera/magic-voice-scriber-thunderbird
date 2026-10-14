@@ -196,19 +196,38 @@ if (api && api.menus) {
   });
 }
 
+// Nettoyage immédiat des ressources audio si l'onglet de rédaction est fermé (M4)
+if (api && api.tabs && api.tabs.onRemoved) {
+  api.tabs.onRemoved.addListener((tabId) => {
+    if (sessionAudio.active && sessionAudio.tabId === tabId) {
+      if (DEBUG) console.log("[MagicVoiceScriber] Onglet fermé, libération de la session :", tabId);
+      libererSessionAudio();
+    }
+  });
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // 3. MOTEUR DE CAPTURE AUDIO, ONDES VOCALES & STREAMING GEMINI LIVE
 // ═══════════════════════════════════════════════════════════════════════════
 
+let demarrageSessionEnCours = false;
+
+let sessionSauvegardeAudio = {
+  dernierBlob: null,
+  dernierMimeType: "audio/webm",
+  dernierVoiceMode: "natural"
+};
+
 let sessionAudio = {
   active: false,
-  etat: "IDLE", // "IDLE" | "RECORDING" | "PAUSED"
+  etat: "IDLE", // "IDLE" | "RECORDING" | "PAUSED" | "STOPPING"
   tabId: null,
   fluxMedia: null,
   mediaRecorder: null,
   tranchesAudio: [],
   mimeType: "audio/webm",
   contexteAudio: null,
+  noeudSource: null,
   analyseur: null,
   donneesFreq: null,
   donneesTemps: null,
@@ -402,6 +421,7 @@ function libererSessionAudio() {
 
   if (sessionAudio.processeurPcm) {
     try {
+      sessionAudio.processeurPcm.onaudioprocess = null;
       sessionAudio.processeurPcm.disconnect();
     } catch {
       /* Ignorer */
@@ -418,6 +438,15 @@ function libererSessionAudio() {
     sessionAudio.gainMuet = null;
   }
 
+  if (sessionAudio.noeudSource) {
+    try {
+      sessionAudio.noeudSource.disconnect();
+    } catch {
+      /* Ignorer */
+    }
+    sessionAudio.noeudSource = null;
+  }
+
   if (sessionAudio.socketLive) {
     try {
       sessionAudio.socketLive.close();
@@ -432,7 +461,7 @@ function libererSessionAudio() {
 
   if (typeof sessionAudio.resolveurFinLive === "function") {
     try {
-      sessionAudio.resolveurFinLive();
+      sessionAudio.resolveurFinLive(true);
     } catch {
       /* Ignorer */
     }
@@ -450,15 +479,31 @@ function libererSessionAudio() {
     sessionAudio.fluxMedia = null;
   }
 
+  if (sessionAudio.mediaRecorder) {
+    try {
+      if (sessionAudio.mediaRecorder.state !== "inactive") {
+        sessionAudio.mediaRecorder.stop();
+      }
+    } catch {
+      /* Ignorer */
+    }
+    sessionAudio.mediaRecorder = null;
+  }
+
   if (sessionAudio.contexteAudio && sessionAudio.contexteAudio.state !== "closed") {
     sessionAudio.contexteAudio.close().catch(() => {});
     sessionAudio.contexteAudio = null;
   }
 
+  // Purge intégrale de la mémoire vive audio et des textes
+  sessionAudio.tranchesAudio = [];
+  sessionAudio.texteValideLive = "";
+  sessionAudio.texteInterimLive = "";
+  sessionAudio.dernierTexteInterimValide = "";
+  sessionAudio.tabId = null;
   sessionAudio.analyseur = null;
   sessionAudio.donneesFreq = null;
   sessionAudio.donneesTemps = null;
-  sessionAudio.mediaRecorder = null;
   sessionAudio.active = false;
   sessionAudio.etat = "IDLE";
 }
@@ -469,139 +514,164 @@ function libererSessionAudio() {
  * @returns {Promise<Object>}
  */
 async function demarrerSessionAudio(tabId) {
-  libererSessionAudio();
-
-  const config = await chargerConfiguration();
-  if (!globalThis.MVSProviders.estConfigure(config)) {
-    return {
-      success: false,
-      error: "NOT_CONFIGURED",
-      activeVoiceMode: determinerModeVoixActif(config),
-      provider: config.provider
-    };
+  if (demarrageSessionEnCours) {
+    return { success: false, error: "BUSY" };
   }
+  demarrageSessionEnCours = true;
 
-  // Détection en 1,8 s du bug Thunderbird #2080573 (getUserMedia restant pending si media.navigator.permission.disabled = false)
-  let flux;
-  let idTimeoutMic = null;
   try {
-    const promesseMic = navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      }
-    });
+    libererSessionAudio();
 
-    const promesseDelai = new Promise((_, reject) => {
-      idTimeoutMic = setTimeout(() => {
-        reject(new Error("MIC_PREF_REQUIRED"));
-      }, 1800);
-    });
-
-    flux = await Promise.race([promesseMic, promesseDelai]);
-    if (idTimeoutMic) clearTimeout(idTimeoutMic);
-  } catch (err) {
-    if (idTimeoutMic) clearTimeout(idTimeoutMic);
-    if (DEBUG) console.error("[MagicVoiceScriber] Erreur getUserMedia :", err);
-    if (err && err.message === "MIC_PREF_REQUIRED") {
+    const config = await chargerConfiguration();
+    if (!globalThis.MVSProviders.estConfigure(config)) {
       return {
         success: false,
-        error: "MIC_PREF_REQUIRED",
+        error: "NOT_CONFIGURED",
+        activeVoiceMode: determinerModeVoixActif(config),
         provider: config.provider
       };
     }
+
+    // Détection en 1,8 s du bug Thunderbird #2080573 (getUserMedia restant pending si media.navigator.permission.disabled = false)
+    let flux;
+    let idTimeoutMic = null;
+    let promesseMic = null;
+    try {
+      promesseMic = navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+
+      const promesseDelai = new Promise((_, reject) => {
+        idTimeoutMic = setTimeout(() => {
+          reject(new Error("MIC_PREF_REQUIRED"));
+        }, 1800);
+      });
+
+      flux = await Promise.race([promesseMic, promesseDelai]);
+      if (idTimeoutMic) clearTimeout(idTimeoutMic);
+    } catch (err) {
+      if (idTimeoutMic) clearTimeout(idTimeoutMic);
+      // Garde-fou B2 : si le flux micro arrive en retard après le timeout, couper immédiatement ses pistes
+      if (promesseMic) {
+        promesseMic
+          .then((fluxTardif) => {
+            if (fluxTardif) {
+              fluxTardif.getTracks().forEach((p) => {
+                try {
+                  p.stop();
+                } catch {}
+              });
+            }
+          })
+          .catch(() => {});
+      }
+      if (DEBUG) console.error("[MagicVoiceScriber] Erreur getUserMedia :", err);
+      if (err && err.message === "MIC_PREF_REQUIRED") {
+        return {
+          success: false,
+          error: "MIC_PREF_REQUIRED",
+          provider: config.provider
+        };
+      }
+      return {
+        success: false,
+        error: "MIC_DENIED",
+        provider: config.provider
+      };
+    }
+
+    sessionAudio.fluxMedia = flux;
+    sessionAudio.tabId = tabId;
+    sessionAudio.tranchesAudio = [];
+    sessionAudio.texteValideLive = "";
+    sessionAudio.texteInterimLive = "";
+    sessionAudio.dernierTexteInterimValide = "";
+    sessionAudio.resolveurFinLive = null;
+    sessionAudio.wsPret = false;
+    sessionAudio.activiteDemarree = false;
+    sessionAudio.tamponPcmAvantPret = [];
+
+    // Initialisation et réveil explicite de l'AudioContext pour les 5 barres d'ondes blanches
+    try {
+      const AudioCtx = globalThis.AudioContext || globalThis.webkitAudioContext;
+      if (AudioCtx) {
+        sessionAudio.contexteAudio = new AudioCtx();
+        if (sessionAudio.contexteAudio.state === "suspended") {
+          await sessionAudio.contexteAudio.resume();
+        }
+
+        const source = sessionAudio.contexteAudio.createMediaStreamSource(flux);
+        sessionAudio.noeudSource = source;
+        sessionAudio.analyseur = sessionAudio.contexteAudio.createAnalyser();
+        sessionAudio.analyseur.fftSize = 128;
+        sessionAudio.analyseur.smoothingTimeConstant = 0.65;
+        source.connect(sessionAudio.analyseur);
+        sessionAudio.donneesFreq = new Uint8Array(sessionAudio.analyseur.frequencyBinCount);
+        sessionAudio.donneesTemps = new Uint8Array(sessionAudio.analyseur.fftSize);
+
+        // Si le moteur est Gemini avec gemini-3.5-transcribe-live, ouvrir le flux WebSocket v1beta
+        const estGeminiLive =
+          config.provider === "gemini" &&
+          config.geminiModel === "gemini-3.5-transcribe-live" &&
+          Boolean(config.geminiApiKey && config.geminiApiKey.trim());
+
+        if (estGeminiLive) {
+          initialiserWebSocketLive(config, source);
+        }
+      }
+    } catch (err) {
+      if (DEBUG) console.warn("[MagicVoiceScriber] Analyseur audio non disponible :", err);
+    }
+
+    // Démarrage du MediaRecorder (utilisé pour les modes batch et comme filet de sécurité)
+    const mime = choisirMimeTypeSupporte();
+    sessionAudio.mimeType = mime || "audio/webm";
+    try {
+      sessionAudio.mediaRecorder = mime
+        ? new MediaRecorder(flux, { mimeType: mime })
+        : new MediaRecorder(flux);
+    } catch {
+      sessionAudio.mediaRecorder = new MediaRecorder(flux);
+    }
+
+    sessionAudio.mediaRecorder.addEventListener("dataavailable", (e) => {
+      if (e.data && e.data.size > 0) {
+        sessionAudio.tranchesAudio.push(e.data);
+      }
+    });
+
+    sessionAudio.mediaRecorder.start(200);
+    sessionAudio.active = true;
+    sessionAudio.etat = "RECORDING";
+
+    // Envoi périodique (50 ms = 20 FPS) des 5 hauteurs de barres au bouton flottant
+    if (tabId) {
+      sessionAudio.intervalleOndes = setInterval(() => {
+        if (!sessionAudio.active || sessionAudio.etat !== "RECORDING") return;
+        const bars = calculerCinqBarresVocales();
+        api.tabs
+          .sendMessage(tabId, {
+            action: "updateVoiceBars",
+            bars
+          })
+          .catch(() => {});
+      }, 50);
+    }
+
     return {
-      success: false,
-      error: "MIC_DENIED",
-      provider: config.provider
+      success: true,
+      state: "RECORDING",
+      activeVoiceMode: determinerModeVoixActif(config),
+      provider: config.provider,
+      geminiModel: config.geminiModel
     };
+  } finally {
+    demarrageSessionEnCours = false;
   }
-
-  sessionAudio.fluxMedia = flux;
-  sessionAudio.tabId = tabId;
-  sessionAudio.tranchesAudio = [];
-  sessionAudio.texteValideLive = "";
-  sessionAudio.texteInterimLive = "";
-  sessionAudio.dernierTexteInterimValide = "";
-  sessionAudio.resolveurFinLive = null;
-  sessionAudio.wsPret = false;
-  sessionAudio.activiteDemarree = false;
-  sessionAudio.tamponPcmAvantPret = [];
-
-  // Initialisation et réveil explicite de l'AudioContext pour les 5 barres d'ondes blanches
-  try {
-    const AudioCtx = globalThis.AudioContext || globalThis.webkitAudioContext;
-    if (AudioCtx) {
-      sessionAudio.contexteAudio = new AudioCtx();
-      if (sessionAudio.contexteAudio.state === "suspended") {
-        await sessionAudio.contexteAudio.resume();
-      }
-
-      const source = sessionAudio.contexteAudio.createMediaStreamSource(flux);
-      sessionAudio.analyseur = sessionAudio.contexteAudio.createAnalyser();
-      sessionAudio.analyseur.fftSize = 128;
-      sessionAudio.analyseur.smoothingTimeConstant = 0.65;
-      source.connect(sessionAudio.analyseur);
-      sessionAudio.donneesFreq = new Uint8Array(sessionAudio.analyseur.frequencyBinCount);
-      sessionAudio.donneesTemps = new Uint8Array(sessionAudio.analyseur.fftSize);
-
-      // Si le moteur est Gemini avec gemini-3.5-transcribe-live, ouvrir le flux WebSocket v1beta
-      const estGeminiLive =
-        config.provider === "gemini" &&
-        config.geminiModel === "gemini-3.5-transcribe-live" &&
-        Boolean(config.geminiApiKey && config.geminiApiKey.trim());
-
-      if (estGeminiLive) {
-        initialiserWebSocketLive(config, source);
-      }
-    }
-  } catch (err) {
-    if (DEBUG) console.warn("[MagicVoiceScriber] Analyseur audio non disponible :", err);
-  }
-
-  // Démarrage du MediaRecorder (utilisé pour les modes batch et comme filet de sécurité)
-  const mime = choisirMimeTypeSupporte();
-  sessionAudio.mimeType = mime || "audio/webm";
-  try {
-    sessionAudio.mediaRecorder = mime
-      ? new MediaRecorder(flux, { mimeType: mime })
-      : new MediaRecorder(flux);
-  } catch {
-    sessionAudio.mediaRecorder = new MediaRecorder(flux);
-  }
-
-  sessionAudio.mediaRecorder.addEventListener("dataavailable", (e) => {
-    if (e.data && e.data.size > 0) {
-      sessionAudio.tranchesAudio.push(e.data);
-    }
-  });
-
-  sessionAudio.mediaRecorder.start(200);
-  sessionAudio.active = true;
-  sessionAudio.etat = "RECORDING";
-
-  // Envoi périodique (50 ms = 20 FPS) des 5 hauteurs de barres au bouton flottant
-  if (tabId) {
-    sessionAudio.intervalleOndes = setInterval(() => {
-      if (!sessionAudio.active || sessionAudio.etat !== "RECORDING") return;
-      const bars = calculerCinqBarresVocales();
-      api.tabs
-        .sendMessage(tabId, {
-          action: "updateVoiceBars",
-          bars
-        })
-        .catch(() => {});
-    }, 50);
-  }
-
-  return {
-    success: true,
-    state: "RECORDING",
-    activeVoiceMode: determinerModeVoixActif(config),
-    provider: config.provider,
-    geminiModel: config.geminiModel
-  };
 }
 
 /**
@@ -627,6 +697,11 @@ function initialiserWebSocketLive(config, sourceNode) {
     ws.addEventListener("error", (errEvent) => {
       if (DEBUG) console.warn("[MagicVoiceScriber] Erreur WebSocket Live :", errEvent);
       sessionAudio.wsPret = false;
+      if (typeof sessionAudio.resolveurFinLive === "function") {
+        try {
+          sessionAudio.resolveurFinLive(true);
+        } catch {}
+      }
     });
 
     ws.addEventListener("close", (closeEvent) => {
@@ -636,6 +711,11 @@ function initialiserWebSocketLive(config, sourceNode) {
         );
       }
       sessionAudio.wsPret = false;
+      if (typeof sessionAudio.resolveurFinLive === "function") {
+        try {
+          sessionAudio.resolveurFinLive(true);
+        } catch {}
+      }
     });
 
     ws.addEventListener("message", async (event) => {
@@ -653,14 +733,16 @@ function initialiserWebSocketLive(config, sourceNode) {
             sessionAudio.socketLive.readyState === WebSocket.OPEN &&
             !sessionAudio.activiteDemarree
           ) {
-            sessionAudio.socketLive.send(
-              JSON.stringify({
-                realtimeInput: {
-                  activityStart: {}
-                }
-              })
-            );
-            sessionAudio.activiteDemarree = true;
+            try {
+              sessionAudio.socketLive.send(
+                JSON.stringify({
+                  realtimeInput: {
+                    activityStart: {}
+                  }
+                })
+              );
+              sessionAudio.activiteDemarree = true;
+            } catch {}
           }
           if (
             Array.isArray(sessionAudio.tamponPcmAvantPret) &&
@@ -671,7 +753,9 @@ function initialiserWebSocketLive(config, sourceNode) {
                 sessionAudio.socketLive &&
                 sessionAudio.socketLive.readyState === WebSocket.OPEN
               ) {
-                sessionAudio.socketLive.send(payloadPcm);
+                try {
+                  sessionAudio.socketLive.send(payloadPcm);
+                } catch {}
               }
             }
             sessionAudio.tamponPcmAvantPret = [];
@@ -732,16 +816,15 @@ function initialiserWebSocketLive(config, sourceNode) {
             diffuserTexteLiveVersEditeur();
           }
 
-          // Déblocage réactif immédiat si on attendait la finalisation du tour
-          if (
-            sc.generationComplete === true ||
-            sc.turnComplete === true ||
-            aRecuSegmentValide
-          ) {
+          // Déblocage réactif si le tour est complètement terminé par Gemini (B1)
+          if (sc.generationComplete === true || sc.turnComplete === true) {
             if (typeof sessionAudio.resolveurFinLive === "function") {
-              const res = sessionAudio.resolveurFinLive;
-              sessionAudio.resolveurFinLive = null;
-              res();
+              sessionAudio.resolveurFinLive(true);
+            }
+          } else if (aRecuSegmentValide) {
+            // Relance le timer de silence (800ms) sans fermer prématurément pour préserver la fin de phrase
+            if (typeof sessionAudio.resolveurFinLive === "function") {
+              sessionAudio.resolveurFinLive(false);
             }
           }
         }
@@ -792,18 +875,22 @@ function initialiserWebSocketLive(config, sourceNode) {
 
       // Mode Manual VAD (Push-to-Talk) : émettre activityStart au tout début de l'élocution
       if (!sessionAudio.activiteDemarree) {
-        sessionAudio.socketLive.send(
-          JSON.stringify({
-            realtimeInput: {
-              activityStart: {}
-            }
-          })
-        );
-        sessionAudio.activiteDemarree = true;
+        try {
+          sessionAudio.socketLive.send(
+            JSON.stringify({
+              realtimeInput: {
+                activityStart: {}
+              }
+            })
+          );
+          sessionAudio.activiteDemarree = true;
+        } catch {}
       }
 
       // Contrat officiel Gemini 3.5 Transcribe Live : realtimeInput.audio
-      sessionAudio.socketLive.send(payloadAudio);
+      try {
+        sessionAudio.socketLive.send(payloadAudio);
+      } catch {}
     };
   } catch (err) {
     if (DEBUG) console.warn("[MagicVoiceScriber] WebSocket Live non initialisé :", err);
@@ -822,21 +909,40 @@ async function arreterEtTranscrireSession(modeVoixDemande, texteSecoursClient = 
     return { success: false, error: "SESSION_LOST" };
   }
 
+  // Passer en état STOPPING pour cesser immédiatement d'envoyer du flux audio au WebSocket
+  sessionAudio.etat = "STOPPING";
+
   // Si un WebSocket Gemini Live est ouvert, signaler la fin du flux audio et attendre réactivement la finalisation
   if (sessionAudio.socketLive && sessionAudio.socketLive.readyState === WebSocket.OPEN) {
     try {
       await new Promise((resolve) => {
-        sessionAudio.resolveurFinLive = resolve;
-        const timerSecurite = setTimeout(() => {
-          if (sessionAudio.resolveurFinLive === resolve) {
-            sessionAudio.resolveurFinLive = null;
-          }
+        let timerSecurite = null;
+        let timerSilence = null;
+
+        const nettoyerEtResoudre = () => {
+          if (timerSecurite) clearTimeout(timerSecurite);
+          if (timerSilence) clearTimeout(timerSilence);
+          sessionAudio.resolveurFinLive = null;
           resolve();
-        }, 4000); // 4 000 ms pour laisser le temps au modèle d'émettre le segment final SMART
+        };
+
+        sessionAudio.resolveurFinLive = (estComplet = false) => {
+          if (estComplet) {
+            nettoyerEtResoudre();
+          } else {
+            // Relance le timer de silence (800ms) après chaque segment reçu pour ne pas tronquer la fin (B1)
+            if (timerSilence) clearTimeout(timerSilence);
+            timerSilence = setTimeout(nettoyerEtResoudre, 800);
+          }
+        };
+
+        // Délai de sécurité global maximal de 5 secondes
+        timerSecurite = setTimeout(() => {
+          nettoyerEtResoudre();
+        }, 5000);
 
         try {
           // Mode Manual VAD (Push-to-Talk) : clôture explicite du tour par activityEnd
-          // Règle Bidi Gemini API : audioStreamEnd est STRICTEMENT INTERDIT lorsque automaticActivityDetection.disabled = true.
           sessionAudio.socketLive.send(
             JSON.stringify({
               realtimeInput: {
@@ -845,9 +951,7 @@ async function arreterEtTranscrireSession(modeVoixDemande, texteSecoursClient = 
             })
           );
         } catch {
-          clearTimeout(timerSecurite);
-          sessionAudio.resolveurFinLive = null;
-          resolve();
+          nettoyerEtResoudre();
         }
       });
     } catch {
@@ -880,6 +984,11 @@ async function arreterEtTranscrireSession(modeVoixDemande, texteSecoursClient = 
       resolve(new Blob(sessionAudio.tranchesAudio, { type: mime }));
     }
   });
+
+  // Sauvegarde de sécurité du blob audio complet en mémoire en cas d'erreur API (M6)
+  sessionSauvegardeAudio.dernierBlob = blobFinal;
+  sessionSauvegardeAudio.dernierMimeType = blobFinal.type || mime;
+  sessionSauvegardeAudio.dernierVoiceMode = modeVoixDemande;
 
   // Priorité au segment validé et nettoyé par SMART.
   // L'interim brut n'est utilisé en secours que si aucun segment validé n'a été produit.
@@ -977,6 +1086,26 @@ async function traiterMessage(message, expediteur) {
 
   const tabIdExpediteur = expediteur.tab && expediteur.tab.id ? expediteur.tab.id : null;
 
+  // Contrôle de session multi-onglets (M3) : empêcher une autre fenêtre d'interférer avec une dictée en cours
+  if (
+    sessionAudio.active &&
+    sessionAudio.tabId !== null &&
+    tabIdExpediteur !== null &&
+    sessionAudio.tabId !== tabIdExpediteur
+  ) {
+    if (message.action === "startAudioSession") {
+      return { success: false, error: "BUSY" };
+    }
+    if (
+      message.action === "pauseResumeAudioSession" ||
+      message.action === "stopAndTranscribeSession" ||
+      message.action === "cancelAudioSession" ||
+      message.action === "keepAliveAudioSession"
+    ) {
+      return { success: false, error: "UNAUTHORIZED" };
+    }
+  }
+
   // ── Action 1 : Récupérer l'état et la configuration pour la capsule ────────
   if (message.action === "getConfig") {
     const config = await chargerConfiguration();
@@ -1068,6 +1197,45 @@ async function traiterMessage(message, expediteur) {
     return { success: true };
   }
 
+  // ── Action 6bis : Réessayer la transcription avec le dernier audio sauvegardé (M6) ──
+  if (message.action === "retryLastTranscription") {
+    if (!sessionSauvegardeAudio.dernierBlob) {
+      return { success: false, error: "NO_AUDIO" };
+    }
+    const config = await chargerConfiguration();
+    const voiceMode = MODES_VOIX_VALIDES.has(message.voiceMode)
+      ? message.voiceMode
+      : sessionSauvegardeAudio.dernierVoiceMode || determinerModeVoixActif(config);
+
+    let audioBase64;
+    try {
+      audioBase64 = await blobVersBase64(sessionSauvegardeAudio.dernierBlob);
+    } catch {
+      return { success: false, error: "EMPTY_RECORDING" };
+    }
+
+    try {
+      const res = await globalThis.MVSProviders.transcrire(
+        config,
+        audioBase64,
+        sessionSauvegardeAudio.dernierMimeType || "audio/webm",
+        voiceMode
+      );
+      return {
+        success: true,
+        text: res.text,
+        provider: config.provider,
+        wasLiveStreamed: false
+      };
+    } catch (err) {
+      const code = err && err.message ? err.message : "SERVICE_UNAVAILABLE";
+      return {
+        success: false,
+        error: CODES_ERREURS_CONNUS.has(code) ? code : "SERVICE_UNAVAILABLE"
+      };
+    }
+  }
+
   // ── Action 7 : Transcrire un payload Base64 direct (rétro-compatibilité) ───
   if (message.action === "transcribeAudio") {
     if (typeof message.audioBase64 !== "string" || !message.audioBase64.trim()) {
@@ -1103,6 +1271,10 @@ async function traiterMessage(message, expediteur) {
 
   // ── Action 8 : Tester la connexion à un fournisseur depuis les options ─────
   if (message.action === "testProvider") {
+    // Protection SSRF (P1.2) : seuls les appels depuis la page d'options interne sont autorisés
+    if (expediteur && expediteur.tab) {
+      return { success: false, error: "UNAUTHORIZED" };
+    }
     if (!message.config || typeof message.config !== "object") {
       return { success: false, message: "INVALID_PAYLOAD" };
     }

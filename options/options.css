@@ -12,9 +12,13 @@
   --opt-border: #e2e8f0;
   --opt-text-primary: #0f172a;
   --opt-text-secondary: #334155;
-  --opt-text-muted: #64748b;
-  --opt-accent: #6d28d9;
-  --opt-accent-hover: #5b21b6;
+  --opt-text-muted: #475569;
+  --opt-accent: #ea6512;
+  --opt-accent-hover: #c2410c;
+  --opt-accent-border: #85270b;
+  --opt-badge-bg: rgba(234, 101, 18, 0.12);
+  --opt-badge-text: #c2410c;
+  --opt-badge-border: rgba(234, 101, 18, 0.25);
   --opt-success-bg: #ecfdf5;
   --opt-success-text: #065f46;
   --opt-error-bg: #fef2f2;
@@ -32,8 +36,12 @@
     --opt-text-primary: #f8fafc;
     --opt-text-secondary: #cbd5e1;
     --opt-text-muted: #94a3b8;
-    --opt-accent: #8b5cf6;
-    --opt-accent-hover: #7c3aed;
+    --opt-accent: #f97316;
+    --opt-accent-hover: #ea6512;
+    --opt-accent-border: #ea6512;
+    --opt-badge-bg: rgba(249, 115, 22, 0.18);
+    --opt-badge-text: #fdba74;
+    --opt-badge-border: rgba(249, 115, 22, 0.35);
     --opt-success-bg: rgba(16, 185, 129, 0.15);
     --opt-success-text: #6ee7b7;
     --opt-error-bg: rgba(244, 63, 94, 0.15);
@@ -126,8 +134,9 @@ body {
 .mvs-badge {
   padding: 3px 10px;
   border-radius: 999px;
-  background: rgba(139, 92, 246, 0.16);
-  color: var(--opt-accent);
+  background: var(--opt-badge-bg);
+  color: var(--opt-badge-text);
+  border: 1px solid var(--opt-badge-border);
   font-size: 11.5px;
   font-weight: 600;
 }

@@ -372,7 +372,7 @@
       const modeleChoisi = (config.geminiModel || "gemini-3.5-transcribe-live").replace(/^models\//, "").trim();
       const modeleRest = modeleChoisi === "gemini-3.5-transcribe-live" ? "gemini-3.5-transcribe" : modeleChoisi;
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modeleRest)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modeleRest)}:generateContent`;
       const typePropre = (mimeType || "audio/webm").split(";")[0].trim() || "audio/webm";
 
       const payload = {
@@ -399,7 +399,10 @@
       try {
         reponse = await fetch(url, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey
+          },
           body: JSON.stringify(payload),
           signal: AbortSignal.timeout(TIMEOUT_REQUETE_MS)
         });
@@ -516,11 +519,20 @@
      */
     async transcrire(audioBase64, mimeType = "audio/webm", voiceMode = "natural", config = {}) {
       const sttUrl = (config.sttBaseUrl || "https://api.openai.com").trim();
-      const sttApiKey = (config.sttApiKey || config.llmApiKey || "").trim();
+      const llmUrl = (config.llmBaseUrl || "https://api.openai.com").trim();
+
+      // Garde-fou de sécurité : ne partager la clé entre STT et LLM que s'ils partagent la même origine
+      let memeOrigine = false;
+      try {
+        memeOrigine = new URL(sttUrl).origin === new URL(llmUrl).origin;
+      } catch {
+        memeOrigine = false;
+      }
+
+      const sttApiKey = (config.sttApiKey || (memeOrigine ? config.llmApiKey : "") || "").trim();
       const sttModel = (config.sttModel || "whisper-1").trim();
 
-      const llmUrl = (config.llmBaseUrl || "https://api.openai.com").trim();
-      const llmApiKey = (config.llmApiKey || config.sttApiKey || "").trim();
+      const llmApiKey = (config.llmApiKey || (memeOrigine ? config.sttApiKey : "") || "").trim();
       const llmModel = (config.llmModel || "gpt-4o-mini").trim();
 
       const estSttLocal = sttUrl.includes("localhost") || sttUrl.includes("127.0.0.1");
@@ -664,7 +676,20 @@
         return Boolean(config.geminiApiKey && config.geminiApiKey.trim().length > 0);
       }
       if (provider === "openai") {
-        return Boolean(config.llmApiKey && config.llmApiKey.trim().length > 0);
+        const llmOk = Boolean(config.llmApiKey && config.llmApiKey.trim().length > 0);
+        const sttUrl = (config.sttBaseUrl || "https://api.openai.com").trim();
+        const llmUrl = (config.llmBaseUrl || "https://api.openai.com").trim();
+        let memeOrigine = false;
+        try {
+          memeOrigine = new URL(sttUrl).origin === new URL(llmUrl).origin;
+        } catch {
+          memeOrigine = false;
+        }
+        const estSttLocal = sttUrl.includes("localhost") || sttUrl.includes("127.0.0.1");
+        if (!estSttLocal && !memeOrigine) {
+          return llmOk && Boolean(config.sttApiKey && config.sttApiKey.trim().length > 0);
+        }
+        return llmOk;
       }
       if (provider === "local") {
         return Boolean(
@@ -705,8 +730,11 @@
           if (!apiKey) {
             return { success: false, message: "UNAUTHORIZED" };
           }
-          const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`;
-          const rep = await fetch(url, { signal: AbortSignal.timeout(10000) });
+          const url = "https://generativelanguage.googleapis.com/v1beta/models";
+          const rep = await fetch(url, {
+            headers: { "x-goog-api-key": apiKey },
+            signal: AbortSignal.timeout(10000)
+          });
           if (!rep.ok) {
             if (rep.status === 400 || rep.status === 401 || rep.status === 403) {
               return { success: false, message: "UNAUTHORIZED" };
@@ -786,6 +814,50 @@
         }
       }
       return "https://generativelanguage.googleapis.com/*";
+    },
+
+    /**
+     * Calcule l'ensemble des match patterns d'origines WebExtension requis (STT + LLM).
+     * @param {string} [provider='gemini']
+     * @param {Object} [config={}]
+     * @returns {string[]} Liste dédoublée de patterns d'origines
+     */
+    obtenirPatternsOrigines(provider = "gemini", config = {}) {
+      const ensemble = new Set();
+      if (provider === "gemini") {
+        ensemble.add("https://generativelanguage.googleapis.com/*");
+      } else if (provider === "openai") {
+        const preset = config.openaiPreset || "openai";
+        if (preset === "openai") {
+          ensemble.add("https://api.openai.com/*");
+        } else if (preset === "groq") {
+          ensemble.add("https://api.groq.com/*");
+        } else if (preset === "mistral") {
+          ensemble.add("https://api.mistral.ai/*");
+          ensemble.add("https://api.groq.com/*");
+        } else {
+          try {
+            const uLlm = new URL(config.llmBaseUrl || "https://api.openai.com");
+            ensemble.add(`${uLlm.protocol}//${uLlm.hostname}/*`);
+          } catch {}
+          try {
+            const uStt = new URL(config.sttBaseUrl || "https://api.openai.com");
+            ensemble.add(`${uStt.protocol}//${uStt.hostname}/*`);
+          } catch {}
+        }
+      } else if (provider === "local") {
+        try {
+          const uLlm = new URL(config.localLlmUrl || "http://localhost:11434");
+          ensemble.add(`${uLlm.protocol}//${uLlm.hostname}/*`);
+        } catch {
+          ensemble.add("http://localhost/*");
+        }
+        try {
+          const uStt = new URL(config.localSttUrl || "http://localhost:8000");
+          ensemble.add(`${uStt.protocol}//${uStt.hostname}/*`);
+        } catch {}
+      }
+      return Array.from(ensemble);
     },
 
     /**
