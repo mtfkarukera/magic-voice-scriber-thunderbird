@@ -12,7 +12,7 @@
     "description": "Nhãn ngắn cho nút trên thanh công cụ soạn thảo"
   },
   "composeActionTitle": {
-    "message": "Magic Voice Scriber — Đọc chính tả thông minh (PC: Alt+Shift+S • Mac: ⌘⇧S hoặc ⌥⇧S)",
+    "message": "PC: Alt+Shift+S • Mac: ⌘⇧S hoặc ⌥⇧S",
     "description": "Chú giải nút trên thanh công cụ soạn thảo"
   },
   "menuOptionsTitle": {

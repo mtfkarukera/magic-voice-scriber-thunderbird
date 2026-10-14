@@ -12,7 +12,7 @@
     "description": "Rótulo curto do botão na barra de redação"
   },
   "composeActionTitle": {
-    "message": "Magic Voice Scriber — Ditado inteligente (PC: Alt+Shift+S • Mac: ⌘⇧S ou ⌥⇧S)",
+    "message": "PC: Alt+Shift+S • Mac: ⌘⇧S ou ⌥⇧S",
     "description": "Dica do botão de redação"
   },
   "menuOptionsTitle": {

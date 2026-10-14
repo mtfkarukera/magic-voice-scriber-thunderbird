@@ -29,7 +29,7 @@
 ## 🚀 Installation & Démarrage Rapide
 
 ### Depuis un fichier `.xpi`
-1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.2.4.xpi`.
+1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.2.5.xpi`.
 2. Dans Thunderbird, ouvrez **Outils > Modules complémentaires et thèmes** (`Ctrl+Maj+A`).
 3. Cliquez sur la roue dentée ⚙️ > **Installer un module depuis un fichier…** et sélectionnez le fichier `.xpi`.
 

@@ -5,6 +5,21 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ---
 
+## [1.2.5] - 2026-10-14
+
+### Amélioré (Expérience Utilisateur & Raccourcis)
+- **Infobulle Ultra-Conviviale & Épurée du Bouton de Rédaction (`_locales/*/messages.json`)** :
+  - Remplacement du texte verbeux de l'infobulle (`composeActionTitle`) par une indication claire et synthétique des raccourcis multi-plateformes dans les 6 langues :
+    - `fr` : `"PC : Alt+Maj+S • Mac : ⌘⇧S ou ⌥⇧S"`
+    - `en` : `"PC: Alt+Shift+S • Mac: ⌘⇧S or ⌥⇧S"`
+    - `es` : `"PC: Alt+Mayús+S • Mac: ⌘⇧S o ⌥⇧S"`
+    - `pt` : `"PC: Alt+Shift+S • Mac: ⌘⇧S ou ⌥⇧S"`
+    - `de` : `"PC: Alt+Umschalt+S • Mac: ⌘⇧S oder ⌥⇧S"`
+    - `vi` : `"PC: Alt+Shift+S • Mac: ⌘⇧S hoặc ⌥⇧S"`
+  - Amélioration de la lisibilité visuelle immédiate au survol de la souris dans la barre d'outils de rédaction de courriel sous Thunderbird 128+ ESR.
+
+---
+
 ## [1.2.4] - 2026-10-14
 
 ### Corrigé & Fiabilisé (Éradication de la Troncature et Diagnostic Précis)

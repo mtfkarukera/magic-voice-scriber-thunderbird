@@ -12,7 +12,7 @@
     "description": "Libellé court du bouton dans la barre d'action de rédaction"
   },
   "composeActionTitle": {
-    "message": "Magic Voice Scriber — Dictée intelligente (PC : Alt+Maj+S • Mac : ⌘⇧S ou ⌥⇧S)",
+    "message": "PC : Alt+Maj+S • Mac : ⌘⇧S ou ⌥⇧S",
     "description": "Infobulle du bouton de rédaction"
   },
   "menuOptionsTitle": {

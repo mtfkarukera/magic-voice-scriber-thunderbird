@@ -12,7 +12,7 @@
     "description": "Etiqueta corta del botón en la barra de redacción"
   },
   "composeActionTitle": {
-    "message": "Magic Voice Scriber — Dictado inteligente (PC: Alt+Mayús+S • Mac: ⌘⇧S o ⌥⇧S)",
+    "message": "PC: Alt+Mayús+S • Mac: ⌘⇧S o ⌥⇧S",
     "description": "Descripción emergente del botón de redacción"
   },
   "menuOptionsTitle": {

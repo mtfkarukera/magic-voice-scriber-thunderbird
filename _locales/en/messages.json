@@ -12,7 +12,7 @@
     "description": "Short label for compose toolbar button"
   },
   "composeActionTitle": {
-    "message": "Magic Voice Scriber — Smart Dictation (PC: Alt+Shift+S • Mac: ⌘⇧S or ⌥⇧S)",
+    "message": "PC: Alt+Shift+S • Mac: ⌘⇧S or ⌥⇧S",
     "description": "Compose toolbar button tooltip"
   },
   "menuOptionsTitle": {

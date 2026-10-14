@@ -12,7 +12,7 @@
     "description": "Kurze Beschriftung der Schaltfläche im Verfassen-Fenster"
   },
   "composeActionTitle": {
-    "message": "Magic Voice Scriber — Intelligentes Diktat (PC: Alt+Umschalt+S • Mac: ⌘⇧S oder ⌥⇧S)",
+    "message": "PC: Alt+Umschalt+S • Mac: ⌘⇧S oder ⌥⇧S",
     "description": "Tooltip der Schaltfläche im Verfassen-Fenster"
   },
   "menuOptionsTitle": {
