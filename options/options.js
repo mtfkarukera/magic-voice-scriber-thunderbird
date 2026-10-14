@@ -398,7 +398,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (res && res.success) {
           afficherStatut("success", t("statusTestSuccess"));
         } else {
-          const code = (res && res.message) || "SERVICE_UNAVAILABLE";
+          const code = (res && (res.message || res.error)) || "SERVICE_UNAVAILABLE";
           const detail = code === "UNAUTHORIZED" ? t("errorUnauthorized") : code;
           afficherStatut("error", `${t("statusTestFailed")} ${detail}`);
         }

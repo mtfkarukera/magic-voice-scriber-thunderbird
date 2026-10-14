@@ -173,7 +173,7 @@ describe("2. MVSProviders — Pipelines Gemini, OpenAI/Mistral & Local (Mock Fet
       assert.equal(res.success, true);
       assert.equal(res.text, "Bonjour, voici le rapport final.");
       assert.ok(urlAppelee.includes("models/gemini-3.5-transcribe:generateContent"));
-      assert.equal(urlAppelee.includes("?key="), false, "La clé API ne doit plus être dans l'URL");
+      assert.ok(urlAppelee.includes("?key=AIzaTestKey"), "Le paramètre key de secours doit être présent dans l'URL");
       assert.equal(optionsAppelees.headers["x-goog-api-key"], "AIzaTestKey", "x-goog-api-key doit être dans les headers");
       assert.equal(corpsEnvoye.generationConfig.audioTranscriptionConfig.mode, "SMART");
       assert.equal(corpsEnvoye.generationConfig.temperature, undefined);
@@ -288,6 +288,33 @@ describe("2. MVSProviders — Pipelines Gemini, OpenAI/Mistral & Local (Mock Fet
 
       assert.equal(res.success, true);
       assert.equal(res.text, "");
+    } finally {
+      globalThis.fetch = fetchOriginal;
+    }
+  });
+
+  it("teste avec succès la connexion Gemini (testerConnexion) avec double authentification", async () => {
+    const fetchOriginal = globalThis.fetch;
+    let urlTestee = "";
+    let headersTestes = null;
+
+    globalThis.fetch = async (url, opts) => {
+      urlTestee = url;
+      headersTestes = opts && opts.headers;
+      return { ok: true, status: 200 };
+    };
+
+    try {
+      const res = await MVSProviders.testerConnexion({
+        provider: "gemini",
+        geminiApiKey: "AIzaTestKeyValid"
+      });
+
+      assert.equal(res.success, true);
+      assert.equal(res.message, "OK");
+      assert.ok(urlTestee.includes("https://generativelanguage.googleapis.com/v1beta/models"));
+      assert.ok(urlTestee.includes("?key=AIzaTestKeyValid"));
+      assert.equal(headersTestes["x-goog-api-key"], "AIzaTestKeyValid");
     } finally {
       globalThis.fetch = fetchOriginal;
     }

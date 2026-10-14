@@ -1271,12 +1271,13 @@ async function traiterMessage(message, expediteur) {
 
   // ── Action 8 : Tester la connexion à un fournisseur depuis les options ─────
   if (message.action === "testProvider") {
-    // Protection SSRF (P1.2) : seuls les appels depuis la page d'options interne sont autorisés
-    if (expediteur && expediteur.tab) {
-      return { success: false, error: "UNAUTHORIZED" };
+    // Protection SSRF : dans Thunderbird, la page d'options s'exécute dans un onglet (about:addons ou tab).
+    // On s'assure que le message provient bien de la page de paramètres interne et non d'un autre contexte.
+    if (expediteur && expediteur.url && !expediteur.url.includes("options")) {
+      return { success: false, error: "UNAUTHORIZED", message: "UNAUTHORIZED" };
     }
     if (!message.config || typeof message.config !== "object") {
-      return { success: false, message: "INVALID_PAYLOAD" };
+      return { success: false, error: "INVALID_PAYLOAD", message: "INVALID_PAYLOAD" };
     }
     return await globalThis.MVSProviders.testerConnexion(message.config);
   }

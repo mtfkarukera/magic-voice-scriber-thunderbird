@@ -372,7 +372,7 @@
       const modeleChoisi = (config.geminiModel || "gemini-3.5-transcribe-live").replace(/^models\//, "").trim();
       const modeleRest = modeleChoisi === "gemini-3.5-transcribe-live" ? "gemini-3.5-transcribe" : modeleChoisi;
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modeleRest)}:generateContent`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modeleRest)}:generateContent?key=${encodeURIComponent(apiKey)}`;
       const typePropre = (mimeType || "audio/webm").split(";")[0].trim() || "audio/webm";
 
       const payload = {
@@ -730,7 +730,7 @@
           if (!apiKey) {
             return { success: false, message: "UNAUTHORIZED" };
           }
-          const url = "https://generativelanguage.googleapis.com/v1beta/models";
+          const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`;
           const rep = await fetch(url, {
             headers: { "x-goog-api-key": apiKey },
             signal: AbortSignal.timeout(10000)
