@@ -5,6 +5,23 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)
 
 ---
 
+## [1.2.6] - 2026-10-14
+
+### Ajouté & Amélioré (Ergonomie & Design « La Goutte Vocale »)
+- **La Goutte Vocale suspendue sous le curseur (`compose/compose-injected.js`)** :
+  - Repositionnement ergonomique du déclencheur à 2 px sous la ligne de base du curseur (`rectCurseur.left - 2px`), supprimant toute interférence avec le flux horizontal de lecture et d'écriture.
+  - Détection automatique des bords de fenêtre avec bascule haute fluide en cas de frappe en bas d'écran.
+- **Micro-Pastille 14 px & Hitbox Magnétique 28 px (`compose/compose-injected.js`)** :
+  - Réduction de moitié du diamètre en état de veille (14×14 px), logeant parfaitement dans l'interligne sans masquer le texte inférieur.
+  - Hitbox magnétique invisible de 28×28 px (`::before`) assurant une zone de clic généreuse et infaillible conforme à la loi de Fitts.
+  - Micro-icône vectorielle de microphone blanc SVG pur (8×8 px) en veille (zéro `innerHTML`), cédant la place aux 5 barres d'ondes vocales animées lors de l'enregistrement.
+  - Micro-zoom au survol (20×20 px) avec halo lumineux chaleureux.
+- **Ghost Mode : Atténuation Automatique à la Frappe (`compose/compose-injected.js`)** :
+  - Atténuation instantanée de l'opacité à 20 % pendant la frappe active au clavier pour une discrétion absolue.
+  - Rétablissement fluide à 85 % d'opacité dès que la frappe s'interrompt (pause d'1 seconde) ou que la souris approche.
+
+---
+
 ## [1.2.5] - 2026-10-14
 
 ### Amélioré (Expérience Utilisateur & Raccourcis)

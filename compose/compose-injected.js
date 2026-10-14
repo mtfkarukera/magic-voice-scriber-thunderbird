@@ -166,7 +166,7 @@ const DEBUG = false;
    * @returns {{ right: number, top: number, bottom: number, height: number }}
    */
   function obtenirRectangleCurseur() {
-    const defaut = { right: 24, top: 20, bottom: 40, height: 20 };
+    const defaut = { left: 24, right: 24, top: 20, bottom: 40, height: 20 };
     try {
       // Si un flux live est en cours d'écriture, on se cale juste après le span live
       if (conteneurTexteLiveEl && document.body && document.body.contains(conteneurTexteLiveEl)) {
@@ -175,6 +175,7 @@ const DEBUG = false;
           const dernier = rectsLive[rectsLive.length - 1];
           if (dernier.width > 0 || dernier.height > 0) {
             return {
+              left: dernier.left,
               right: dernier.right,
               top: dernier.top,
               bottom: dernier.bottom,
@@ -201,6 +202,7 @@ const DEBUG = false;
         const r = rects[rects.length - 1];
         if (r.top > 0 || r.left > 0 || r.height > 0) {
           return {
+            left: r.left,
             right: r.right,
             top: r.top,
             bottom: r.bottom,
@@ -222,6 +224,7 @@ const DEBUG = false;
         }
         if (rectSonde && (rectSonde.top > 0 || rectSonde.left > 0)) {
           return {
+            left: rectSonde.left,
             right: rectSonde.right,
             top: rectSonde.top,
             bottom: rectSonde.bottom,
@@ -236,7 +239,7 @@ const DEBUG = false;
   }
 
   /**
-   * Positionne le bouton flottant à 10 px à droite du curseur,
+   * Positionne le widget sous le curseur (Goutte Vocale en veille, ou pilule déployée en enregistrement),
    * tout en garantissant qu'il ne sorte jamais des limites visibles de la fenêtre.
    */
   function positionnerPresDuCurseur() {
@@ -244,20 +247,39 @@ const DEBUG = false;
 
     const rectCurseur = obtenirRectangleCurseur();
     const rectWidget = conteneurFlottant.getBoundingClientRect();
-    const largeurW = rectWidget.width || (etatCourant === "IDLE_FLOATING" ? 30 : 210);
-    const hauteurW = rectWidget.height || (etatCourant === "IDLE_FLOATING" ? 30 : 38);
+    const estEnVeille = etatCourant === "IDLE_FLOATING";
+    const largeurW = rectWidget.width || (estEnVeille ? 14 : 210);
+    const hauteurW = rectWidget.height || (estEnVeille ? 14 : 38);
 
     const largeurFenetre = window.innerWidth || document.documentElement.clientWidth || 800;
     const hauteurFenetre = window.innerHeight || document.documentElement.clientHeight || 600;
 
-    // Décalage de 10 px (quelques millimètres) à droite du curseur, centré verticalement sur la ligne
-    let gauche = rectCurseur.right + 10;
-    let haut = rectCurseur.top + rectCurseur.height / 2 - hauteurW / 2;
+    const refX = rectCurseur.left !== undefined ? rectCurseur.left : rectCurseur.right;
+    let gauche = 0;
+    let haut = 0;
 
-    // Si le curseur est trop près du bord droit, on place le widget juste en dessous de la ligne
-    if (gauche + largeurW > largeurFenetre - 12) {
-      gauche = Math.max(12, largeurFenetre - largeurW - 12);
-      haut = rectCurseur.bottom + 6;
+    if (estEnVeille) {
+      // 💧 Goutte Vocale (14 px) : suspendue 2 px sous le curseur, alignée sur le trait vertical
+      gauche = refX - 2;
+      haut = rectCurseur.bottom + 2;
+
+      // Si débordement en bas de fenêtre, bascule au-dessus de la ligne
+      if (haut + hauteurW > hauteurFenetre - 6) {
+        haut = Math.max(6, rectCurseur.top - hauteurW - 2);
+      }
+    } else {
+      // 🎙️ Pilule active déployée (210 px) : sous le flux de dictée live
+      gauche = refX - 8;
+      haut = rectCurseur.bottom + 4;
+
+      // Si débordement à droite, aligner à droite
+      if (gauche + largeurW > largeurFenetre - 12) {
+        gauche = Math.max(12, largeurFenetre - largeurW - 12);
+      }
+      // Si débordement en bas, passer au-dessus
+      if (haut + hauteurW > hauteurFenetre - 8) {
+        haut = Math.max(6, rectCurseur.top - hauteurW - 6);
+      }
     }
 
     gauche = Math.max(8, Math.min(gauche, largeurFenetre - largeurW - 8));
@@ -329,7 +351,7 @@ const DEBUG = false;
       .mvs-pill.mvs-hidden {
         display: none !important;
       }
-      /* ── Le Petit Bouton Rond avec les 5 Ondes Vocales Blanches ── */
+      /* ── Le Petit Bouton Rond avec les 5 Ondes Vocales Blanches (ou Icône Micro en Veille) ── */
       .mvs-red-wave-btn {
         position: relative;
         width: 30px;
@@ -344,21 +366,48 @@ const DEBUG = false;
         gap: 2.3px;
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         box-shadow: 0 2px 10px rgba(239, 68, 68, 0.55);
-        transition: transform 0.14s ease, opacity 0.16s ease, background 0.2s ease, box-shadow 0.2s ease, width 0.15s ease, height 0.15s ease;
+        transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    opacity 0.20s ease,
+                    background 0.2s ease,
+                    box-shadow 0.2s ease,
+                    width 0.18s ease,
+                    height 0.18s ease;
         flex-shrink: 0;
       }
-      /* En état de veille permanente près du curseur : compact (26x26 px) et légèrement discret */
+      /* En état de veille permanente sous le curseur : Goutte Vocale (14x14 px) */
       .mvs-red-wave-btn.state-idle {
-        width: 26px;
-        height: 26px;
-        opacity: 0.78;
+        width: 14px;
+        height: 14px;
+        opacity: 0.85;
         background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.38);
+        box-shadow: 0 2px 6px rgba(239, 68, 68, 0.40);
       }
+      /* Hitbox magnétique invisible de 28x28 px pour un clic sans effort (Loi de Fitts) */
+      .mvs-red-wave-btn.state-idle::before {
+        content: "";
+        position: absolute;
+        top: -7px;
+        left: -7px;
+        right: -7px;
+        bottom: -7px;
+        border-radius: 50%;
+        background: transparent;
+      }
+      /* Micro-zoom au survol (20x20 px) avec halo lumineux */
       .mvs-red-wave-btn.state-idle:hover {
+        width: 20px;
+        height: 20px;
         opacity: 1;
-        transform: scale(1.10);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.60);
+        box-shadow: 0 0 12px rgba(249, 115, 22, 0.70), 0 2px 8px rgba(239, 68, 68, 0.50);
+      }
+      /* Ghost Mode : atténuation discrète pendant la frappe active au clavier */
+      .mvs-floating-root.is-typing .mvs-red-wave-btn.state-idle {
+        opacity: 0.20;
+        transform: scale(0.90);
+      }
+      .mvs-floating-root.is-typing .mvs-red-wave-btn.state-idle:hover {
+        opacity: 1 !important;
+        transform: scale(1.05) !important;
       }
       .mvs-red-wave-btn:hover {
         transform: scale(1.06);
@@ -381,6 +430,25 @@ const DEBUG = false;
       .mvs-red-wave-btn.state-done {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         box-shadow: 0 2px 10px rgba(16, 185, 129, 0.5);
+      }
+      /* Icône SVG miniature du microphone en veille */
+      .mvs-idle-mic-icon {
+        display: none;
+        width: 8px;
+        height: 8px;
+        pointer-events: none;
+        transition: width 0.15s ease, height 0.15s ease;
+      }
+      .mvs-red-wave-btn.state-idle .mvs-idle-mic-icon {
+        display: block;
+      }
+      .mvs-red-wave-btn.state-idle:hover .mvs-idle-mic-icon {
+        width: 10px;
+        height: 10px;
+      }
+      /* Masquer les 5 barres d'ondes en veille */
+      .mvs-red-wave-btn.state-idle .mvs-wave-bar {
+        display: none !important;
       }
       /* Les 5 barres verticales blanches à l'intérieur du bouton */
       .mvs-wave-bar {
@@ -512,16 +580,48 @@ const DEBUG = false;
       e.stopPropagation();
     });
 
+    conteneurFlottant.addEventListener("mouseenter", () => {
+      reinitialiserAttenuatonFrappe();
+    });
+
     // ── 1. Capsule flottante (Veille compacte ou Enregistrement déployé) ──────
     vueCapsule = document.createElement("div");
     vueCapsule.className = "mvs-pill mvs-pill-idle";
 
-    // Bouton principal rond avec les 5 barres verticales blanches (|┃|┃|)
+    // Bouton principal rond avec micro SVG en veille et 5 barres verticales blanches en enregistrement
     btnOndeRouge = document.createElement("button");
     btnOndeRouge.type = "button";
     btnOndeRouge.className = "mvs-red-wave-btn state-idle";
     btnOndeRouge.setAttribute("title", t("composeActionTitle"));
     btnOndeRouge.setAttribute("aria-label", t("composeActionTitle"));
+
+    // Micro-icône SVG miniature pour la Goutte Vocale en veille (Règle 11 : Zéro innerHTML)
+    const nsSvg = "http://www.w3.org/2000/svg";
+    const svgMic = document.createElementNS(nsSvg, "svg");
+    svgMic.setAttribute("class", "mvs-idle-mic-icon");
+    svgMic.setAttribute("viewBox", "0 0 24 24");
+    svgMic.setAttribute("fill", "none");
+    svgMic.setAttribute("stroke", "#ffffff");
+    svgMic.setAttribute("stroke-width", "2.8");
+    svgMic.setAttribute("stroke-linecap", "round");
+    svgMic.setAttribute("stroke-linejoin", "round");
+
+    const pathCapsule = document.createElementNS(nsSvg, "path");
+    pathCapsule.setAttribute("d", "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z");
+    svgMic.appendChild(pathCapsule);
+
+    const pathArc = document.createElementNS(nsSvg, "path");
+    pathArc.setAttribute("d", "M19 10v2a7 7 0 0 1-14 0v-2");
+    svgMic.appendChild(pathArc);
+
+    const lignePied = document.createElementNS(nsSvg, "line");
+    lignePied.setAttribute("x1", "12");
+    lignePied.setAttribute("y1", "19");
+    lignePied.setAttribute("x2", "12");
+    lignePied.setAttribute("y2", "22");
+    svgMic.appendChild(lignePied);
+
+    btnOndeRouge.appendChild(svgMic);
 
     const hauteursRepos = [5, 9, 13, 9, 5];
     barresBlanchesEls = [];
@@ -935,6 +1035,7 @@ const DEBUG = false;
   async function demarrerSessionFlottante() {
     construireInterfaceShadowDom();
     restaurerPositionCurseur();
+    reinitialiserAttenuatonFrappe();
     nettoyerConteneurLiveDOM();
 
     vueOnboarding.classList.add("mvs-hidden");
@@ -1214,6 +1315,7 @@ const DEBUG = false;
    */
   function replierVersBoutonVeille() {
     arreterChrono();
+    reinitialiserAttenuatonFrappe();
     etatCourant = "IDLE_FLOATING";
 
     if (idBoucleAnimation) {
@@ -1254,6 +1356,33 @@ const DEBUG = false;
   // 7. ÉCOUTEURS D'ÉVÉNEMENTS (SUIVI PERMANENT DU CURSEUR, CLAVIER & MESSAGES)
   // ═══════════════════════════════════════════════════════════════════════════
 
+  // ── Ghost Mode : Atténuation automatique de la Goutte Vocale pendant la frappe ──
+  let timerFinFrappe = null;
+
+  function gererAttenuatonFrappe() {
+    if (!conteneurFlottant || etatCourant !== "IDLE_FLOATING") return;
+    conteneurFlottant.classList.add("is-typing");
+    if (timerFinFrappe) {
+      clearTimeout(timerFinFrappe);
+    }
+    timerFinFrappe = setTimeout(() => {
+      if (conteneurFlottant) {
+        conteneurFlottant.classList.remove("is-typing");
+      }
+      timerFinFrappe = null;
+    }, 1000);
+  }
+
+  function reinitialiserAttenuatonFrappe() {
+    if (timerFinFrappe) {
+      clearTimeout(timerFinFrappe);
+      timerFinFrappe = null;
+    }
+    if (conteneurFlottant) {
+      conteneurFlottant.classList.remove("is-typing");
+    }
+  }
+
   // Verrou anti-réentrance et étranglement 60 FPS pour éviter toute surchauffe CPU
   let estEnTrainDePositionner = false;
   let rafPositionnement = null;
@@ -1279,12 +1408,21 @@ const DEBUG = false;
     planifierPositionnementCurseur();
   });
 
-  document.addEventListener("keyup", () => {
+  document.addEventListener("input", () => {
     planifierPositionnementCurseur();
+    gererAttenuatonFrappe();
+  });
+
+  document.addEventListener("keyup", (e) => {
+    planifierPositionnementCurseur();
+    if (e && (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown")) {
+      reinitialiserAttenuatonFrappe();
+    }
   });
 
   document.addEventListener("mouseup", () => {
     planifierPositionnementCurseur();
+    reinitialiserAttenuatonFrappe();
   });
 
   window.addEventListener("resize", () => {
@@ -1310,7 +1448,12 @@ const DEBUG = false;
         return;
       }
 
-      if (etatCourant === "IDLE_FLOATING") return;
+      if (etatCourant === "IDLE_FLOATING") {
+        if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key && e.key.length === 1) {
+          gererAttenuatonFrappe();
+        }
+        return;
+      }
 
       if (e.key === "Escape") {
         e.preventDefault();

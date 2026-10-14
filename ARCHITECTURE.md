@@ -12,7 +12,7 @@ Ce document décrit l'architecture technique interne, les flux de données et le
 flowchart TD
     subgraph ComposeWindow["Fenêtre de Rédaction Thunderbird (Compose)"]
         Editor["Éditeur HTML (body[contenteditable='true'])"]
-        CaretPill["compose/compose-injected.js\n(Bouton Rouge à Ondes Flottant au Curseur - Shadow DOM)"]
+        CaretPill["compose/compose-injected.js\n(La Goutte Vocale sous le Curseur & Ghost Mode - Shadow DOM)"]
     end
 
     subgraph BackgroundContext["Arrière-Plan Privilégié (Event Page MV3)"]
@@ -44,7 +44,7 @@ magic-voice-scriber-thunderbird/
 ├── background.js                  # Event Page : capture micro, 5 barres d'ondes, streaming Live, KeepAlive
 ├── mvs-providers.js               # Orchestrateur des 3 familles de moteurs IA + prompts Rambler
 ├── compose/
-│   ├── compose-injected.js        # Bouton rouge à ondes blanches flottant à côté du curseur (Shadow DOM)
+│   ├── compose-injected.js        # La Goutte Vocale (14 px) flottante sous le curseur avec Ghost Mode (Shadow DOM)
 │   ├── compose.html               # Structure de la capsule
 │   ├── compose.css                # Styles glassmorphism
 │   └── compose.js                 # Logique du widget

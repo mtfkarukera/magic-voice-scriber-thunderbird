@@ -9,9 +9,10 @@
 ## ✨ Fonctionnalités Principales
 
 - 🎙️ **Dictée Sémantique Style Rambler** : Suppression intelligente des bafouillements, faux départs et répétitions. Si vous dites *« Rendez-vous mardi, non pardon mercredi à 14h »*, seul *« Rendez-vous mercredi à 14h00 »* est inséré.
-- 🌊 **Capsule Glassmorphism & Onde Réactive** : Interface élégante avec visualisation sonore en temps réel (`AudioContext` + `AnalyserNode`), jauge de capacité optimale (5 minutes) et animation d'inférence fluide.
+- 💧 **La Goutte Vocale (Smart Voice Gem)** : Micro-déclencheur discret de 14 px suspendu sous le curseur avec icône vectorielle blanche, atténuation intelligente pendant la frappe (Ghost Mode à 20 % d'opacité) et hitbox magnétique de 28 px.
+- 🌊 **Capsule Glassmorphism & Onde Réactive** : Se déploie sur place en 1 clic avec visualisation sonore en temps réel (`AudioContext` + `AnalyserNode`), jauge de capacité optimale (5 minutes) et streaming du texte au fil de la parole.
 - ⌨️ **Pilotage 100 % Clavier ou Souris** :
-  - `Alt+Shift+S` (ou clic sur le bouton de la barre d'outils de rédaction) : Démarre / Termine la dictée.
+  - `Alt+Shift+S` (ou clic sur la Goutte / le bouton de barre d'outils) : Démarre / Termine la dictée.
   - `Espace` : Met en pause ou reprend l'enregistrement à tout moment pour vous laisser réfléchir sans stress.
   - `Échap` : Annule immédiatement la prise de parole sans rien insérer.
 - 🎭 **Sélecteur de Mode Morphing à 3 États** :
@@ -29,7 +30,7 @@
 ## 🚀 Installation & Démarrage Rapide
 
 ### Depuis un fichier `.xpi`
-1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.2.5.xpi`.
+1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.2.6.xpi`.
 2. Dans Thunderbird, ouvrez **Outils > Modules complémentaires et thèmes** (`Ctrl+Maj+A`).
 3. Cliquez sur la roue dentée ⚙️ > **Installer un module depuis un fichier…** et sélectionnez le fichier `.xpi`.
 
