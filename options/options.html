@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="optionsPageTitle"></title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="mvs-options-container">
+    <!-- ── EN-TÊTE DE LA PAGE ── -->
+    <header class="mvs-options-header">
+      <img src="../icon.png" alt="" class="mvs-logo" width="44" height="44">
+      <div class="mvs-header-titles">
+        <h1 data-i18n="extName"></h1>
+        <p class="mvs-subtitle" data-i18n="optionsHeaderSubtitle"></p>
+      </div>
+    </header>
+
+    <form id="form-options" class="mvs-options-form" novalidate>
+      <!-- ── BANNIÈRE D'AUTORISATION RÉSEAU 1-CLIC (SI REQUISE) ── -->
+      <div id="permission-warning-banner" class="mvs-permission-banner mvs-hidden" role="alert">
+        <div class="permission-banner-content">
+          <span data-i18n="permissionBannerText"></span>
+          <code id="permission-domain-code"></code>
+        </div>
+        <button type="button" id="btn-grant-permission" class="mvs-btn mvs-btn-secondary">
+          <span data-i18n="btnGrantPermission"></span>
+        </button>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- SECTION 1 : CHOIX DU MOTEUR D'INTELLIGENCE VOCALE                 -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <section class="mvs-card">
+        <div class="mvs-card-header">
+          <h2 data-i18n="sectionProviderTitle"></h2>
+          <span id="provider-badge" class="mvs-badge" data-i18n="badgeDefault"></span>
+        </div>
+
+        <div class="mvs-field">
+          <label for="select-provider" data-i18n="labelSelectProvider"></label>
+          <select id="select-provider" class="mvs-select">
+            <option value="gemini" data-i18n="providerOptionGemini"></option>
+            <option value="openai" data-i18n="providerOptionOpenai"></option>
+            <option value="local" data-i18n="providerOptionLocal"></option>
+          </select>
+          <p id="help-provider" class="mvs-help" data-i18n="helpProviderGemini"></p>
+        </div>
+
+        <!-- ── SOUS-SECTION 1A : GOOGLE GEMINI (DÉFAUT) ── -->
+        <div id="section-gemini" class="mvs-provider-panel">
+          <h3 class="mvs-panel-title" data-i18n="sectionGeminiTitle"></h3>
+
+          <div class="mvs-field">
+            <label for="gemini-api-key" data-i18n="labelGeminiApiKey"></label>
+            <div class="mvs-input-group">
+              <input type="password" id="gemini-api-key" class="mvs-input" autocomplete="off" data-i18n-placeholder="placeholderGeminiApiKey">
+              <button type="button" id="btn-toggle-gemini-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
+            </div>
+            <p class="mvs-help" data-i18n="helpGeminiApiKey"></p>
+          </div>
+
+          <div class="mvs-field">
+            <label for="gemini-model" data-i18n="labelGeminiModel"></label>
+            <select id="gemini-model" class="mvs-select">
+              <option value="gemini-3.5-transcribe-live" data-i18n="geminiModelLive"></option>
+              <option value="gemini-3.5-transcribe" data-i18n="geminiModelBatch"></option>
+            </select>
+            <p class="mvs-help" data-i18n="helpGeminiModel"></p>
+          </div>
+        </div>
+
+        <!-- ── SOUS-SECTION 1B : OPENAI & TIERS CLOUD (MISTRAL, GROQ, OPENAI) ── -->
+        <div id="section-openai" class="mvs-provider-panel mvs-hidden">
+          <h3 class="mvs-panel-title" data-i18n="sectionOpenaiTitle"></h3>
+
+          <div class="mvs-field">
+            <label for="openai-preset" data-i18n="labelOpenaiPreset"></label>
+            <select id="openai-preset" class="mvs-select">
+              <option value="openai" data-i18n="presetOpenai"></option>
+              <option value="groq" data-i18n="presetGroq"></option>
+              <option value="mistral" data-i18n="presetMistral"></option>
+              <option value="custom" data-i18n="presetCustomCloud"></option>
+            </select>
+            <p class="mvs-help" data-i18n="helpOpenaiPipeline"></p>
+          </div>
+
+          <div class="mvs-grid-2">
+            <div class="mvs-field">
+              <label for="stt-base-url" data-i18n="labelSttEndpoint"></label>
+              <input type="url" id="stt-base-url" class="mvs-input">
+            </div>
+            <div class="mvs-field">
+              <label for="stt-model" data-i18n="labelSttModel"></label>
+              <input type="text" id="stt-model" class="mvs-input">
+            </div>
+          </div>
+
+          <div class="mvs-field">
+            <label for="stt-api-key" data-i18n="labelSttApiKey"></label>
+            <div class="mvs-input-group">
+              <input type="password" id="stt-api-key" class="mvs-input" autocomplete="off">
+              <button type="button" id="btn-toggle-stt-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
+            </div>
+          </div>
+
+          <hr class="mvs-divider">
+
+          <div class="mvs-grid-2">
+            <div class="mvs-field">
+              <label for="llm-base-url" data-i18n="labelLlmEndpoint"></label>
+              <input type="url" id="llm-base-url" class="mvs-input">
+            </div>
+            <div class="mvs-field">
+              <label for="llm-model" data-i18n="labelLlmModel"></label>
+              <input type="text" id="llm-model" class="mvs-input">
+            </div>
+          </div>
+
+          <div class="mvs-field">
+            <label for="llm-api-key" data-i18n="labelLlmApiKey"></label>
+            <div class="mvs-input-group">
+              <input type="password" id="llm-api-key" class="mvs-input" autocomplete="off">
+              <button type="button" id="btn-toggle-llm-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SOUS-SECTION 1C : MODÈLE 100 % LOCAL (OLLAMA / LM STUDIO / WHISPER) ── -->
+        <div id="section-local" class="mvs-provider-panel mvs-hidden">
+          <h3 class="mvs-panel-title" data-i18n="sectionLocalTitle"></h3>
+
+          <div class="mvs-grid-2">
+            <div class="mvs-field">
+              <label for="local-stt-url" data-i18n="labelLocalSttUrl"></label>
+              <input type="url" id="local-stt-url" class="mvs-input">
+            </div>
+            <div class="mvs-field">
+              <label for="local-stt-model" data-i18n="labelLocalSttModel"></label>
+              <input type="text" id="local-stt-model" class="mvs-input">
+            </div>
+          </div>
+
+          <hr class="mvs-divider">
+
+          <div class="mvs-field">
+            <label for="local-llm-preset" data-i18n="labelLocalLlmPreset"></label>
+            <select id="local-llm-preset" class="mvs-select">
+              <option value="ollama" data-i18n="presetOllama"></option>
+              <option value="lmstudio" data-i18n="presetLmStudio"></option>
+              <option value="custom" data-i18n="presetCustomLocal"></option>
+            </select>
+          </div>
+
+          <div class="mvs-grid-2">
+            <div class="mvs-field">
+              <label for="local-llm-url" data-i18n="labelLocalLlmUrl"></label>
+              <input type="url" id="local-llm-url" class="mvs-input">
+            </div>
+            <div class="mvs-field">
+              <label for="local-llm-model" data-i18n="labelLocalLlmModel"></label>
+              <input type="text" id="local-llm-model" class="mvs-input">
+            </div>
+          </div>
+
+          <div class="mvs-field">
+            <label for="local-api-key" data-i18n="labelLocalApiKey"></label>
+            <div class="mvs-input-group">
+              <input type="password" id="local-api-key" class="mvs-input" autocomplete="off" data-i18n-placeholder="placeholderLocalApiKey">
+              <button type="button" id="btn-toggle-local-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- SECTION 2 : PRÉFÉRENCES DU MODE DE DICTÉE (HORS GEMINI)           -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <section id="section-voice-mode" class="mvs-card mvs-hidden">
+        <div class="mvs-card-header">
+          <h2 data-i18n="sectionVoiceModeTitle"></h2>
+        </div>
+
+        <div class="mvs-field">
+          <label for="voice-mode-policy" data-i18n="labelVoiceModePolicy"></label>
+          <select id="voice-mode-policy" class="mvs-select">
+            <option value="remember" data-i18n="policyRememberLast"></option>
+            <option value="default" data-i18n="policyUseDefault"></option>
+          </select>
+        </div>
+
+        <div class="mvs-field" id="field-default-voice-mode">
+          <label for="default-voice-mode" data-i18n="labelDefaultVoiceMode"></label>
+          <select id="default-voice-mode" class="mvs-select">
+            <option value="natural" data-i18n="modeNaturalLabel"></option>
+            <option value="pro" data-i18n="modeProLabel"></option>
+            <option value="bullets" data-i18n="modeBulletsLabel"></option>
+          </select>
+        </div>
+      </section>
+
+      <!-- ── ZONE DE STATUT & BOUTONS D'ACTION ── -->
+      <div id="status-container" class="mvs-status-banner mvs-hidden" role="status" aria-live="polite">
+        <span id="status-icon" aria-hidden="true"></span>
+        <span id="status-text"></span>
+      </div>
+
+      <footer class="mvs-actions-bar">
+        <button type="button" id="btn-test" class="mvs-btn mvs-btn-secondary">
+          <span data-i18n="btnTestConnection"></span>
+        </button>
+        <button type="submit" id="btn-save" class="mvs-btn mvs-btn-primary">
+          <span data-i18n="btnSaveOptions"></span>
+        </button>
+      </footer>
+    </form>
+  </main>
+
+  <script src="../mvs-providers.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+{
+  "extName": {
+    "message": "Magic Voice Scriber",
+    "description": "Name der Erweiterung"
+  },
+  "extDescription": {
+    "message": "Intelligentes semantisches Sprachdiktat inspiriert von Google Rambler für Thunderbird (Gemini, OpenAI/Mistral/Groq oder lokal mit Ollama/Whisper).",
+    "description": "Beschreibung der Erweiterung"
+  },
+  "composeActionLabel": {
+    "message": "Diktieren",
+    "description": "Kurze Beschriftung der Schaltfläche im Verfassen-Fenster"
+  },
+  "composeActionTitle": {
+    "message": "Magic Voice Scriber — Intelligentes Diktat (PC: Alt+Umschalt+S • Mac: ⌘⇧S oder ⌥⇧S)",
+    "description": "Tooltip der Schaltfläche im Verfassen-Fenster"
+  },
+  "menuOptionsTitle": {
+    "message": "Magic Voice Scriber Einstellungen…",
+    "description": "Kontextmenüeintrag zum Öffnen der Einstellungen"
+  },
+  "onboardingMessage": {
+    "message": "Willkommen bei Magic Voice Scriber! Geben Sie mit 1 Klick Ihren Gemini- (empfohlen), OpenAI-/Drittanbieter- oder lokalen API-Schlüssel ein, um das intelligente Diktat zu aktivieren.",
+    "description": "Willkommensnachricht ohne API-Schlüssel"
+  },
+  "btnOpenSettings": {
+    "message": "Mit 1 Klick konfigurieren",
+    "description": "Schaltfläche zum Öffnen der Einstellungen"
+  },
+  "btnSettingsTitle": {
+    "message": "Einstellungen öffnen",
+    "description": "Tooltip für Einstellungen"
+  },
+  "modeNaturalLabel": {
+    "message": "Natürlich",
+    "description": "Sprachmodus 1: Natürlich"
+  },
+  "modeNaturalDesc": {
+    "message": "Entfernt Füllwörter und korrigiert die Zeichensetzung unter Beibehaltung Ihrer genauen Worte",
+    "description": "Tooltip für Modus Natürlich"
+  },
+  "modeProLabel": {
+    "message": "Professionell",
+    "description": "Sprachmodus 2: Professionell"
+  },
+  "modeProDesc": {
+    "message": "Formuliert flüssig, höflich und geschäftsmäßig um",
+    "description": "Tooltip für Modus Professionell"
+  },
+  "modeBulletsLabel": {
+    "message": "Zusammenfassung",
+    "description": "Sprachmodus 3: Stichpunkte"
+  },
+  "modeBulletsDesc": {
+    "message": "Strukturiert Ihre Gedanken in einer klaren Aufzählung",
+    "description": "Tooltip für Modus Zusammenfassung"
+  },
+  "modeBtnAriaLabel": {
+    "message": "Aktiver Diktiermodus. Klicken Sie, um zwischen Natürlich, Professionell und Zusammenfassung zu wechseln.",
+    "description": "Barrierefreies Label des Modus-Umschalters"
+  },
+  "statusReady": {
+    "message": "Bereit zum Zuhören",
+    "description": "Bereitschaftsstatus"
+  },
+  "statusRecording": {
+    "message": "Aufnahme läuft… (Leertaste: Pause)",
+    "description": "Aufnahmestatus"
+  },
+  "statusPaused": {
+    "message": "Pausiert — Leertaste drücken zum Fortsetzen",
+    "description": "Pausenstatus"
+  },
+  "statusThinking": {
+    "message": "Text wird bereinigt und formatiert…",
+    "description": "KI-Verarbeitungsstatus"
+  },
+  "statusLiveStreaming": {
+    "message": "Live-Transkription läuft…",
+    "description": "WebSocket-Live-Status"
+  },
+  "statusInserted": {
+    "message": "Text an Cursorposition eingefügt ✓",
+    "description": "Erfolgsstatus nach dem Einfügen"
+  },
+  "statusMaxDurationReached": {
+    "message": "Optimale Kapazität erreicht (5 Min.) — Wird abgeschlossen…",
+    "description": "Status bei Erreichen des 5-Minuten-Limits"
+  },
+  "statusPermissionRequired": {
+    "message": "Netzwerkberechtigung erforderlich — Klicken Sie auf das Engine-Badge",
+    "description": "Status bei fehlender Host-Berechtigung"
+  },
+  "btnPauseTitle": {
+    "message": "Aufnahme pausieren / fortsetzen (Leertaste)",
+    "description": "Tooltip für Pause"
+  },
+  "btnStopLabel": {
+    "message": "Fertigstellen & Einfügen",
+    "description": "Beschriftung für Fertigstellen"
+  },
+  "btnStopTitle": {
+    "message": "Aufnahme beenden und bereinigten Text einfügen (Eingabetaste)",
+    "description": "Tooltip für Fertigstellen"
+  },
+  "btnCancelLabel": {
+    "message": "Abbrechen",
+    "description": "Beschriftung für Abbrechen"
+  },
+  "btnCancelTitle": {
+    "message": "Aufnahme verwerfen und schließen (Escape)",
+    "description": "Tooltip für Abbrechen"
+  },
+  "hintShortcuts": {
+    "message": "Leertaste: Pause • Eingabe: Einfügen • Esc: Abbrechen",
+    "description": "Tastenkürzel-Hinweis"
+  },
+  "errorMicPermission": {
+    "message": "Mikrofonzugriff verweigert. Bitte erlauben Sie den Mikrofonzugriff.",
+    "description": "Mikrofonfehler"
+  },
+  "errorNoAudio": {
+    "message": "Kein Ton erkannt. Bitte sprechen Sie und versuchen Sie es erneut.",
+    "description": "Fehler bei leerem Audio"
+  },
+  "errorEmptyRecording": {
+    "message": "Aufnahme zu kurz oder stumm. Bitte erneut versuchen.",
+    "description": "Fehler wenn die Audioaufnahme keine verwertbaren Daten enthält"
+  },
+  "errorSessionLost": {
+    "message": "Aufnahmesitzung unterbrochen. Bitte Diktat neu starten.",
+    "description": "Fehler wenn die Hintergrund-Aufnahmesitzung verloren ging"
+  },
+  "errorUnauthorized": {
+    "message": "Ungültiger oder fehlender API-Schlüssel. Bitte prüfen Sie Ihre Einstellungen.",
+    "description": "Fehler 401/403"
+  },
+  "errorRateLimited": {
+    "message": "API-Kontingent oder Limit überschritten (429). Bitte kurz warten.",
+    "description": "Fehler 429"
+  },
+  "errorTimeout": {
+    "message": "Zeitüberschreitung der Anfrage. Bitte prüfen Sie Ihre Verbindung.",
+    "description": "Timeout-Fehler"
+  },
+  "errorNetwork": {
+    "message": "Netzwerkfehler. Prüfen Sie Ihre Internetverbindung oder Ihren lokalen Server.",
+    "description": "Netzwerkfehler"
+  },
+  "errorServiceUnavailable": {
+    "message": "Transkriptionsdienst vorübergehend nicht verfügbar.",
+    "description": "Allgemeiner Dienstfehler"
+  },
+  "errorInsertFailed": {
+    "message": "Text konnte nicht in den E-Mail-Editor eingefügt werden.",
+    "description": "DOM-Einfügefehler"
+  },
+  "badgePermissionWarnTitle": {
+    "message": "Berechtigung erforderlich — Klicken für 1-Klick-Autorisierung",
+    "description": "Berechtigungswarnung"
+  },
+  "badgeProviderActiveTitle": {
+    "message": "Aktive Engine (Klicken zum Ändern in den Einstellungen)",
+    "description": "Tooltip des Engine-Badges"
+  },
+  "optionsPageTitle": {
+    "message": "Einstellungen — Magic Voice Scriber",
+    "description": "Titel der Einstellungsseite"
+  },
+  "optionsHeaderSubtitle": {
+    "message": "Semantisches Sprachdiktat inspiriert von Google Rambler für Thunderbird",
+    "description": "Untertitel der Einstellungen"
+  },
+  "sectionProviderTitle": {
+    "message": "1. Sprach-KI-Engine",
+    "description": "Überschrift Anbieter-Sektion"
+  },
+  "labelSelectProvider": {
+    "message": "Aktiver Anbieter",
+    "description": "Label Anbieterauswahl"
+  },
+  "providerOptionGemini": {
+    "message": "Google Gemini API (Empfohlen — Standard)",
+    "description": "Option Gemini"
+  },
+  "providerOptionOpenai": {
+    "message": "OpenAI / Drittanbieter-Cloud (Mistral, Groq, OpenAI…)",
+    "description": "Option OpenAI"
+  },
+  "providerOptionLocal": {
+    "message": "100 % Lokales Modell (Ollama, LM Studio, Lokales Whisper)",
+    "description": "Option Lokal"
+  },
+  "badgeDefault": {
+    "message": "Standard",
+    "description": "Standard-Badge"
+  },
+  "helpProviderGemini": {
+    "message": "Nutzt nativ die Gemini 3.5 Transcribe Modelle im SMART-Modus (Entfernung von Füllwörtern, Selbstkorrekturen und Formatierung in einem Durchgang).",
+    "description": "Hilfetext Gemini"
+  },
+  "helpProviderOpenai": {
+    "message": "Kombiniert schnelle Spracherkennung (Whisper auf OpenAI oder Groq) mit einem Sprachmodell (Mistral, OpenAI, Groq) zur Textbereinigung.",
+    "description": "Hilfetext OpenAI"
+  },
+  "helpProviderLocal": {
+    "message": "100 % Offline- und souveräne Verarbeitung auf Ihrem Computer über einen lokalen Whisper-Server und Ollama oder LM Studio.",
+    "description": "Hilfetext Lokal"
+  },
+  "sectionGeminiTitle": {
+    "message": "Google Gemini Konfiguration",
+    "description": "Überschrift Gemini"
+  },
+  "labelGeminiApiKey": {
+    "message": "Google AI Studio API-Schlüssel",
+    "description": "Label Gemini-Schlüssel"
+  },
+  "placeholderGeminiApiKey": {
+    "message": "AIzaSy...",
+    "description": "Platzhalter Gemini-Schlüssel"
+  },
+  "helpGeminiApiKey": {
+    "message": "Kostenlosen Schlüssel unter aistudio.google.com erstellen",
+    "description": "Hilfe Gemini-Schlüssel"
+  },
+  "labelGeminiModel": {
+    "message": "Gemini-Transkriptionsmodell",
+    "description": "Label Gemini-Modell"
+  },
+  "geminiModelBatch": {
+    "message": "gemini-3.5-transcribe — Vollständige Aufnahme (Push-to-Talk via REST)",
+    "description": "Option 1 Gemini-Modell"
+  },
+  "geminiModelLive": {
+    "message": "gemini-3.5-transcribe-live — Wörter beim Sprechen anzeigen (WebSocket)",
+    "description": "Option 2 Gemini-Modell"
+  },
+  "helpGeminiModel": {
+    "message": "Das REST-Modell verarbeitet die gesamte Aufnahme mit maximaler Stabilität. Das Live-Modell überträgt Wörter in Echtzeit über WebSocket.",
+    "description": "Hilfe Gemini-Modelle"
+  },
+  "sectionOpenaiTitle": {
+    "message": "OpenAI / Drittanbieter-Cloud Konfiguration",
+    "description": "Überschrift OpenAI"
+  },
+  "labelOpenaiPreset": {
+    "message": "Cloud-Voreinstellung",
+    "description": "Label Cloud-Preset"
+  },
+  "presetOpenai": {
+    "message": "OpenAI (Whisper-1 + GPT-4o-mini)",
+    "description": "Preset OpenAI"
+  },
+  "presetGroq": {
+    "message": "Groq (Whisper Large v3 Turbo + Llama 3.3 70B)",
+    "description": "Preset Groq"
+  },
+  "presetMistral": {
+    "message": "Mistral AI (Whisper/Groq STT + Mistral Small)",
+    "description": "Preset Mistral"
+  },
+  "presetCustomCloud": {
+    "message": "Benutzerdefiniert (OpenAI-kompatibel)",
+    "description": "Preset Benutzerdefiniert"
+  },
+  "labelSttEndpoint": {
+    "message": "Audio-Basis-URL (STT / Whisper)",
+    "description": "Label STT-URL"
+  },
+  "labelSttApiKey": {
+    "message": "Audio-API-Schlüssel (STT)",
+    "description": "Label STT-Schlüssel"
+  },
+  "labelSttModel": {
+    "message": "Audio-Modell (STT)",
+    "description": "Label STT-Modell"
+  },
+  "labelLlmEndpoint": {
+    "message": "Text-Basis-URL (Bereinigungs-LLM)",
+    "description": "Label LLM-URL"
+  },
+  "labelLlmApiKey": {
+    "message": "Text-API-Schlüssel (LLM)",
+    "description": "Label LLM-Schlüssel"
+  },
+  "labelLlmModel": {
+    "message": "Text-Modell (LLM)",
+    "description": "Label LLM-Modell"
+  },
+  "helpOpenaiPipeline": {
+    "message": "Tipp: Wenn Sie Mistral zur Textbereinigung nutzen, geben Sie für die Audio-Transkription einen Groq- oder OpenAI-Schlüssel (oder lokalen Whisper-Server) an.",
+    "description": "Tipp Pipeline"
+  },
+  "sectionLocalTitle": {
+    "message": "Konfiguration für 100 % Lokales Modell",
+    "description": "Überschrift Lokal"
+  },
+  "labelLocalSttUrl": {
+    "message": "Lokale STT-Server-URL (Whisper.cpp / Speaches / Faster-Whisper)",
+    "description": "Label lokale STT-URL"
+  },
+  "labelLocalSttModel": {
+    "message": "Name des lokalen STT-Modells",
+    "description": "Label lokales STT-Modell"
+  },
+  "labelLocalLlmPreset": {
+    "message": "Lokaler LLM-Server",
+    "description": "Label lokaler LLM-Server"
+  },
+  "presetOllama": {
+    "message": "Ollama (http://localhost:11434)",
+    "description": "Preset Ollama"
+  },
+  "presetLmStudio": {
+    "message": "LM Studio (http://localhost:1234)",
+    "description": "Preset LM Studio"
+  },
+  "presetCustomLocal": {
+    "message": "Benutzerdefinierter lokaler Server",
+    "description": "Preset lokal benutzerdefiniert"
+  },
+  "labelLocalLlmUrl": {
+    "message": "Basis-URL des lokalen LLM-Servers",
+    "description": "Label lokale LLM-URL"
+  },
+  "labelLocalLlmModel": {
+    "message": "Lokales LLM-Modell (z. B. llama3.2, qwen2.5, mistral)",
+    "description": "Label lokales LLM-Modell"
+  },
+  "labelLocalApiKey": {
+    "message": "Lokaler API-Schlüssel (optional)",
+    "description": "Label lokaler Schlüssel"
+  },
+  "placeholderLocalApiKey": {
+    "message": "Leer lassen, falls kein Schlüssel erforderlich ist",
+    "description": "Platzhalter lokaler Schlüssel"
+  },
+  "sectionVoiceModeTitle": {
+    "message": "2. Einstellungen des Diktiermodus",
+    "description": "Überschrift Modus-Einstellungen"
+  },
+  "labelVoiceModePolicy": {
+    "message": "Verhalten beim Öffnen der Kapsel",
+    "description": "Label Modus-Speicherung"
+  },
+  "policyRememberLast": {
+    "message": "Zuletzt gewählten Modus beibehalten (Empfohlen)",
+    "description": "Option letzten Modus merken"
+  },
+  "policyUseDefault": {
+    "message": "Immer auf den unten festgelegten Standardmodus zurücksetzen",
+    "description": "Option Standardmodus nutzen"
+  },
+  "labelDefaultVoiceMode": {
+    "message": "Standardmodus",
+    "description": "Label Standardmodus"
+  },
+  "btnToggleKeyTitle": {
+    "message": "API-Schlüssel anzeigen / verbergen",
+    "description": "Tooltip Schlüssel anzeigen"
+  },
+  "btnTestConnection": {
+    "message": "Verbindung testen",
+    "description": "Schaltfläche Verbindung testen"
+  },
+  "btnSaveOptions": {
+    "message": "Einstellungen speichern",
+    "description": "Schaltfläche Speichern"
+  },
+  "statusTesting": {
+    "message": "Verbindung wird getestet…",
+    "description": "Status beim Testen"
+  },
+  "statusTestSuccess": {
+    "message": "Verbindung zur Engine erfolgreich ✓",
+    "description": "Status Test erfolgreich"
+  },
+  "statusTestFailed": {
+    "message": "Verbindungstest fehlgeschlagen:",
+    "description": "Präfix Test fehlgeschlagen"
+  },
+  "statusSaved": {
+    "message": "Einstellungen erfolgreich gespeichert ✓",
+    "description": "Status gespeichert"
+  },
+  "permissionBannerText": {
+    "message": "Für die Verbindung zu dieser Domain ist eine Netzwerkberechtigung erforderlich:",
+    "description": "Banner-Text Berechtigung"
+  },
+  "btnGrantPermission": {
+    "message": "Mit 1 Klick autorisieren",
+    "description": "Schaltfläche Autorisieren"
+  },
+  "micPrefRequiredMessage": {
+    "message": "Einmalige Thunderbird-Einrichtung: Einstellungen (⌘, oder Extras > Einstellungen) → Tab Allgemein (ganz nach unten scrollen) → Schaltfläche «Konfiguration bearbeiten…», media.navigator.permission.disabled einfügen und auf true setzen.",
+    "description": "Einmaliger Hinweis zur Mikrofonaktivierung in Thunderbird"
+  },
+  "btnCopyMicPref": {
+    "message": "Einstellungsnamen kopieren",
+    "description": "Schaltfläche zum Kopieren von media.navigator.permission.disabled"
+  },
+  "btnCopyMicPrefCopied": {
+    "message": "Kopiert ✓",
+    "description": "Kopierbestätigung"
+  }
+}

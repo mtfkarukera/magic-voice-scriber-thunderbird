@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="extName"></title>
+  <link rel="stylesheet" href="compose.css">
+</head>
+<body>
+  <main class="mvs-capsule" id="mvs-capsule">
+    <!-- ── EN-TÊTE : Badge Moteur + Sélecteur Morphing 3 États + Réglages ── -->
+    <header class="mvs-header">
+      <button type="button" id="btn-provider-badge" class="mvs-provider-badge" data-i18n-title="badgeProviderActiveTitle" data-i18n-aria-label="badgeProviderActiveTitle">
+        <span class="provider-dot" id="provider-dot" aria-hidden="true"></span>
+        <span class="provider-label" id="txt-provider-label"></span>
+      </button>
+
+      <div class="mvs-header-actions">
+        <!-- Bouton Sélecteur de Mode Morphing à 3 États -->
+        <button type="button" id="btn-voice-mode" class="mvs-mode-selector mode-natural" data-mode="natural" data-i18n-aria-label="modeBtnAriaLabel">
+          <span class="mode-icon" id="mode-icon" aria-hidden="true">🎙️</span>
+          <span class="mode-label" id="mode-label" data-i18n="modeNaturalLabel"></span>
+        </button>
+
+        <!-- Bouton Paramètres -->
+        <button type="button" id="btn-open-options" class="mvs-icon-btn" data-i18n-title="btnSettingsTitle" data-i18n-aria-label="btnSettingsTitle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ── VUE 1 : ACCUEIL ONBOARDING (Clé API manquante) ── -->
+    <section id="view-onboarding" class="mvs-onboarding mvs-hidden" aria-live="polite">
+      <div class="onboarding-icon" aria-hidden="true">✨</div>
+      <p class="onboarding-text" data-i18n="onboardingMessage"></p>
+      <button type="button" id="btn-onboarding-configure" class="mvs-btn mvs-btn-primary">
+        <span data-i18n="btnOpenSettings"></span>
+      </button>
+    </section>
+
+    <!-- ── VUE 2 : ENREGISTREUR & ONDULATION GLASSMORPHISM ── -->
+    <section id="view-recorder" class="mvs-recorder">
+      <!-- Visualiseur d'onde sonore réactive + Compteur -->
+      <div class="mvs-wave-container" id="wave-container">
+        <canvas id="waveform-canvas" width="336" height="76" aria-hidden="true"></canvas>
+        <div class="mvs-timer-pill" id="timer-display" aria-live="off">00:00 / 05:00</div>
+      </div>
+
+      <!-- Barre de capacité optimale (5 minutes max) -->
+      <div class="mvs-capacity-track" aria-hidden="true">
+        <div class="mvs-capacity-fill" id="capacity-progress-bar"></div>
+      </div>
+
+      <!-- Aperçu en direct pour gemini-3.5-transcribe-live (WebSocket) -->
+      <div id="live-transcript-preview" class="mvs-live-preview mvs-hidden" aria-live="polite"></div>
+
+      <!-- Statut dynamique -->
+      <div class="mvs-status-row" id="status-bar" role="status" aria-live="polite">
+        <span class="status-indicator" id="status-indicator" aria-hidden="true"></span>
+        <span class="status-text" id="status-text" data-i18n="statusReady"></span>
+      </div>
+
+      <!-- Boutons d'action principaux -->
+      <div class="mvs-controls">
+        <!-- Bouton Pause / Reprise (Espace) -->
+        <button type="button" id="btn-pause" class="mvs-btn mvs-btn-secondary" data-i18n-title="btnPauseTitle" data-i18n-aria-label="btnPauseTitle">
+          <span id="pause-icon" aria-hidden="true">⏸</span>
+        </button>
+
+        <!-- Bouton Terminer & Insérer (Entrée) -->
+        <button type="button" id="btn-stop" class="mvs-btn mvs-btn-primary mvs-btn-stop" data-i18n-title="btnStopTitle" data-i18n-aria-label="btnStopTitle">
+          <span class="stop-dot" aria-hidden="true"></span>
+          <span data-i18n="btnStopLabel"></span>
+        </button>
+
+        <!-- Bouton Annuler (Échap) -->
+        <button type="button" id="btn-cancel" class="mvs-btn mvs-btn-ghost" data-i18n-title="btnCancelTitle" data-i18n-aria-label="btnCancelTitle">
+          <span data-i18n="btnCancelLabel"></span>
+        </button>
+      </div>
+
+      <!-- Mémo des raccourcis clavier -->
+      <footer class="mvs-footer-hints">
+        <span data-i18n="hintShortcuts"></span>
+      </footer>
+    </section>
+  </main>
+
+  <script src="compose.js"></script>
+</body>
+</html>

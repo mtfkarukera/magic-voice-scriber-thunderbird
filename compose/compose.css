@@ -1,0 +1,433 @@
+/**
+ * Magic Voice Scriber — Feuille de Style de la Capsule Glassmorphism (Compose)
+ * ════════════════════════════════════════════════════════════════════════════
+ *
+ * Conforme aux directives de la compétence modern-web-design :
+ *   - Glassmorphism (backdrop-filter: blur(16px) saturate(190%))
+ *   - Accessibilité WCAG 2.1 Niveau AA (contrastes >= 4.5:1, :focus-visible explicite)
+ *   - Micro-animations fluides cubic-bezier(0.4, 0, 0.2, 1)
+ */
+
+:root {
+  --mvs-bg-glass: rgba(15, 23, 42, 0.88);
+  --mvs-bg-surface: rgba(30, 41, 59, 0.72);
+  --mvs-border-glass: rgba(255, 255, 255, 0.14);
+  --mvs-text-primary: #f8fafc;
+  --mvs-text-secondary: #cbd5e1;
+  --mvs-text-muted: #94a3b8;
+  --mvs-accent: #8b5cf6;
+  --mvs-accent-hover: #7c3aed;
+  --mvs-accent-glow: rgba(139, 92, 246, 0.35);
+  --mvs-recording: #f43f5e;
+  --mvs-paused: #f59e0b;
+  --mvs-success: #10b981;
+  --mvs-thinking: #38bdf8;
+  --mvs-shadow: 0 12px 36px 0 rgba(2, 6, 23, 0.45);
+  --mvs-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --mvs-bg-glass: rgba(255, 255, 255, 0.88);
+    --mvs-bg-surface: rgba(241, 245, 249, 0.85);
+    --mvs-border-glass: rgba(15, 23, 42, 0.12);
+    --mvs-text-primary: #0f172a;
+    --mvs-text-secondary: #334155;
+    --mvs-text-muted: #64748b;
+    --mvs-accent: #6d28d9;
+    --mvs-accent-hover: #5b21b6;
+    --mvs-accent-glow: rgba(109, 40, 217, 0.22);
+    --mvs-shadow: 0 10px 30px 0 rgba(15, 23, 42, 0.14);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 368px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--mvs-text-primary);
+  background: transparent;
+  user-select: none;
+  overflow: hidden;
+}
+
+.mvs-hidden {
+  display: none !important;
+}
+
+/* ── Conteneur Principal Glassmorphism ────────────────────────────────────── */
+.mvs-capsule {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--mvs-bg-glass);
+  backdrop-filter: blur(16px) saturate(190%);
+  -webkit-backdrop-filter: blur(16px) saturate(190%);
+  border: 1px solid var(--mvs-border-glass);
+  box-shadow: var(--mvs-shadow);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.mvs-capsule.is-closing {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+/* ── Accessibilité Focus Clavier (WCAG 2.1 AA) ────────────────────────────── */
+button:focus-visible {
+  outline: 2px solid var(--mvs-accent);
+  outline-offset: 2px;
+}
+
+/* ── En-tête : Badge Moteur + Sélecteur Morphing + Options ────────────────── */
+.mvs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mvs-provider-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--mvs-bg-surface);
+  border: 1px solid var(--mvs-border-glass);
+  border-radius: 999px;
+  color: var(--mvs-text-secondary);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--mvs-transition);
+}
+
+.mvs-provider-badge:hover {
+  transform: translateY(-1px);
+  border-color: var(--mvs-accent);
+  color: var(--mvs-text-primary);
+}
+
+.provider-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mvs-success);
+  box-shadow: 0 0 6px var(--mvs-success);
+}
+
+.provider-dot.is-warning {
+  background: var(--mvs-paused);
+  box-shadow: 0 0 8px var(--mvs-paused);
+  animation: mvsPulse 1.4s infinite ease-in-out;
+}
+
+.mvs-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Bouton Sélecteur de Mode Morphing à 3 États ─────────────────────────── */
+.mvs-mode-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--mvs-border-glass);
+  background: var(--mvs-bg-surface);
+  color: var(--mvs-text-primary);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--mvs-transition);
+}
+
+.mvs-mode-selector:hover {
+  transform: translateY(-1px) scale(1.02);
+  border-color: var(--mvs-accent);
+}
+
+.mvs-mode-selector:active {
+  transform: scale(0.96);
+}
+
+.mvs-mode-selector.mode-natural {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.mvs-mode-selector.mode-pro {
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.mvs-mode-selector.mode-bullets {
+  border-color: rgba(56, 189, 248, 0.5);
+}
+
+.mvs-mode-selector.is-morphing {
+  transform: scale(0.93);
+}
+
+.mvs-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--mvs-border-glass);
+  background: var(--mvs-bg-surface);
+  color: var(--mvs-text-secondary);
+  cursor: pointer;
+  transition: var(--mvs-transition);
+}
+
+.mvs-icon-btn:hover {
+  color: var(--mvs-text-primary);
+  border-color: var(--mvs-accent);
+  transform: rotate(25deg);
+}
+
+/* ── Vue 1 : Onboarding ───────────────────────────────────────────────────── */
+.mvs-onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 14px 12px;
+  background: var(--mvs-bg-surface);
+  border: 1px solid var(--mvs-border-glass);
+  border-radius: 14px;
+}
+
+.onboarding-icon {
+  font-size: 26px;
+}
+
+.onboarding-text {
+  font-size: 12.5px;
+  color: var(--mvs-text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Vue 2 : Visualiseur d'Onde & Enregistreur ───────────────────────────── */
+.mvs-recorder {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mvs-wave-container {
+  position: relative;
+  width: 100%;
+  height: 76px;
+  background: var(--mvs-bg-surface);
+  border: 1px solid var(--mvs-border-glass);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#waveform-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mvs-timer-pill {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.55);
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Jauge de Capacité Optimale (5 min) ──────────────────────────────────── */
+.mvs-capacity-track {
+  width: 100%;
+  height: 4px;
+  background: var(--mvs-bg-surface);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mvs-capacity-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--mvs-accent), #38bdf8);
+  border-radius: 999px;
+  transition: width 0.3s linear, background 0.3s ease;
+}
+
+.mvs-capacity-fill.is-warning {
+  background: linear-gradient(90deg, #f59e0b, #f43f5e);
+}
+
+/* ── Aperçu Live WebSocket ────────────────────────────────────────────────── */
+.mvs-live-preview {
+  max-height: 58px;
+  overflow-y: auto;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: var(--mvs-bg-surface);
+  border: 1px dashed var(--mvs-border-glass);
+  font-size: 12px;
+  color: var(--mvs-text-secondary);
+}
+
+/* ── Ligne de Statut ──────────────────────────────────────────────────────── */
+.mvs-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+  padding: 2px 4px;
+  font-size: 12px;
+  color: var(--mvs-text-secondary);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--mvs-text-muted);
+}
+
+.status-recording .status-indicator {
+  background: var(--mvs-recording);
+  box-shadow: 0 0 8px var(--mvs-recording);
+  animation: mvsPulse 1.1s infinite ease-in-out;
+}
+
+.status-paused .status-indicator {
+  background: var(--mvs-paused);
+}
+
+.status-thinking .status-indicator {
+  background: var(--mvs-thinking);
+  box-shadow: 0 0 8px var(--mvs-thinking);
+  animation: mvsPulse 0.8s infinite ease-in-out;
+}
+
+.status-ready .status-indicator {
+  background: var(--mvs-success);
+}
+
+.status-error {
+  color: #fda4af;
+}
+
+.status-error .status-indicator {
+  background: var(--mvs-recording);
+}
+
+/* ── Contrôles & Boutons ──────────────────────────────────────────────────── */
+.mvs-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mvs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--mvs-border-glass);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--mvs-transition);
+}
+
+.mvs-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.mvs-btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, var(--mvs-accent), #4f46e5);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--mvs-accent-glow);
+}
+
+.mvs-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.mvs-btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.mvs-btn-secondary {
+  width: 40px;
+  background: var(--mvs-bg-surface);
+  color: var(--mvs-text-primary);
+}
+
+.mvs-btn-secondary:hover:not(:disabled) {
+  border-color: var(--mvs-accent);
+  transform: translateY(-1px);
+}
+
+.mvs-btn-ghost {
+  background: transparent;
+  color: var(--mvs-text-secondary);
+}
+
+.mvs-btn-ghost:hover:not(:disabled) {
+  background: var(--mvs-bg-surface);
+  color: var(--mvs-text-primary);
+}
+
+.stop-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+/* ── Pied de Capsule : Raccourcis ────────────────────────────────────────── */
+.mvs-footer-hints {
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--mvs-text-muted);
+  padding-top: 2px;
+}
+
+@keyframes mvsPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.55;
+  }
+}

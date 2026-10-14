@@ -1,0 +1,27 @@
+# Dépendances et artefacts de build
+node_modules/
+dist/
+web-ext-artifacts/
+*.xpi
+*.zip
+
+# Fichiers système et éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers privés IA, gouvernance interne et kits de soumission (Anti-Leak user_global §6)
+AGENTS.md
+task.md
+tasks.md
+PLAN_ACTION.md
+RAPPORT_AUDIT.md
+JUSTIFICATION_ATN.md
+submission_kit.md
+.gemini/
+.claude/
+.env
+.env.*
