@@ -3,6 +3,14 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.2.8] - 2026-10-15
+
+### Ergonomie Multi-OS (Linux GTK / macOS) & Déblocage Pièces Jointes
+- **Sanctuaire pour `Ctrl+Entrée` / `Cmd+Entrée` (`compose/compose-injected.js`)** : Exclusion inconditionnelle des combinaisons `Ctrl+Entrée`, `Cmd+Entrée` et `Alt+Entrée` dans l'écouteur `keydown`, garantissant que le raccourci historique d'envoi immédiat d'e-mail de Thunderbird n'est plus jamais capturé ni bloqué par l'extension.
+- **Restauration intégrale du glisser-déposer de pièces jointes (`compose/compose-injected.js`)** : Définition explicite de `pointer-events: none` sur l'hôte en Light DOM (`hoteShadow`) et sur la racine flottante (`.mvs-floating-root`). Seuls les boutons interactifs réels reçoivent `pointer-events: auto`. Le document redevient 100 % transparent pour le serveur graphique Linux (protocole XDND) et le gestionnaire de glisser-déposer natif de Thunderbird, permettant d'ajouter des pièces jointes par simple drag-and-drop sans la moindre interférence.
+- **Neutralisation du vol de focus sous Linux GTK (`compose/compose-injected.js`)** : Attribution systématique de `tabindex="-1"` sur l'ensemble des boutons de la capsule (`btnOndeRouge`, `btnModeMorphing`, `btnPause`, `btnAnnuler`, etc.) et redirection automatique de tout focus accidentel vers l'éditeur de texte (`focusin`). Élimination définitive de l'escamotage du curseur de texte clignotant sous Linux.
+- **Raccourci étendu (`compose/compose-injected.js`)** : Prise en charge transparente de `Alt+Shift+D` en plus de `Alt+Shift+S` pour déclencher la dictée vocale.
+
 ## [1.2.7] - 2026-10-15
 
 ### Sécurité & Isolation des Secrets

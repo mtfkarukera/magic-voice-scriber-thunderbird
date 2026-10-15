@@ -316,14 +316,23 @@ const DEBUG = false;
 
     hoteShadow = document.createElement("div");
     hoteShadow.id = "mvs-caret-floating-host";
+    hoteShadow.style.pointerEvents = "none";
     (document.documentElement || document.body).appendChild(hoteShadow);
 
     racineShadow = hoteShadow.attachShadow({ mode: "closed" });
+
+    // Règle anti-vol de focus Linux GTK : toute tentative d'amener le focus dans le Shadow DOM est renvoyée à l'éditeur
+    racineShadow.addEventListener("focusin", () => {
+      if (document.body && typeof document.body.focus === "function") {
+        document.body.focus();
+      }
+    });
 
     const styleEl = document.createElement("style");
     styleEl.textContent = `
       :host {
         all: initial;
+        pointer-events: none !important;
       }
       .mvs-floating-root {
         position: fixed;
@@ -335,8 +344,15 @@ const DEBUG = false;
         color: #f8fafc;
         user-select: none;
         -webkit-user-select: none;
+        pointer-events: none !important;
         transition: left 0.10s cubic-bezier(0.22, 1, 0.36, 1),
                     top 0.10s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .mvs-red-wave-btn,
+      .mvs-mode-btn,
+      .mvs-mini-btn,
+      .mvs-onboarding-btn {
+        pointer-events: auto !important;
       }
       /* ── Capsule principale (Mode Actif vs Mode Veille Compact) ── */
       .mvs-pill {
@@ -653,6 +669,8 @@ const DEBUG = false;
     // Bouton principal rond avec micro SVG en veille et 5 barres verticales blanches en enregistrement
     btnOndeRouge = document.createElement("button");
     btnOndeRouge.type = "button";
+    btnOndeRouge.tabIndex = -1;
+    btnOndeRouge.setAttribute("tabindex", "-1");
     btnOndeRouge.className = "mvs-red-wave-btn state-idle";
     btnOndeRouge.setAttribute("title", t("composeActionTitle"));
     btnOndeRouge.setAttribute("aria-label", t("composeActionLabel"));
@@ -720,6 +738,8 @@ const DEBUG = false;
     // Sélecteur de Mode Morphing à 3 états (🎙️ / 👔 / 📋 — affiché uniquement pour OpenAI/Local)
     btnModeMorphing = document.createElement("button");
     btnModeMorphing.type = "button";
+    btnModeMorphing.tabIndex = -1;
+    btnModeMorphing.setAttribute("tabindex", "-1");
     btnModeMorphing.className = "mvs-mode-btn";
     btnModeMorphing.style.display = "none";
 
@@ -737,6 +757,8 @@ const DEBUG = false;
     // Bouton Pause / Reprise (⏸ / ▶)
     btnPause = document.createElement("button");
     btnPause.type = "button";
+    btnPause.tabIndex = -1;
+    btnPause.setAttribute("tabindex", "-1");
     btnPause.className = "mvs-mini-btn";
     btnPause.textContent = "⏸";
     btnPause.style.display = "none";
@@ -752,6 +774,8 @@ const DEBUG = false;
     // Bouton Annuler (✕)
     btnAnnuler = document.createElement("button");
     btnAnnuler.type = "button";
+    btnAnnuler.tabIndex = -1;
+    btnAnnuler.setAttribute("tabindex", "-1");
     btnAnnuler.className = "mvs-mini-btn";
     btnAnnuler.textContent = "✕";
     btnAnnuler.style.display = "none";
@@ -783,6 +807,8 @@ const DEBUG = false;
 
     btnActionOnboardingEl = document.createElement("button");
     btnActionOnboardingEl.type = "button";
+    btnActionOnboardingEl.tabIndex = -1;
+    btnActionOnboardingEl.setAttribute("tabindex", "-1");
     btnActionOnboardingEl.className = "mvs-onboarding-btn";
     btnActionOnboardingEl.textContent = t("btnOpenSettings");
     btnActionOnboardingEl.addEventListener("click", async (e) => {
@@ -803,6 +829,8 @@ const DEBUG = false;
 
     const btnFermerOnboarding = document.createElement("button");
     btnFermerOnboarding.type = "button";
+    btnFermerOnboarding.tabIndex = -1;
+    btnFermerOnboarding.setAttribute("tabindex", "-1");
     btnFermerOnboarding.className = "mvs-mini-btn";
     btnFermerOnboarding.textContent = "✕";
     btnFermerOnboarding.setAttribute("aria-label", t("btnCancelLabel"));
@@ -1544,11 +1572,21 @@ const DEBUG = false;
     true
   );
 
-  // Raccourcis clavier (Alt+Shift+S / ⌘⇧S, Espace : Pause, Entrée : Insérer, Échap : Annuler)
+  // Raccourcis clavier (Alt+Shift+S / ⌘⇧S / Alt+Shift+D, Espace : Pause, Entrée : Insérer, Échap : Annuler)
   window.addEventListener(
     "keydown",
     (e) => {
-      if (e.shiftKey && (e.altKey || e.metaKey) && (e.code === "KeyS" || e.key === "s" || e.key === "S")) {
+      // ⚠️ RÈGLE ABSOLUE : Ne JAMAIS intercepter les raccourcis d'envoi Thunderbird (Ctrl+Entrée, Cmd+Entrée, Alt+Entrée) !
+      if ((e.key === "Enter" || e.code === "Enter") && (e.ctrlKey || e.metaKey || e.altKey)) {
+        return;
+      }
+
+      const estToucheDeclenchement =
+        e.shiftKey &&
+        (e.altKey || e.metaKey) &&
+        (e.code === "KeyS" || e.key === "s" || e.key === "S" || e.code === "KeyD" || e.key === "d" || e.key === "D");
+
+      if (estToucheDeclenchement) {
         e.preventDefault();
         e.stopPropagation();
         basculerActivationWidget();
@@ -1580,7 +1618,7 @@ const DEBUG = false;
             e.stopPropagation();
             basculerPauseReprise();
           }
-        } else if (e.key === "Enter" && !e.shiftKey) {
+        } else if ((e.key === "Enter" || e.code === "Enter") && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
           if (!saisieEnCours) {
             e.preventDefault();
             e.stopPropagation();
@@ -1589,7 +1627,7 @@ const DEBUG = false;
         }
       }
     },
-    true
+    false
   );
 
   /**
