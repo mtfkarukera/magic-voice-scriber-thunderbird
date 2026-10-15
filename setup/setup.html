@@ -89,9 +89,15 @@
             <div class="mvs-alert-icon" aria-hidden="true">⚠️</div>
             <div class="mvs-alert-body">
               <strong data-i18n="snapAlertTitle">Attention aux utilisateurs Ubuntu Linux (Version Snap)</strong>
-              <p data-i18n="snapAlertBody">Le paquet Snap officiel de Thunderbird distribué par Canonical omet le plug microphone (<code>audio-record</code>), ce qui empêche toute capture audio sous Snap. Si le test micro ne réagit pas, installez la version native <strong>.deb</strong> officielle de Mozilla :</p>
+              <p data-i18n="snapAlertBody">Le paquet Snap officiel de Thunderbird bloque l'accès au microphone (absence du connecteur audio). Pour migrer vers la version native .deb sans risquer de réinstallation Snap lors des mises à jour ni perdre vos e-mails :</p>
+              <div class="mvs-alert-actions">
+                <a href="https://mtfk.fr/installer-thunderbird-deb-ubuntu-sans-snap/" target="_blank" rel="noopener noreferrer" class="mvs-btn-tutorial" data-i18n="btnReadUbuntuTutorial">
+                  📖 Consulter le tutoriel pas-à-pas (Migration profil &amp; Pinning APT) →
+                </a>
+              </div>
+              <p class="mvs-alert-subtext" data-i18n="snapAlertTerminalSubtext">Ou pour les utilisateurs avancés, exécutez la commande complète avec priorité APT 1001 :</p>
               <div class="mvs-code-snippet">
-                <code>sudo add-apt-repository ppa:mozillateam/ppa &amp;&amp; sudo apt update &amp;&amp; sudo apt install thunderbird</code>
+                <code>sudo add-apt-repository -y ppa:mozillateam/ppa &amp;&amp; echo -e 'Package: thunderbird*\nPin: release o=LP-PPA-mozillateam\nPin-Priority: 1001' | sudo tee /etc/apt/preferences.d/mozillateam-thunderbird &amp;&amp; sudo apt update &amp;&amp; sudo apt install -y thunderbird</code>
                 <button type="button" id="btn-copy-deb-cmd" class="mvs-btn-inline-copy" data-i18n="btnCopyCmd">Copier la commande</button>
               </div>
             </div>

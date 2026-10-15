@@ -460,8 +460,8 @@
     "description": "Snap alert title"
   },
   "snapAlertBody": {
-    "message": "The official Thunderbird Snap distributed by Canonical omits the microphone plug (audio-record), preventing any audio capture under Snap. If the mic test does not react, install Mozilla's official native .deb package:",
-    "description": "Snap alert body"
+    "message": "The official Thunderbird Snap package blocks microphone access (missing audio-record plug). To migrate cleanly to the native .deb version without Snap reinstallation upon updates or risking email loss:",
+    "description": "Corps alerte Snap"
   },
   "btnCopyCmd": {
     "message": "Copy Command",
@@ -642,5 +642,17 @@
   "step5Desc": {
     "message": "Your semantic voice dictation environment is completely configured.",
     "description": "Step 5 description"
+  },
+  "btnReadUbuntuTutorial": {
+    "message": "📖 Read the step-by-step tutorial (Profile backup & APT Pinning) →",
+    "description": "Bouton tutoriel Ubuntu Snap deb"
+  },
+  "snapAlertTerminalSubtext": {
+    "message": "Or for advanced users, run the complete migration command with APT Pinning 1001:",
+    "description": "Sous-texte commande terminal Ubuntu"
+  },
+  "cmdCopied": {
+    "message": "Command copied ✓",
+    "description": "Notification copie commande bash"
   }
 }

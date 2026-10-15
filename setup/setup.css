@@ -334,6 +334,40 @@ body {
   color: var(--setup-accent);
 }
 
+.mvs-alert-actions {
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.mvs-btn-tutorial {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(234, 88, 12, 0.12);
+  border: 1px solid rgba(234, 88, 12, 0.35);
+  color: #ea580c;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mvs-btn-tutorial:hover {
+  background: rgba(234, 88, 12, 0.22);
+  border-color: #ea580c;
+  color: #c2410c;
+  transform: translateY(-1px);
+}
+
+.mvs-alert-subtext {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
 /* ── Formulaires & Sélecteurs ── */
 .mvs-field {
   margin-bottom: 16px;

@@ -464,7 +464,7 @@
     "description": "Titre alerte Snap"
   },
   "snapAlertBody": {
-    "message": "Le paquet Snap officiel de Thunderbird distribué par Canonical omet le plug microphone (audio-record), ce qui empêche toute capture audio sous Snap. Si le test micro ne réagit pas, installez la version native .deb officielle de Mozilla :",
+    "message": "Le paquet Snap officiel de Thunderbird bloque l'accès au microphone (absence du connecteur audio). Pour migrer vers la version native .deb sans risquer de réinstallation Snap lors des mises à jour ni perdre vos e-mails :",
     "description": "Corps alerte Snap"
   },
   "btnCopyCmd": {
@@ -642,5 +642,17 @@
   "btnFinishSetup": {
     "message": "Enregistrer et commencer à dicter ✓",
     "description": "Bouton final du wizard"
+  },
+  "btnReadUbuntuTutorial": {
+    "message": "📖 Consulter le tutoriel pas-à-pas (Migration profil & Pinning APT) →",
+    "description": "Bouton tutoriel Ubuntu Snap deb"
+  },
+  "snapAlertTerminalSubtext": {
+    "message": "Ou pour les utilisateurs avancés, exécutez la commande complète avec priorité APT 1001 :",
+    "description": "Sous-texte commande terminal Ubuntu"
+  },
+  "cmdCopied": {
+    "message": "Commande copiée ✓",
+    "description": "Notification copie commande bash"
   }
 }

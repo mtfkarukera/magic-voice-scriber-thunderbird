@@ -55,13 +55,16 @@ Vous pouvez réouvrir cet assistant à tout moment depuis les options de l'exten
 > En conséquence, aucune WebExtension ne peut capturer le son sous Thunderbird Snap (le profil AppArmor bloque le micro et `sudo snap connect thunderbird:audio-record` échoue car le plug n'existe pas).
 
 #### Solution : Utiliser la version native `.deb` officielle de Mozilla
-Pour profiter pleinement de la dictée vocale sous Ubuntu Linux, installez la version native `.deb` officielle de Mozilla (sans confinement Snap) :
+Pour profiter pleinement de la dictée vocale sous Ubuntu Linux, installez la version native `.deb` officielle de Mozilla (sans confinement Snap).  
+👉 **[Consultez notre tutoriel pas-à-pas illustré sur mtfk.fr](https://mtfk.fr/installer-thunderbird-deb-ubuntu-sans-snap/)** pour sauvegarder votre profil existant (`~/snap/...`) et éviter toute perte d'e-mails.
+
+Pour les utilisateurs expérimentés, vous pouvez également configurer directement le PPA et la priorité APT 1001 au terminal :
 
 ```bash
 # 1. Ajouter le PPA officiel de l'équipe Mozilla pour Thunderbird
 sudo add-apt-repository ppa:mozillateam/ppa
 
-# 2. Configurer la priorité APT pour privilégier le paquet .deb natif
+# 2. Configurer la priorité APT pour privilégier le paquet .deb natif (Pinning 1001)
 echo '
 Package: thunderbird*
 Pin: release o=LP-PPA-mozillateam

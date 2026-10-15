@@ -267,12 +267,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnCopyDebCmd = document.getElementById("btn-copy-deb-cmd");
   if (btnCopyDebCmd) {
     btnCopyDebCmd.addEventListener("click", async () => {
-      const commande = "sudo add-apt-repository ppa:mozillateam/ppa && sudo apt update && sudo apt install thunderbird";
+      const commande = "sudo add-apt-repository -y ppa:mozillateam/ppa && echo -e 'Package: thunderbird*\\nPin: release o=LP-PPA-mozillateam\\nPin-Priority: 1001' | sudo tee /etc/apt/preferences.d/mozillateam-thunderbird && sudo apt update && sudo apt install -y thunderbird";
       const succes = await copierDansPressePapier(commande);
       if (succes) {
-        btnCopyDebCmd.textContent = "Commande copiée ✓";
+        btnCopyDebCmd.textContent = t("cmdCopied") || "Commande copiée ✓";
         setTimeout(() => {
-          btnCopyDebCmd.textContent = "Copier la commande";
+          btnCopyDebCmd.textContent = t("btnCopyCmd") || "Copier la commande";
         }, 3000);
       }
     });

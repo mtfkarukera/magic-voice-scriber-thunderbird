@@ -3,6 +3,14 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.3.2] - 2026-10-16
+
+### Sécurisation APT Pinning Ubuntu & Intégration du Tutoriel Pas-à-Pas
+- **Bouton vers le Tutoriel Illustré (`setup/setup.html`, `setup/setup.css`)** : Intégration dans l'étape 1 du wizard d'un lien direct vers le guide complet sur `mtfk.fr` (*Comment installer Thunderbird en version .deb sur Ubuntu et débloquer votre microphone*).
+- **Sécurisation de la commande terminal avec Priorité APT 1001 (`setup/setup.html`, `setup/setup.js`)** : Remplacement de la commande naïve par la commande complète d'un seul tenant créant `/etc/apt/preferences.d/mozillateam-thunderbird` avec priorité 1001, interdisant à Ubuntu de réinstaller le Snap lors des mises à jour système ultérieures.
+- **Accompagnement à la sauvegarde de profil (`README.md`, `setup/setup.html`)** : Sensibilisation sur la migration des e-mails depuis `~/snap/thunderbird/common/.thunderbird/` vers `~/.thunderbird/` pour prévenir tout sentiment de perte de données.
+- **Internationalisation intégrale (6 langues)** : Synchronisation et traduction des nouvelles clés dans les 6 locales (`fr`, `en`, `de`, `es`, `pt`, `vi`).
+
 ## [1.3.1] - 2026-10-16
 
 ### Sanctuarisation de l'Invariant Strict #1 (Gemini SMART)

@@ -460,8 +460,8 @@
     "description": "Tiêu đề cảnh báo Snap"
   },
   "snapAlertBody": {
-    "message": "Gói Thunderbird Snap chính thức của Canonical không hỗ trợ cổng micro (audio-record), ngăn cản mọi hoạt động ghi âm trên Snap. Nếu micro không phản hồi, hãy cài đặt bản .deb chính thức từ Mozilla:",
-    "description": "Nội dung cảnh báo Snap"
+    "message": "Gói Snap chính thức của Thunderbird chặn quyền truy cập micrô (thiếu cổng audio-record). Để chuyển đổi an toàn sang phiên bản .deb gốc mà không bị cài lại Snap khi cập nhật hoặc mất email:",
+    "description": "Corps alerte Snap"
   },
   "btnCopyCmd": {
     "message": "Sao chép lệnh",
@@ -642,5 +642,17 @@
   "step5Desc": {
     "message": "Môi trường đọc chính tả ngữ nghĩa bằng giọng nói của bạn đã được thiết lập hoàn tất.",
     "description": "Mô tả bước 5"
+  },
+  "btnReadUbuntuTutorial": {
+    "message": "📖 Xem hướng dẫn từng bước (Sao lưu hồ sơ & APT Pinning) →",
+    "description": "Bouton tutoriel Ubuntu Snap deb"
+  },
+  "snapAlertTerminalSubtext": {
+    "message": "Hoặc đối với người dùng nâng cao, chạy lệnh di chuyển đầy đủ với ưu tiên APT 1001:",
+    "description": "Sous-texte commande terminal Ubuntu"
+  },
+  "cmdCopied": {
+    "message": "Đã sao chép lệnh ✓",
+    "description": "Notification copie commande bash"
   }
 }
