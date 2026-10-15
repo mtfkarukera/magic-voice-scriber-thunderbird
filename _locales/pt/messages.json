@@ -36,24 +36,24 @@
     "description": "Modo de voz 1: Natural"
   },
   "modeNaturalDesc": {
-    "message": "Remove hesitações e corrige a pontuação mantendo as suas palavras exatas",
-    "description": "Dica do modo Natural"
+    "message": "Remove hesitações e pontua mantendo exatamente as suas palavras faladas.",
+    "description": "Descrição modo natural"
   },
   "modeProLabel": {
     "message": "Profissional",
     "description": "Modo de voz 2: Profissional"
   },
   "modeProDesc": {
-    "message": "Reformula com um tom cortês, fluido e profissional",
-    "description": "Dica do modo Profissional"
+    "message": "Reformula as suas ideias ditadas com um tom cortês, cuidado e formal.",
+    "description": "Descrição modo pro"
   },
   "modeBulletsLabel": {
     "message": "Síntese",
     "description": "Modo de voz 3: Síntese em tópicos"
   },
   "modeBulletsDesc": {
-    "message": "Estrutura as suas ideias numa lista clara de tópicos",
-    "description": "Dica do modo Síntese"
+    "message": "Transforma os seus pensamentos em voz alta numa lista ordenada de ações.",
+    "description": "Descrição modo tópicos"
   },
   "modeBtnAriaLabel": {
     "message": "Modo de ditado ativo. Clique para alternar entre Natural, Profissional e Síntese.",
@@ -428,12 +428,12 @@
     "description": "Etiqueta passo 2"
   },
   "step3Label": {
-    "message": "Estilo de Ditado",
-    "description": "Etiqueta passo 3"
+    "message": "Estilo e Atalhos",
+    "description": "Rótulo passo 3"
   },
   "step4Label": {
-    "message": "Pronto!",
-    "description": "Etiqueta passo 4"
+    "message": "Experimentar a Magia",
+    "description": "Rótulo passo 4"
   },
   "step1Title": {
     "message": "1. Diagnóstico do Microfone e Compatibilidade",
@@ -508,12 +508,12 @@
     "description": "Descrição passo 3"
   },
   "modeNaturalTitle": {
-    "message": "Modo Rambler (Recomendado)",
+    "message": "Modo Rambler (Fiel)",
     "description": "Título modo natural"
   },
   "modeProTitle": {
     "message": "Modo Profissional",
-    "description": "Título modo profissional"
+    "description": "Título modo pro"
   },
   "modeBulletsTitle": {
     "message": "Modo Resumo / Tópicos",
@@ -528,11 +528,11 @@
     "description": "Descrição Gota Vocal"
   },
   "step4Title": {
-    "message": "4. Tudo pronto! 🎉",
+    "message": "4. Experimente a Magia ao vivo! ✨",
     "description": "Título passo 4"
   },
   "step4Desc": {
-    "message": "O seu ambiente de ditado inteligente por voz está completamente configurado.",
+    "message": "Faça o teste você mesmo: leia esta frase em voz alta com hesitações para ver o texto limpo em tempo real.",
     "description": "Descrição passo 4"
   },
   "readyHeading": {
@@ -566,5 +566,81 @@
   "btnFinishSetup": {
     "message": "Guardar e Começar a Ditar ✓",
     "description": "Botão final de conclusão"
+  },
+  "step5Label": {
+    "message": "Pronto!",
+    "description": "Rótulo passo 5"
+  },
+  "smartBadgeTitle": {
+    "message": "Tecnologia Nativa Gemini SMART",
+    "description": "Título distintivo SMART"
+  },
+  "smartExplanationText": {
+    "message": "Com o Google Gemini 3.5, a sua voz é processada numa única passagem ultrarrápida. O modelo SMART remove automaticamente hesitações ('hum', 'é'), falsos inícios e repetições sem necessidade de instruções de reformulação artificial.",
+    "description": "Explicação SMART"
+  },
+  "llmModesTitle": {
+    "message": "Estilo de reformulação para o seu modelo LLM:",
+    "description": "Título modos LLM"
+  },
+  "demoPromptLabel": {
+    "message": "💬 Leia esta frase em voz alta:",
+    "description": "Rótulo instrução demo"
+  },
+  "demoPromptText": {
+    "message": "«Olá Marc, hum... podes dar-me um retorno sobre o orçamento... não desculpa, sobre o relatório financeiro até sexta-feira às 14h? Obrigado desde já!»",
+    "description": "Frase de teste demo"
+  },
+  "demoStatusIdle": {
+    "message": "Clique em «Ler a frase» e fale em voz alta.",
+    "description": "Estado inicial demo"
+  },
+  "demoStatusRecording": {
+    "message": "Gravando… Leia a frase em voz alta.",
+    "description": "Estado gravação demo"
+  },
+  "demoStatusProcessing": {
+    "message": "Limpeza semântica em curso… ✨",
+    "description": "Estado processamento demo"
+  },
+  "btnDemoRecord": {
+    "message": "Ler a frase em voz alta",
+    "description": "Botão gravar demo"
+  },
+  "btnDemoStop": {
+    "message": "⏹️ Parar e ver resultado",
+    "description": "Botão parar demo"
+  },
+  "demoResultTitle": {
+    "message": "Resultado limpo pelo Magic Voice Scriber:",
+    "description": "Título resultado demo"
+  },
+  "demoBadgeHesitations": {
+    "message": "Hesitações removidas ✓",
+    "description": "Distintivo hesitações"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Autocorreção resolvida ✓",
+    "description": "Distintivo autocorreção"
+  },
+  "demoBadgePunctuation": {
+    "message": "Pontuação aplicada ✓",
+    "description": "Distintivo pontuação"
+  },
+  "btnSkipDemo": {
+    "message": "Pular teste →",
+    "description": "Botão pular teste"
+  },
+  "btnNextReady": {
+    "message": "Seguinte: Tudo pronto! →",
+    "description": "Botão seguinte pronto"
+  },
+  "step5Title": {
+    "message": "5. Tudo pronto! 🎉",
+    "description": "Título passo 5"
+  },
+  "step5Desc": {
+    "message": "O seu ambiente de ditado por voz semântico está totalmente configurado.",
+    "description": "Descrição passo 5"
   }
 }

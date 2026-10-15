@@ -18,11 +18,11 @@
         </div>
       </div>
 
-      <!-- ── INDICATEUR D'ÉTAPES (STEPPER) ── -->
+      <!-- ── INDICATEUR D'ÉTAPES (STEPPER 5 ÉTAPES) ── -->
       <nav class="mvs-stepper" aria-label="Progression de la configuration">
         <button type="button" class="mvs-step-indicator active" data-step="1" id="step-btn-1">
           <span class="mvs-step-num">1</span>
-          <span class="mvs-step-label" data-i18n="step1Label">Microphone & OS</span>
+          <span class="mvs-step-label" data-i18n="step1Label">Micro & OS</span>
         </button>
         <span class="mvs-step-line" aria-hidden="true"></span>
         <button type="button" class="mvs-step-indicator" data-step="2" id="step-btn-2">
@@ -32,12 +32,17 @@
         <span class="mvs-step-line" aria-hidden="true"></span>
         <button type="button" class="mvs-step-indicator" data-step="3" id="step-btn-3">
           <span class="mvs-step-num">3</span>
-          <span class="mvs-step-label" data-i18n="step3Label">Style de Dictée</span>
+          <span class="mvs-step-label" data-i18n="step3Label">Style & Raccourcis</span>
         </button>
         <span class="mvs-step-line" aria-hidden="true"></span>
         <button type="button" class="mvs-step-indicator" data-step="4" id="step-btn-4">
           <span class="mvs-step-num">4</span>
-          <span class="mvs-step-label" data-i18n="step4Label">Prêt !</span>
+          <span class="mvs-step-label" data-i18n="step4Label">Essayer la Magie</span>
+        </button>
+        <span class="mvs-step-line" aria-hidden="true"></span>
+        <button type="button" class="mvs-step-indicator" data-step="5" id="step-btn-5">
+          <span class="mvs-step-num">5</span>
+          <span class="mvs-step-label" data-i18n="step5Label">Prêt !</span>
         </button>
       </nav>
     </header>
@@ -79,7 +84,7 @@
             </button>
           </div>
 
-          <!-- Alerte Spécifique Linux Snap (affichée si Linux ou si silence détecté) -->
+          <!-- Alerte Spécifique Linux Snap -->
           <div id="linux-snap-alert" class="mvs-alert mvs-alert-warning mvs-hidden" role="alert">
             <div class="mvs-alert-icon" aria-hidden="true">⚠️</div>
             <div class="mvs-alert-body">
@@ -196,48 +201,63 @@
             <span data-i18n="btnPrev">← Retour</span>
           </button>
           <button type="button" class="mvs-btn mvs-btn-primary mvs-btn-next" data-next="3">
-            <span data-i18n="btnNext">Suivant : Style de Dictée →</span>
+            <span data-i18n="btnNext">Suivant : Style &amp; Raccourcis →</span>
           </button>
         </footer>
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════════ -->
-      <!-- ÉTAPE 3 : STYLE DE DICTÉE & RACCOURCIS                             -->
+      <!-- ÉTAPE 3 : STYLE & RACCOURCIS (100 % CONDITIONNEL)                  -->
       <!-- ══════════════════════════════════════════════════════════════════ -->
       <section id="step-panel-3" class="mvs-step-panel" role="region" aria-labelledby="step-btn-3">
         <div class="mvs-panel-intro">
           <h2 data-i18n="step3Title">3. Préférences de Dictée &amp; Ergonomie</h2>
-          <p class="mvs-panel-desc" data-i18n="step3Desc">Choisissez comment Magic Voice Scriber sublime vos paroles au fil du texte.</p>
+          <p class="mvs-panel-desc" data-i18n="step3Desc">Votre configuration vocale s'adapte automatiquement à votre moteur d'IA.</p>
         </div>
 
         <div class="mvs-card">
-          <div class="mvs-modes-selection">
-            <label class="mvs-mode-option selected">
-              <input type="radio" name="setup-voice-mode" value="natural" checked>
-              <div class="mvs-mode-card">
-                <span class="mvs-mode-icon" aria-hidden="true">🎙️</span>
-                <strong data-i18n="modeNaturalTitle">Mode Rambler (Recommandé)</strong>
-                <p data-i18n="modeNaturalDesc">Supprime les hésitations (« euh », « ben »), résout les faux départs et ponctue parfaitement en gardant vos mots exacts.</p>
-              </div>
-            </label>
+          <!-- ── SOUS-SECTION 3A : GEMINI SMART NATIVE (PAR DÉFAUT) ── -->
+          <div id="setup-gemini-smart-panel" class="mvs-smart-box">
+            <div class="mvs-smart-badge">
+              <span class="mvs-badge-icon" aria-hidden="true">✨</span>
+              <strong data-i18n="smartBadgeTitle">Technologie Native Gemini SMART</strong>
+            </div>
+            <p class="mvs-smart-explanation" data-i18n="smartExplanationText">
+              Avec Google Gemini 3.5, votre voix est traitée en une seule passe ultra-rapide. Le modèle SMART élimine automatiquement les hésitations (« euh », « ben »), faux départs et répétitions sans nécessiter de prompt de reformulation artificielle.
+            </p>
+          </div>
 
-            <label class="mvs-mode-option">
-              <input type="radio" name="setup-voice-mode" value="pro">
-              <div class="mvs-mode-card">
-                <span class="mvs-mode-icon" aria-hidden="true">👔</span>
-                <strong data-i18n="modeProTitle">Mode Professionnel</strong>
-                <p data-i18n="modeProDesc">Reformule vos idées dictées avec un ton courtois, soigné et fluide, idéal pour vos correspondances d'affaires.</p>
-              </div>
-            </label>
+          <!-- ── SOUS-SECTION 3B : MODES LLM (UNIQUEMENT OPENAI / LOCAL) ── -->
+          <div id="setup-llm-modes-panel" class="mvs-llm-modes-box mvs-hidden">
+            <h3 class="mvs-llm-modes-title" data-i18n="llmModesTitle">Style de reformulation par votre modèle LLM :</h3>
+            <div class="mvs-modes-selection">
+              <label class="mvs-mode-option selected">
+                <input type="radio" name="setup-voice-mode" value="natural" checked>
+                <div class="mvs-mode-card">
+                  <span class="mvs-mode-icon" aria-hidden="true">🎙️</span>
+                  <strong data-i18n="modeNaturalTitle">Mode Rambler (Fidèle)</strong>
+                  <p data-i18n="modeNaturalDesc">Supprime les hésitations et ponctue tout en conservant vos mots exacts.</p>
+                </div>
+              </label>
 
-            <label class="mvs-mode-option">
-              <input type="radio" name="setup-voice-mode" value="bullets">
-              <div class="mvs-mode-card">
-                <span class="mvs-mode-icon" aria-hidden="true">📋</span>
-                <strong data-i18n="modeBulletsTitle">Mode Synthèse / Puces</strong>
-                <p data-i18n="modeBulletsDesc">Transforme vos pensées exprimées à voix haute en liste d'actions claires et ordonnées.</p>
-              </div>
-            </label>
+              <label class="mvs-mode-option">
+                <input type="radio" name="setup-voice-mode" value="pro">
+                <div class="mvs-mode-card">
+                  <span class="mvs-mode-icon" aria-hidden="true">👔</span>
+                  <strong data-i18n="modeProTitle">Mode Professionnel</strong>
+                  <p data-i18n="modeProDesc">Reformule vos idées dictées avec un ton courtois, soigné et formel.</p>
+                </div>
+              </label>
+
+              <label class="mvs-mode-option">
+                <input type="radio" name="setup-voice-mode" value="bullets">
+                <div class="mvs-mode-card">
+                  <span class="mvs-mode-icon" aria-hidden="true">📋</span>
+                  <strong data-i18n="modeBulletsTitle">Mode Synthèse / Puces</strong>
+                  <p data-i18n="modeBulletsDesc">Transforme vos pensées exprimées à voix haute en liste d'actions ordonnée.</p>
+                </div>
+              </label>
+            </div>
           </div>
 
           <hr class="mvs-divider">
@@ -257,18 +277,82 @@
             <span data-i18n="btnPrev">← Retour</span>
           </button>
           <button type="button" class="mvs-btn mvs-btn-primary mvs-btn-next" data-next="4">
-            <span data-i18n="btnNext">Suivant : Récapitulatif →</span>
+            <span data-i18n="btnNext">Suivant : Essayer la Magie →</span>
           </button>
         </footer>
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════════ -->
-      <!-- ÉTAPE 4 : RÉCAPITULATIF & PRÊT À DICTER                            -->
+      <!-- ÉTAPE 4 : BAC À SABLE INTERACTIF (ESSAYEZ LA MAGIE EN DIRECT !)    -->
       <!-- ══════════════════════════════════════════════════════════════════ -->
       <section id="step-panel-4" class="mvs-step-panel" role="region" aria-labelledby="step-btn-4">
         <div class="mvs-panel-intro">
-          <h2 data-i18n="step4Title">4. Tout est prêt ! 🎉</h2>
-          <p class="mvs-panel-desc" data-i18n="step4Desc">Votre environnement de dictée vocale sémantique est entièrement configuré.</p>
+          <h2 data-i18n="step4Title">4. Essayez la Magie en direct ! ✨</h2>
+          <p class="mvs-panel-desc" data-i18n="step4Desc">Faites le test vous-même : lisez cette phrase à voix haute avec ses hésitations pour voir le texte nettoyé en temps réel.</p>
+        </div>
+
+        <div class="mvs-card mvs-demo-container">
+          <!-- Phrase test suggérée -->
+          <div class="mvs-demo-prompt-card">
+            <span class="mvs-demo-prompt-label" data-i18n="demoPromptLabel">💬 Lisez cette phrase à voix haute :</span>
+            <p class="mvs-demo-prompt-text" id="demo-prompt-text" data-i18n="demoPromptText">
+              « Bonjour Marc, euh... peux-tu me faire un retour sur le devis... non pardon, sur le rapport financier d'ici vendredi à 14 heures ? Merci d'avance ! »
+            </p>
+          </div>
+
+          <!-- Zone d'enregistrement démonstration -->
+          <div class="mvs-demo-recorder">
+            <div class="mvs-mic-visualizer" id="demo-visualizer">
+              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+            </div>
+
+            <p id="demo-status-text" class="mvs-mic-status" data-i18n="demoStatusIdle">Cliquez sur « Lire la phrase » et parlez à voix haute.</p>
+
+            <button type="button" id="btn-demo-record" class="mvs-btn mvs-btn-primary">
+              <span class="mvs-btn-icon-symbol" aria-hidden="true">🎙️</span>
+              <span id="btn-demo-label" data-i18n="btnDemoRecord">Lire la phrase à voix haute</span>
+            </button>
+          </div>
+
+          <!-- Zone d'affichage du résultat nettoyé en direct -->
+          <div id="demo-result-box" class="mvs-demo-result-box mvs-hidden">
+            <div class="mvs-demo-result-header">
+              <span class="mvs-badge-icon" aria-hidden="true">✨</span>
+              <strong data-i18n="demoResultTitle">Résultat nettoyé par Magic Voice Scriber :</strong>
+            </div>
+            <div class="mvs-demo-result-content" id="demo-result-content"></div>
+            <div class="mvs-demo-badges">
+              <span class="mvs-result-pill" data-i18n="demoBadgeHesitations">Hésitations « euh » gommées ✓</span>
+              <span class="mvs-result-pill" data-i18n="demoBadgeAutocorrect">Auto-correction résolue ✓</span>
+              <span class="mvs-result-pill" data-i18n="demoBadgePunctuation">Ponctuation appliquée ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <footer class="mvs-step-footer">
+          <button type="button" class="mvs-btn mvs-btn-secondary mvs-btn-prev" data-prev="3">
+            <span data-i18n="btnPrev">← Retour</span>
+          </button>
+          <div class="mvs-step-footer-actions">
+            <button type="button" class="mvs-btn-link mvs-btn-next" data-next="5" data-i18n="btnSkipDemo">Passer l'essai →</button>
+            <button type="button" class="mvs-btn mvs-btn-primary mvs-btn-next" data-next="5">
+              <span data-i18n="btnNextReady">Suivant : C'est prêt ! →</span>
+            </button>
+          </div>
+        </footer>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- ÉTAPE 5 : RÉCAPITULATIF & PRÊT À DICTER                            -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <section id="step-panel-5" class="mvs-step-panel" role="region" aria-labelledby="step-btn-5">
+        <div class="mvs-panel-intro">
+          <h2 data-i18n="step5Title">5. Tout est prêt ! 🎉</h2>
+          <p class="mvs-panel-desc" data-i18n="step5Desc">Votre environnement de dictée vocale sémantique est entièrement configuré.</p>
         </div>
 
         <div class="mvs-card mvs-ready-card">
@@ -291,7 +375,7 @@
         </div>
 
         <footer class="mvs-step-footer">
-          <button type="button" class="mvs-btn mvs-btn-secondary mvs-btn-prev" data-prev="3">
+          <button type="button" class="mvs-btn mvs-btn-secondary mvs-btn-prev" data-prev="4">
             <span data-i18n="btnPrev">← Retour</span>
           </button>
           <button type="button" id="btn-finish-setup" class="mvs-btn mvs-btn-primary">

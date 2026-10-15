@@ -472,3 +472,41 @@ describe("4. Sécurité DOM, CSP & Garde-fou DEBUG (Règles 11, 12, 14)", () => 
     }
   });
 });
+
+describe("5. Invariant Strict #1 & Stepper 5 Étapes (Setup & Gouvernance)", () => {
+  it("sanctuarise l'Invariant Strict #1 dans AGENTS.md", () => {
+    const agentsMd = fs.readFileSync(path.join(RACINE, "AGENTS.md"), "utf8");
+    assert.ok(agentsMd.includes("INVARIANT STRICT #1"), "Invariant Strict #1 absent de AGENTS.md");
+    assert.ok(agentsMd.includes("GEMINI SMART = ZÉRO PROMPT & ZÉRO MODE DE STYLE"), "Déclaration formelle absente");
+    assert.ok(agentsMd.includes("Obligation d'affichage conditionnel"), "Obligation d'affichage conditionnel absente");
+  });
+
+  it("structure setup.html avec un Stepper strict à 5 étapes et un bac à sable interactif", () => {
+    const setupHtml = fs.readFileSync(path.join(RACINE, "setup/setup.html"), "utf8");
+    for (let i = 1; i <= 5; i++) {
+      assert.ok(setupHtml.includes(`id="step-btn-${i}"`), `Indicateur d'étape ${i} manquant dans setup.html`);
+      assert.ok(setupHtml.includes(`id="step-panel-${i}"`), `Panneau d'étape ${i} manquant dans setup.html`);
+    }
+
+    // Séparation stricte du panneau SMART et des modes LLM
+    assert.ok(setupHtml.includes('id="setup-gemini-smart-panel"'), "Panneau SMART manquant");
+    assert.ok(setupHtml.includes('id="setup-llm-modes-panel"'), "Panneau modes LLM manquant");
+
+    // Bac à sable interactif en étape 4
+    assert.ok(setupHtml.includes('id="btn-demo-record"'), "Bouton d'enregistrement démo manquant");
+    assert.ok(setupHtml.includes('id="demo-prompt-text"'), "Texte de la phrase test manquant");
+    assert.ok(setupHtml.includes('id="demo-result-content"'), "Zone de résultat nettoyé manquante");
+
+    // Clôture en étape 5
+    assert.ok(setupHtml.includes('id="btn-finish-setup"'), "Bouton final de sauvegarde manquant");
+  });
+
+  it("applique l'affichage conditionnel et la gestion 5 étapes dans setup.js", () => {
+    const setupJs = fs.readFileSync(path.join(RACINE, "setup/setup.js"), "utf8");
+    assert.ok(setupJs.includes("totalEtapes = 5"), "setup.js doit configurer totalEtapes = 5");
+    assert.ok(setupJs.includes("panelGeminiSmart.classList.toggle"), "setup.js doit basculer conditionnellement le panneau SMART");
+    assert.ok(setupJs.includes("panelLlmModes.classList.toggle"), "setup.js doit basculer conditionnellement les modes LLM");
+    assert.ok(setupJs.includes("traiterAudioDemo"), "setup.js doit contenir la fonction de traitement audio démo");
+  });
+});
+

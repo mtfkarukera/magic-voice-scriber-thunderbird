@@ -573,6 +573,166 @@ kbd {
   margin-top: 20px;
 }
 
+.mvs-step-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mvs-btn-link {
+  background: none;
+  border: none;
+  color: var(--setup-text-sub);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 6px 10px;
+  transition: color 0.2s ease;
+}
+
+.mvs-btn-link:hover {
+  color: var(--setup-accent);
+}
+
+/* ── Panneau SMART Gemini & Modes LLM Conditionnels ── */
+.mvs-smart-box {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.08) 0%, rgba(249, 115, 22, 0.02) 100%);
+  border: 1px solid rgba(234, 88, 12, 0.25);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.mvs-smart-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--setup-card-bg);
+  border: 1px solid rgba(234, 88, 12, 0.3);
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--setup-accent);
+}
+
+.mvs-badge-icon {
+  font-size: 16px;
+}
+
+.mvs-smart-explanation {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--setup-text-main);
+  margin: 0;
+}
+
+.mvs-llm-modes-box {
+  margin-bottom: 20px;
+}
+
+.mvs-llm-modes-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--setup-text-main);
+}
+
+/* ── Bac à Sable Interactif (Étape 4) ── */
+.mvs-demo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mvs-demo-prompt-card {
+  background: var(--setup-panel-bg);
+  border: 1px solid var(--setup-card-border);
+  border-left: 4px solid var(--setup-accent);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.mvs-demo-prompt-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--setup-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.mvs-demo-prompt-text {
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--setup-text-main);
+  margin: 0;
+  font-weight: 500;
+}
+
+.mvs-demo-recorder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  border: 2px dashed var(--setup-card-border);
+  border-radius: 12px;
+  background: var(--setup-panel-bg);
+}
+
+.mvs-demo-recorder .mvs-mic-visualizer {
+  margin-bottom: 12px;
+}
+
+.mvs-demo-result-box {
+  background: var(--setup-panel-bg);
+  border: 1px solid var(--setup-card-border);
+  border-radius: 12px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.mvs-demo-result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--setup-accent);
+  margin-bottom: 12px;
+}
+
+.mvs-demo-result-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--setup-text-main);
+  background: var(--setup-card-bg);
+  border: 1px solid var(--setup-card-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.mvs-demo-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mvs-result-pill {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--setup-success);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
 /* ── Utilitaires ── */
 .mvs-hidden {
   display: none !important;

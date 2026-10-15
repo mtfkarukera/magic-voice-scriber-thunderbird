@@ -36,24 +36,24 @@
     "description": "Voice mode 1: Natural cleanup"
   },
   "modeNaturalDesc": {
-    "message": "Removes filler words and fixes punctuation while keeping your exact words",
-    "description": "Tooltip for Natural mode"
+    "message": "Removes hesitations and punctuates while keeping your exact spoken words.",
+    "description": "Natural mode description"
   },
   "modeProLabel": {
     "message": "Professional",
     "description": "Voice mode 2: Professional polish"
   },
   "modeProDesc": {
-    "message": "Polishes phrasing with a courteous and professional tone",
-    "description": "Tooltip for Professional mode"
+    "message": "Reformulates your spoken thoughts with a courteous, polished, and formal tone.",
+    "description": "Pro mode description"
   },
   "modeBulletsLabel": {
     "message": "Summary",
     "description": "Voice mode 3: Bullet points summary"
   },
   "modeBulletsDesc": {
-    "message": "Structures your spoken thoughts into clear bullet points",
-    "description": "Tooltip for Summary mode"
+    "message": "Turns your spoken thoughts into a clean, structured bulleted action list.",
+    "description": "Bullets mode description"
   },
   "modeBtnAriaLabel": {
     "message": "Active voice mode. Click to switch between Natural, Professional, and Summary.",
@@ -428,11 +428,11 @@
     "description": "Step 2 label"
   },
   "step3Label": {
-    "message": "Dictation Style",
+    "message": "Style & Shortcuts",
     "description": "Step 3 label"
   },
   "step4Label": {
-    "message": "Ready!",
+    "message": "Try the Magic",
     "description": "Step 4 label"
   },
   "step1Title": {
@@ -508,7 +508,7 @@
     "description": "Step 3 description"
   },
   "modeNaturalTitle": {
-    "message": "Rambler Mode (Recommended)",
+    "message": "Rambler Mode (Faithful)",
     "description": "Natural mode title"
   },
   "modeProTitle": {
@@ -516,7 +516,7 @@
     "description": "Pro mode title"
   },
   "modeBulletsTitle": {
-    "message": "Bullets & Summary Mode",
+    "message": "Summary / Bullets Mode",
     "description": "Bullets mode title"
   },
   "shortcutLabel": {
@@ -528,11 +528,11 @@
     "description": "Smart Voice Gem description"
   },
   "step4Title": {
-    "message": "4. All set! 🎉",
+    "message": "4. Try the Magic Live! ✨",
     "description": "Step 4 title"
   },
   "step4Desc": {
-    "message": "Your intelligent semantic dictation environment is fully configured.",
+    "message": "Test it yourself: read this sentence out loud with its hesitations to see the cleaned text in real time.",
     "description": "Step 4 description"
   },
   "readyHeading": {
@@ -566,5 +566,81 @@
   "btnFinishSetup": {
     "message": "Save & Start Dictating ✓",
     "description": "Final setup button"
+  },
+  "step5Label": {
+    "message": "Ready!",
+    "description": "Step 5 label"
+  },
+  "smartBadgeTitle": {
+    "message": "Native Gemini SMART Technology",
+    "description": "SMART badge title"
+  },
+  "smartExplanationText": {
+    "message": "With Google Gemini 3.5, your voice is processed in a single ultra-fast pass. The SMART model automatically removes hesitations ('um', 'uh'), false starts, and repetitions without needing artificial reformulation prompts.",
+    "description": "SMART explanation"
+  },
+  "llmModesTitle": {
+    "message": "Reformulation style for your LLM model:",
+    "description": "LLM modes title"
+  },
+  "demoPromptLabel": {
+    "message": "💬 Read this sentence out loud:",
+    "description": "Demo prompt label"
+  },
+  "demoPromptText": {
+    "message": "\"Hello Marc, um... could you give me feedback on the quote... no sorry, on the financial report by Friday at 2 PM? Thanks in advance!\"",
+    "description": "Demo prompt text"
+  },
+  "demoStatusIdle": {
+    "message": "Click 'Read sentence' and speak out loud.",
+    "description": "Demo status idle"
+  },
+  "demoStatusRecording": {
+    "message": "Recording in progress… Read the sentence out loud.",
+    "description": "Demo status recording"
+  },
+  "demoStatusProcessing": {
+    "message": "Semantic cleaning in progress… ✨",
+    "description": "Demo status processing"
+  },
+  "btnDemoRecord": {
+    "message": "Read sentence out loud",
+    "description": "Btn demo record"
+  },
+  "btnDemoStop": {
+    "message": "⏹️ Stop and view result",
+    "description": "Btn demo stop"
+  },
+  "demoResultTitle": {
+    "message": "Cleaned result by Magic Voice Scriber:",
+    "description": "Demo result title"
+  },
+  "demoBadgeHesitations": {
+    "message": "Filler words removed ✓",
+    "description": "Badge hesitations"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Self-correction resolved ✓",
+    "description": "Badge autocorrect"
+  },
+  "demoBadgePunctuation": {
+    "message": "Punctuation applied ✓",
+    "description": "Badge punctuation"
+  },
+  "btnSkipDemo": {
+    "message": "Skip demo →",
+    "description": "Btn skip demo"
+  },
+  "btnNextReady": {
+    "message": "Next: All ready! →",
+    "description": "Btn next ready"
+  },
+  "step5Title": {
+    "message": "5. All ready! 🎉",
+    "description": "Step 5 title"
+  },
+  "step5Desc": {
+    "message": "Your semantic voice dictation environment is completely configured.",
+    "description": "Step 5 description"
   }
 }

@@ -36,24 +36,24 @@
     "description": "Sprachmodus 1: Natürlich"
   },
   "modeNaturalDesc": {
-    "message": "Entfernt Füllwörter und korrigiert die Zeichensetzung unter Beibehaltung Ihrer genauen Worte",
-    "description": "Tooltip für Modus Natürlich"
+    "message": "Entfernt Füllwörter und setzt Zeichensetzung, behält Ihre genauen Worte bei.",
+    "description": "Natürlicher Modus Beschreibung"
   },
   "modeProLabel": {
     "message": "Professionell",
     "description": "Sprachmodus 2: Professionell"
   },
   "modeProDesc": {
-    "message": "Formuliert flüssig, höflich und geschäftsmäßig um",
-    "description": "Tooltip für Modus Professionell"
+    "message": "Formuliert Ihre diktierten Gedanken höflich, gewählt und förmlich um.",
+    "description": "Pro Modus Beschreibung"
   },
   "modeBulletsLabel": {
     "message": "Zusammenfassung",
     "description": "Sprachmodus 3: Stichpunkte"
   },
   "modeBulletsDesc": {
-    "message": "Strukturiert Ihre Gedanken in einer klaren Aufzählung",
-    "description": "Tooltip für Modus Zusammenfassung"
+    "message": "Wandelt laut gesprochene Gedanken in eine übersichtliche Aufgabenliste um.",
+    "description": "Aufzählungsmodus Beschreibung"
   },
   "modeBtnAriaLabel": {
     "message": "Aktiver Diktiermodus. Klicken Sie, um zwischen Natürlich, Professionell und Zusammenfassung zu wechseln.",
@@ -428,11 +428,11 @@
     "description": "Schritt 2 Label"
   },
   "step3Label": {
-    "message": "Diktierstil",
+    "message": "Stil & Tastenkürzel",
     "description": "Schritt 3 Label"
   },
   "step4Label": {
-    "message": "Fertig!",
+    "message": "Magie ausprobieren",
     "description": "Schritt 4 Label"
   },
   "step1Title": {
@@ -508,16 +508,16 @@
     "description": "Schritt 3 Beschreibung"
   },
   "modeNaturalTitle": {
-    "message": "Rambler-Modus (Empfohlen)",
-    "description": "Titel natürlicher Modus"
+    "message": "Rambler-Modus (Originalgetreu)",
+    "description": "Natürlicher Modus Titel"
   },
   "modeProTitle": {
     "message": "Professioneller Modus",
-    "description": "Titel Profi-Modus"
+    "description": "Pro Modus Titel"
   },
   "modeBulletsTitle": {
-    "message": "Stichpunkte & Zusammenfassung",
-    "description": "Titel Aufzählungsmodus"
+    "message": "Zusammenfassung / Aufzählung",
+    "description": "Aufzählungsmodus Titel"
   },
   "shortcutLabel": {
     "message": "Diktier-Tastenkürzel:",
@@ -528,11 +528,11 @@
     "description": "Beschreibung Stimmtropfen"
   },
   "step4Title": {
-    "message": "4. Alles bereit! 🎉",
+    "message": "4. Probieren Sie die Magie live aus! ✨",
     "description": "Schritt 4 Titel"
   },
   "step4Desc": {
-    "message": "Ihre intelligente Diktierumgebung ist vollständig eingerichtet.",
+    "message": "Machen Sie selbst den Test: Lesen Sie diesen Satz laut mit allen Zögerlichkeiten vor, um den bereinigten Text in Echtzeit zu sehen.",
     "description": "Schritt 4 Beschreibung"
   },
   "readyHeading": {
@@ -566,5 +566,81 @@
   "btnFinishSetup": {
     "message": "Speichern & Diktieren starten ✓",
     "description": "Schaltfläche Fertigstellen"
+  },
+  "step5Label": {
+    "message": "Bereit!",
+    "description": "Schritt 5 Label"
+  },
+  "smartBadgeTitle": {
+    "message": "Native Gemini SMART-Technologie",
+    "description": "SMART Badge Titel"
+  },
+  "smartExplanationText": {
+    "message": "Mit Google Gemini 3.5 wird Ihre Stimme in einem einzigen, ultraschnellen Durchgang verarbeitet. Das SMART-Modell entfernt automatisch Füllwörter ('äh', 'öh'), Fehlstarts und Wiederholungen ganz ohne künstliche Umformulierungs-Prompts.",
+    "description": "SMART Erklärung"
+  },
+  "llmModesTitle": {
+    "message": "Umformatierungsstil für Ihr LLM-Modell:",
+    "description": "LLM Modi Titel"
+  },
+  "demoPromptLabel": {
+    "message": "💬 Lesen Sie diesen Satz laut vor:",
+    "description": "Demo Vorgabe Label"
+  },
+  "demoPromptText": {
+    "message": "„Hallo Marc, äh... kannst du mir bitte eine Rückmeldung zum Kostenvoranschlag... nein Verzeihung, zum Finanzbericht bis Freitag um 14 Uhr geben? Vielen Dank im Voraus!“",
+    "description": "Demo Beispielsatz"
+  },
+  "demoStatusIdle": {
+    "message": "Klicken Sie auf „Satz vorlesen“ und sprechen Sie laut.",
+    "description": "Demo Status Leerlauf"
+  },
+  "demoStatusRecording": {
+    "message": "Aufnahme läuft… Lesen Sie den Satz laut vor.",
+    "description": "Demo Status Aufnahme"
+  },
+  "demoStatusProcessing": {
+    "message": "Semantische Bereinigung läuft… ✨",
+    "description": "Demo Status Verarbeitung"
+  },
+  "btnDemoRecord": {
+    "message": "Satz laut vorlesen",
+    "description": "Button Demo Aufnahme"
+  },
+  "btnDemoStop": {
+    "message": "⏹️ Beenden und Ergebnis anzeigen",
+    "description": "Button Demo Stopp"
+  },
+  "demoResultTitle": {
+    "message": "Bereinigtes Ergebnis von Magic Voice Scriber:",
+    "description": "Demo Ergebnis Titel"
+  },
+  "demoBadgeHesitations": {
+    "message": "Füllwörter bereinigt ✓",
+    "description": "Badge Füllwörter"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Selbstkorrektur aufgelöst ✓",
+    "description": "Badge Selbstkorrektur"
+  },
+  "demoBadgePunctuation": {
+    "message": "Satzzeichen gesetzt ✓",
+    "description": "Badge Interpunktion"
+  },
+  "btnSkipDemo": {
+    "message": "Test überspringen →",
+    "description": "Button Test überspringen"
+  },
+  "btnNextReady": {
+    "message": "Weiter: Alles bereit! →",
+    "description": "Button Weiter bereit"
+  },
+  "step5Title": {
+    "message": "5. Alles bereit! 🎉",
+    "description": "Schritt 5 Titel"
+  },
+  "step5Desc": {
+    "message": "Ihre semantische Spracheingabe-Umgebung ist vollständig eingerichtet.",
+    "description": "Schritt 5 Beschreibung"
   }
 }

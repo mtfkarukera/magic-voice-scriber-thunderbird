@@ -87,13 +87,17 @@ stateDiagram-v2
 ## 4. Détail des 3 Pipelines d'Intelligence Vocale (`mvs-providers.js`)
 
 ### 4.1 Pipeline 1 : Google Gemini (Par défaut)
+- **Invariant Strict #1 (Gemini SMART = Zéro Prompt & Zéro Mode de Style)** :
+  - L'API Gemini de transcription (`gemini-3.5-transcribe` et `gemini-3.5-transcribe-live`) fonctionne exclusivement en mode `SMART`.
+  - Elle n'est PAS un LLM conversationnel et n'accepte AUCUN `systemInstruction`, AUCUN prompt utilisateur ni d'arguments de reformulation.
+  - Le sélecteur de styles est masqué dès lors que Gemini est actif, valorisant la rapidité de traitement en 1 seule passe.
 - **`gemini-3.5-transcribe` (REST)** :
-  - Envoie le blob audio encodé en Base64 dans `contents[0].parts[0].inlineData` accompagné de l'instruction du mode de voix (`natural`, `pro`, `bullets`) et de `generationConfig.audioTranscriptionConfig.mode = "SMART"`.
-  - Authentification sécurisée via en-tête standard `x-goog-api-key`.
-  - Avantage : Traitement en **une seule passe** (transcription + suppression des hésitations + auto-corrections + structuration).
+  - Envoie le blob audio encodé en Base64 dans `contents[0].parts[0].inlineData` avec `generationConfig.audioTranscriptionConfig.mode = "SMART"` (sans prompt ni temperature).
+  - Authentification sécurisée via l'en-tête standard `x-goog-api-key`.
+  - Avantage : Traitement natif en **une seule passe** (transcription + suppression des hésitations + résolution d'auto-corrections + ponctuation).
 - **`gemini-3.5-transcribe-live` (WebSocket)** :
-  - Établit une session WebSocket Bidi sur `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent`.
-  - Envoie le message initial `setup` avec `model: "models/gemini-3.5-transcribe-live"`, `responseModalities: ["TEXT"]` et `inputAudioTranscription: { mode: "SMART" }`.
+  - Établit une session WebSocket Bidi sur `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent`.
+  - Envoie le message initial `setup` avec `model: "models/gemini-3.5-transcribe-live"`, `responseModalities: ["TEXT"]` et `inputAudioTranscription: { mode: "SMART" }` (sans prompt).
   - Diffuse des tranches audio PCM 16 kHz (`audio/pcm;rate=16000`) et affiche les fragments transcrits en temps réel sans jamais détruire le texte intermédiaire.
 
 ### 4.2 Pipeline 2 : OpenAI / Tiers Cloud (Mistral, Groq, OpenAI)
@@ -135,11 +139,12 @@ sequenceDiagram
     participant TB as Thunderbird
     participant BG as background.js
     participant Wizard as setup/setup.html
+    participant Engine as MVSProviders
 
     Note over TB,BG: Première installation du module (.xpi)
     TB->>BG: browser.runtime.onInstalled (reason: "install")
     BG->>TB: browser.tabs.create("setup/setup.html")
-    TB->>Wizard: Affichage du Wizard interactif
+    TB->>Wizard: Affichage du Wizard interactif (5 étapes)
     
     rect rgb(240, 248, 255)
     Note over Wizard: Étape 1 : Microphone & OS
@@ -159,15 +164,34 @@ sequenceDiagram
     BG-->>Wizard: Résultat du test (Connexion réussie ✓)
     end
 
+    rect rgb(254, 243, 199)
+    Note over Wizard: Étape 3 : Style & Raccourcis (Conditionnel)
+    alt Gemini Actif
+        Wizard-->>User: Panneau SMART natif sans prompt
+    else OpenAI ou Local Actif
+        Wizard-->>User: Sélecteur à 3 cartes (Rambler, Pro, Puces)
+    end
+    end
+
+    rect rgb(243, 232, 255)
+    Note over Wizard: Étape 4 : Bac à Sable Interactif (« Essayez la Magie »)
+    User->>Wizard: Lecture à voix haute de la phrase test avec hésitations
+    Wizard->>Wizard: Capture audio & Analyseur FFT 5 barres
+    Wizard->>Engine: MVSProviders.transcrire(config, audioBase64)
+    Engine-->>Wizard: Texte nettoyé (« ...rapport financier d'ici vendredi à 14 heures ? »)
+    Wizard-->>User: Affichage du résultat en direct + Badges verts ✓
+    end
+
     rect rgb(245, 255, 245)
-    Note over Wizard: Étape 3 & 4 : Préférences & Clôture
-    User->>Wizard: Sélection du Mode Rambler & clic "Enregistrer"
+    Note over Wizard: Étape 5 : Clôture & Sauvegarde
+    User->>Wizard: Clic "Enregistrer et commencer à dicter ✓"
     Wizard->>TB: browser.storage.local.set(config)
-    Wizard->>TB: Fermeture de l'onglet setup
+    Wizard->>TB: Fermeture propre de l'onglet setup
     end
 ```
 
 - **Déclenchement automatique garanti** : Lors du premier démarrage (`onInstalled` avec `details.reason === "install"`), Thunderbird ouvre un onglet dédié présentant l'assistant. Les mises à jour ultérieures (`reason === "update"`) n'ouvrent aucun onglet intempestif afin de respecter la tranquillité de l'utilisateur.
 - **Accès permanent** : L'assistant reste accessible à tout instant depuis la page des options via le bouton « Relancer l'assistant de configuration & diagnostic ».
 - **Détection active du confinement Snap** : En inspectant à la fois l'OS retourné par l'API WebExtension et le niveau d'amplitude du microphone après ouverture du flux, l'assistant identifie immédiatement le silence absolu caractéristique de l'absence de plug `audio-record` dans le paquet Snap d'Ubuntu, orientant l'utilisateur vers la solution native `.deb` officielle sans ambiguïté.
+- **Bac à sable interactif de validation immédiate** : Permet à l'utilisateur de tester en conditions réelles sa configuration microphone et sa clé API avant même d'ouvrir sa première fenêtre de rédaction.
 

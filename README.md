@@ -30,16 +30,17 @@
 ## 🚀 Installation & Démarrage Rapide
 
 ### Depuis un fichier `.xpi`
-1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.3.0.xpi`.
+1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.3.1.xpi`.
 2. Dans Thunderbird, ouvrez **Outils > Modules complémentaires et thèmes** (`Ctrl+Maj+A`).
 3. Cliquez sur la roue dentée ⚙️ > **Installer un module depuis un fichier…** et sélectionnez le fichier `.xpi`.
 
 ### Assistant de Configuration & Diagnostic Automatique
-Dès l'installation, Magic Voice Scriber ouvre automatiquement son **Assistant de Configuration & Diagnostic** interactif en 4 étapes :
-1. **Diagnostic du Microphone & OS** : Teste le flux audio en direct avec un vumètre 5 barres et guide l'autorisation unique `media.navigator.permission.disabled`.
+Dès l'installation, Magic Voice Scriber ouvre automatiquement son **Assistant de Configuration & Diagnostic** interactif en 5 étapes :
+1. **Diagnostic du Microphone & OS** : Teste le flux audio en direct avec un vumètre 5 barres et guide l'autorisation unique `media.navigator.permission.disabled` (avec diagnostic Linux Snap vs .deb).
 2. **Choix du Moteur d'IA (BYOK)** : Saisie et validation en 1 clic de votre clé API Google Gemini, Mistral, Groq, OpenAI ou de vos endpoints locaux.
-3. **Style de Dictée & Raccourcis** : Choix entre le **Mode Rambler** (recommandé) et la **Dictée Pure**.
-4. **Prêt à dicter** : Vous pouvez commencer immédiatement dans votre fenêtre de rédaction !
+3. **Style & Ergonomie (100 % conditionnel)** : Présentation valorisante du mode natif **Gemini SMART** en 1 passe sans prompt artificiel, ou sélecteur à 3 cartes (Rambler, Pro, Puces) pour OpenAI/Local.
+4. **Bac à Sable Interactif (« Essayez la Magie en direct ! ✨ »)** : Faites le test immédiatement sur une phrase modèle avec hésitation et auto-correction pour voir votre texte nettoyé et ponctué en conditions réelles.
+5. **Prêt à dicter ! 🎉** : Enregistrement des préférences et rappel des raccourcis pour commencer dans votre fenêtre de rédaction.
 
 Vous pouvez réouvrir cet assistant à tout moment depuis les options de l'extension.
 

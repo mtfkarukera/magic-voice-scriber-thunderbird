@@ -93,6 +93,29 @@ async function copierDansPressePapier(texte) {
   return succes;
 }
 
+/**
+ * Convertit un Blob audio en chaîne Base64 pure.
+ * @param {Blob} blob
+ * @returns {Promise<string>}
+ */
+function blobVersBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const lecteur = new FileReader();
+    lecteur.onloadend = () => {
+      if (typeof lecteur.result === "string") {
+        const base64 = lecteur.result.includes(",")
+          ? lecteur.result.split(",")[1]
+          : lecteur.result;
+        resolve(base64);
+      } else {
+        reject(new Error("NO_AUDIO"));
+      }
+    };
+    lecteur.onerror = () => reject(new Error("NO_AUDIO"));
+    lecteur.readAsDataURL(blob);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (api && api.i18n && typeof api.i18n.getUILanguage === "function") {
     const lang = api.i18n.getUILanguage().slice(0, 2);
@@ -105,20 +128,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ═════════════════════════════════════════════════════════════════════════
 
   let etapeCourante = 1;
-  const totalEtapes = 4;
+  const totalEtapes = 5;
 
   const panels = {
     1: document.getElementById("step-panel-1"),
     2: document.getElementById("step-panel-2"),
     3: document.getElementById("step-panel-3"),
-    4: document.getElementById("step-panel-4")
+    4: document.getElementById("step-panel-4"),
+    5: document.getElementById("step-panel-5")
   };
 
   const stepIndicators = {
     1: document.getElementById("step-btn-1"),
     2: document.getElementById("step-btn-2"),
     3: document.getElementById("step-btn-3"),
-    4: document.getElementById("step-btn-4")
+    4: document.getElementById("step-btn-4"),
+    5: document.getElementById("step-btn-5")
   };
 
   function afficherEtape(numero) {
@@ -127,6 +152,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Arrêt propre du test micro si on quitte l'étape 1
     if (etapeCourante === 1 && numero !== 1) {
       arreterTestMicro();
+    }
+
+    // Arrêt propre du bac à sable interactif si on quitte l'étape 4
+    if (etapeCourante === 4 && numero !== 4 && typeof arreterEnregistrementDemo === "function") {
+      arreterEnregistrementDemo(true);
     }
 
     etapeCourante = numero;
@@ -441,6 +471,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (panelGemini) panelGemini.classList.toggle("mvs-hidden", val !== "gemini");
     if (panelOpenai) panelOpenai.classList.toggle("mvs-hidden", val !== "openai");
     if (panelLocal) panelLocal.classList.toggle("mvs-hidden", val !== "local");
+
+    // Invariant Strict #1 : Gemini SMART = Zéro mode de style. Panneau conditionnel.
+    const panelGeminiSmart = document.getElementById("setup-gemini-smart-panel");
+    const panelLlmModes = document.getElementById("setup-llm-modes-panel");
+    if (panelGeminiSmart) panelGeminiSmart.classList.toggle("mvs-hidden", val !== "gemini");
+    if (panelLlmModes) panelLlmModes.classList.toggle("mvs-hidden", val === "gemini");
+
     if (apiTestStatus) {
       apiTestStatus.textContent = "";
       apiTestStatus.className = "mvs-api-status";
@@ -550,7 +587,254 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // ═════════════════════════════════════════════════════════════════════════
-  // 5. ÉTAPE 4 : FINALISATION & SAUVEGARDE GLOBALE
+  // 5. ÉTAPE 4 : BAC À SABLE INTERACTIF (ESSAYEZ LA MAGIE EN DIRECT !)
+  // ═════════════════════════════════════════════════════════════════════════
+
+  let demoAudioStream = null;
+  let demoAudioCtx = null;
+  let demoAudioAnalyser = null;
+  let demoAudioInterval = null;
+  let demoMediaRecorder = null;
+  let demoAudioChunks = [];
+  let demoIsRecording = false;
+
+  const btnDemoRecord = document.getElementById("btn-demo-record");
+  const demoStatusText = document.getElementById("demo-status-text");
+  const demoResultBox = document.getElementById("demo-result-box");
+  const demoResultContent = document.getElementById("demo-result-content");
+  const demoWaveformBars = document.querySelectorAll("#demo-visualizer .mvs-waveform-bar");
+
+  function arreterEnregistrementDemo(annuler = false) {
+    demoIsRecording = false;
+    if (demoAudioInterval) {
+      clearInterval(demoAudioInterval);
+      demoAudioInterval = null;
+    }
+    if (demoMediaRecorder && demoMediaRecorder.state !== "inactive") {
+      try {
+        demoMediaRecorder.stop();
+      } catch {}
+    }
+    if (demoAudioStream) {
+      demoAudioStream.getTracks().forEach((track) => track.stop());
+      demoAudioStream = null;
+    }
+    if (demoAudioCtx && demoAudioCtx.state !== "closed") {
+      demoAudioCtx.close().catch(() => {});
+      demoAudioCtx = null;
+    }
+    demoWaveformBars.forEach((bar) => {
+      bar.style.height = "6px";
+    });
+
+    if (btnDemoRecord) {
+      btnDemoRecord.disabled = false;
+      btnDemoRecord.classList.remove("mvs-btn-secondary");
+      btnDemoRecord.classList.add("mvs-btn-primary");
+      definirContenuBoutonMicro(btnDemoRecord, "🎙️", t("btnDemoRecord") || "Lire la phrase à voix haute");
+    }
+
+    if (annuler && demoStatusText) {
+      demoStatusText.textContent = t("demoStatusIdle") || "Cliquez sur « Lire la phrase » et parlez à voix haute.";
+    }
+  }
+
+  async function demarrerEnregistrementDemo() {
+    if (demoIsRecording) {
+      // Deuxième clic = arrêt de l'enregistrement et lancement du nettoyage sémantique
+      if (demoStatusText) {
+        demoStatusText.textContent = t("demoStatusProcessing") || "Nettoyage sémantique en cours… ✨";
+      }
+      if (btnDemoRecord) {
+        btnDemoRecord.disabled = true;
+        definirContenuBoutonMicro(btnDemoRecord, "⏳", "Traitement IA en cours…");
+      }
+
+      demoIsRecording = false;
+      if (demoAudioInterval) {
+        clearInterval(demoAudioInterval);
+        demoAudioInterval = null;
+      }
+      demoWaveformBars.forEach((bar) => {
+        bar.style.height = "6px";
+      });
+
+      if (demoMediaRecorder && demoMediaRecorder.state === "recording") {
+        demoMediaRecorder.addEventListener("stop", async () => {
+          await traiterAudioDemo();
+        }, { once: true });
+        try {
+          demoMediaRecorder.stop();
+        } catch {
+          await traiterAudioDemo();
+        }
+      } else {
+        await traiterAudioDemo();
+      }
+      return;
+    }
+
+    // Réinitialisation de la zone de résultat
+    if (demoResultBox) demoResultBox.classList.add("mvs-hidden");
+    if (demoResultContent) demoResultContent.textContent = "";
+    demoAudioChunks = [];
+
+    try {
+      demoAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+      demoAudioCtx = new AudioCtxClass();
+      if (demoAudioCtx.state === "suspended") {
+        await demoAudioCtx.resume();
+      }
+
+      const sourceNode = demoAudioCtx.createMediaStreamSource(demoAudioStream);
+      demoAudioAnalyser = demoAudioCtx.createAnalyser();
+      demoAudioAnalyser.fftSize = 64;
+      sourceNode.connect(demoAudioAnalyser);
+
+      const freqData = new Uint8Array(demoAudioAnalyser.frequencyBinCount);
+
+      // Animation réactive des 5 barres pendant l'élocution
+      demoAudioInterval = setInterval(() => {
+        if (!demoAudioAnalyser) return;
+        demoAudioAnalyser.getByteFrequencyData(freqData);
+        let total = 0;
+        for (let i = 0; i < freqData.length; i++) total += freqData[i];
+        const moyenne = total / freqData.length;
+
+        demoWaveformBars.forEach((bar, idx) => {
+          const val = freqData[idx * 2] || moyenne;
+          const h = Math.max(6, Math.min(42, Math.round((val / 255) * 44)));
+          bar.style.height = `${h}px`;
+        });
+      }, 70);
+
+      // Initialisation du MediaRecorder
+      let mime = "audio/webm";
+      if (typeof MediaRecorder !== "undefined") {
+        if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+          mime = "audio/webm;codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/webm")) {
+          mime = "audio/webm";
+        } else if (MediaRecorder.isTypeSupported("audio/ogg;codecs=opus")) {
+          mime = "audio/ogg;codecs=opus";
+        }
+      }
+
+      demoMediaRecorder = new MediaRecorder(demoAudioStream, { mimeType: mime });
+      demoMediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          demoAudioChunks.push(e.data);
+        }
+      };
+      demoMediaRecorder.start(250);
+
+      demoIsRecording = true;
+      if (btnDemoRecord) {
+        btnDemoRecord.classList.remove("mvs-btn-primary");
+        btnDemoRecord.classList.add("mvs-btn-secondary");
+        definirContenuBoutonMicro(btnDemoRecord, "⏹️", t("btnDemoStop") || "Arrêter et voir le résultat");
+      }
+      if (demoStatusText) {
+        demoStatusText.textContent = t("demoStatusRecording") || "Enregistrement en cours… Lisez la phrase à voix haute.";
+      }
+    } catch (errDemoMic) {
+      if (DEBUG) console.warn("[Setup] Erreur micro démo :", errDemoMic);
+      arreterEnregistrementDemo(true);
+      if (demoStatusText) {
+        demoStatusText.textContent = "Impossible d'accéder au micro. Veuillez vérifier vos autorisations à l'étape 1.";
+      }
+    }
+  }
+
+  async function traiterAudioDemo() {
+    if (demoAudioStream) {
+      demoAudioStream.getTracks().forEach((track) => track.stop());
+      demoAudioStream = null;
+    }
+    if (demoAudioCtx && demoAudioCtx.state !== "closed") {
+      demoAudioCtx.close().catch(() => {});
+      demoAudioCtx = null;
+    }
+
+    const mime = (demoMediaRecorder && demoMediaRecorder.mimeType) || "audio/webm";
+    const blobFinal = new Blob(demoAudioChunks, { type: mime });
+
+    if (blobFinal.size < 200) {
+      if (demoStatusText) {
+        demoStatusText.textContent = "Aucun son suffisant capté. Réessayez en parlant bien distinctement.";
+      }
+      if (btnDemoRecord) {
+        btnDemoRecord.disabled = false;
+        definirContenuBoutonMicro(btnDemoRecord, "🎙️", t("btnDemoRecord") || "Lire la phrase à voix haute");
+        btnDemoRecord.classList.remove("mvs-btn-secondary");
+        btnDemoRecord.classList.add("mvs-btn-primary");
+      }
+      return;
+    }
+
+    try {
+      const base64Audio = await blobVersBase64(blobFinal);
+      const provider = selectProvider ? selectProvider.value : "gemini";
+      const modeRadio = document.querySelector('input[name="setup-voice-mode"]:checked');
+      const voiceMode = modeRadio ? modeRadio.value : "natural";
+
+      const configDemo = {
+        provider,
+        geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
+        geminiModel: "gemini-3.5-transcribe",
+        openaiPreset: selectOpenaiPreset ? selectOpenaiPreset.value : "openai",
+        sttApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : "",
+        llmApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : ""
+      };
+
+      let resultat;
+      if (globalThis.MVSProviders) {
+        resultat = await globalThis.MVSProviders.transcrire(
+          configDemo,
+          base64Audio,
+          blobFinal.type || "audio/webm",
+          voiceMode
+        );
+      }
+
+      if (resultat && resultat.text && resultat.text.trim()) {
+        if (demoResultContent) {
+          demoResultContent.textContent = resultat.text.trim();
+        }
+        if (demoResultBox) {
+          demoResultBox.classList.remove("mvs-hidden");
+        }
+        if (demoStatusText) {
+          demoStatusText.textContent = "Transcription et nettoyage sémantique réussis ✓";
+        }
+      } else {
+        if (demoStatusText) {
+          demoStatusText.textContent = "Le moteur n'a retourné aucun texte. Vérifiez votre clé API à l'étape 2.";
+        }
+      }
+    } catch (errTranscription) {
+      if (DEBUG) console.warn("[Setup] Erreur transcription démo :", errTranscription);
+      if (demoStatusText) {
+        const msg = errTranscription && errTranscription.message ? errTranscription.message : "Erreur réseau";
+        demoStatusText.textContent = `Échec de transcription : ${msg}. Vérifiez votre clé d'API.`;
+      }
+    } finally {
+      if (btnDemoRecord) {
+        btnDemoRecord.disabled = false;
+        definirContenuBoutonMicro(btnDemoRecord, "🎙️", t("btnDemoRecord") || "Lire la phrase à voix haute");
+        btnDemoRecord.classList.remove("mvs-btn-secondary");
+        btnDemoRecord.classList.add("mvs-btn-primary");
+      }
+    }
+  }
+
+  if (btnDemoRecord) {
+    btnDemoRecord.addEventListener("click", demarrerEnregistrementDemo);
+  }
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // 6. ÉTAPE 5 : FINALISATION & SAUVEGARDE GLOBALE
   // ═════════════════════════════════════════════════════════════════════════
 
   const btnFinish = document.getElementById("btn-finish-setup");

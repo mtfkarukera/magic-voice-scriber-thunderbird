@@ -428,12 +428,16 @@
     "description": "Libellé étape 2"
   },
   "step3Label": {
-    "message": "Style de Dictée",
+    "message": "Style & Raccourcis",
     "description": "Libellé étape 3"
   },
   "step4Label": {
-    "message": "Prêt !",
+    "message": "Essayer la Magie",
     "description": "Libellé étape 4"
+  },
+  "step5Label": {
+    "message": "Prêt !",
+    "description": "Libellé étape 5"
   },
   "step1Title": {
     "message": "1. Diagnostic du Microphone et Compatibilité Système",
@@ -507,8 +511,20 @@
     "message": "Choisissez comment Magic Voice Scriber sublime vos paroles au fil du texte.",
     "description": "Description étape 3"
   },
+  "smartBadgeTitle": {
+    "message": "Technologie Native Gemini SMART",
+    "description": "Titre du badge SMART"
+  },
+  "smartExplanationText": {
+    "message": "Avec Google Gemini 3.5, votre voix est traitée en une seule passe ultra-rapide. Le modèle SMART élimine automatiquement les hésitations (« euh », « ben »), faux départs et répétitions sans nécessiter de prompt de reformulation artificielle.",
+    "description": "Explication de la technologie SMART"
+  },
+  "llmModesTitle": {
+    "message": "Style de reformulation par votre modèle LLM :",
+    "description": "Titre du sélecteur de modes LLM"
+  },
   "modeNaturalTitle": {
-    "message": "Mode Rambler (Recommandé)",
+    "message": "Mode Rambler (Fidèle)",
     "description": "Titre mode naturel"
   },
   "modeProTitle": {
@@ -528,12 +544,72 @@
     "description": "Description de la Goutte vocale"
   },
   "step4Title": {
-    "message": "4. Tout est prêt ! 🎉",
+    "message": "4. Essayez la Magie en direct ! ✨",
     "description": "Titre étape 4"
   },
   "step4Desc": {
-    "message": "Votre environnement de dictée vocale sémantique est entièrement configuré.",
+    "message": "Faites le test vous-même : lisez cette phrase à voix haute avec ses hésitations pour voir le texte nettoyé en temps réel.",
     "description": "Description étape 4"
+  },
+  "demoPromptLabel": {
+    "message": "💬 Lisez cette phrase à voix haute :",
+    "description": "Label de la consigne démo"
+  },
+  "demoPromptText": {
+    "message": "« Bonjour Marc, euh... peux-tu me faire un retour sur le devis... non pardon, sur le rapport financier d'ici vendredi à 14 heures ? Merci d'avance ! »",
+    "description": "Phrase-test suggérée pour le bac à sable"
+  },
+  "demoStatusIdle": {
+    "message": "Cliquez sur « Lire la phrase » et parlez à voix haute.",
+    "description": "Statut initial de la démo"
+  },
+  "demoStatusRecording": {
+    "message": "Enregistrement en cours… Lisez la phrase à voix haute.",
+    "description": "Statut enregistrement démo"
+  },
+  "demoStatusProcessing": {
+    "message": "Nettoyage sémantique en cours… ✨",
+    "description": "Statut traitement démo"
+  },
+  "btnDemoRecord": {
+    "message": "Lire la phrase à voix haute",
+    "description": "Bouton enregistrement démo"
+  },
+  "btnDemoStop": {
+    "message": "⏹️ Arrêter et voir le résultat",
+    "description": "Bouton arrêt démo"
+  },
+  "demoResultTitle": {
+    "message": "Résultat nettoyé par Magic Voice Scriber :",
+    "description": "Titre du résultat de la démo"
+  },
+  "demoBadgeHesitations": {
+    "message": "Hésitations « euh » gommées ✓",
+    "description": "Badge hésitations supprimées"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Auto-correction résolue ✓",
+    "description": "Badge autocorrection"
+  },
+  "demoBadgePunctuation": {
+    "message": "Ponctuation appliquée ✓",
+    "description": "Badge ponctuation"
+  },
+  "btnSkipDemo": {
+    "message": "Passer l'essai →",
+    "description": "Bouton passer l'essai démo"
+  },
+  "btnNextReady": {
+    "message": "Suivant : C'est prêt ! →",
+    "description": "Bouton vers étape finale"
+  },
+  "step5Title": {
+    "message": "5. Tout est prêt ! 🎉",
+    "description": "Titre étape 5"
+  },
+  "step5Desc": {
+    "message": "Votre environnement de dictée vocale sémantique est entièrement configuré.",
+    "description": "Description étape 5"
   },
   "readyHeading": {
     "message": "Comment dicter dans vos courriels ?",

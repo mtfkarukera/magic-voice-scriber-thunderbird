@@ -3,6 +3,24 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.3.1] - 2026-10-16
+
+### Sanctuarisation de l'Invariant Strict #1 (Gemini SMART)
+- **Sanctuarisation architecturale (`AGENTS.md`)** : Inscription formelle de l'**Invariant Strict #1** interdisant toute proposition, prompt ou argumentation de style de reformulation artificielle lorsque Google Gemini est sélectionné.
+- **Affichage 100 % conditionnel (`setup/setup.html`, `setup/setup.js`, `setup/setup.css`)** :
+  - Si `provider === "gemini"` : Masquage total des 3 cartes de modes LLM et affichage valorisant de l'explication native Gemini SMART en 1 passe sans prompt.
+  - Si `provider === "openai" || provider === "local"` : Révélation dynamique du sélecteur à 3 cartes de modes LLM (Mode Rambler, Professionnel, Synthèse / Puces).
+
+### Assistant Étendu à 5 Étapes & Bac à Sable Interactif Live
+- **Transition vers un Stepper à 5 étapes (`setup/setup.html`, `setup/setup.js`)** :
+  - **Étape 1 : Microphone & Compatibilité Système** (visualiseur FFT 5 barres, diagnostic Linux Snap vs .deb).
+  - **Étape 2 : Moteur d'IA & BYOK** (sélection du moteur et validation de clé API).
+  - **Étape 3 : Style & Raccourcis (100 % conditionnel)** (panneau SMART Gemini vs sélecteur 3 modes LLM).
+  - **Étape 4 : Bac à sable interactif (« Essayez la Magie en direct ! ✨ »)** : L'utilisateur teste directement la dictée sur une phrase suggérée contenant hésitations et auto-correction, enregistre sa voix, et observe le résultat nettoyé en temps réel avec badges de validation sémantique.
+  - **Étape 5 : Clôture (« Tout est prêt ! 🎉 »)** : Synthèse des étapes d'utilisation et enregistrement sécurisé dans `browser.storage.local`.
+- **Internationalisation intégrale (6 langues)** : Traduction complète des nouvelles clés de guidage dans `_locales/` (`fr`, `en`, `es`, `de`, `pt`, `vi`) avec parité absolue 161/161 clés.
+- **Tests unitaires et intégrité automatisés (`test/mvs.test.js`)** : 20 tests automatisés validant la présence de l'Invariant Strict #1, la structure 5 étapes et l'absence totale de duplication ou faille CSP.
+
 ## [1.3.0] - 2026-10-15
 
 ### Assistant de Configuration & Diagnostic Dédié (Onboarding Wizard)

@@ -36,24 +36,24 @@
     "description": "Chế độ giọng nói 1: Tự nhiên"
   },
   "modeNaturalDesc": {
-    "message": "Loại bỏ từ đệm và sửa dấu câu nhưng vẫn giữ nguyên từ ngữ của bạn",
-    "description": "Chú giải chế độ Tự nhiên"
+    "message": "Loại bỏ ngập ngừng và chấm câu trong khi vẫn giữ nguyên lời nói chính xác của bạn.",
+    "description": "Mô tả chế độ tự nhiên"
   },
   "modeProLabel": {
     "message": "Chuyên nghiệp",
     "description": "Chế độ giọng nói 2: Chuyên nghiệp"
   },
   "modeProDesc": {
-    "message": "Diễn đạt lại với giọng văn lịch sự, trôi chảy và chuyên nghiệp",
-    "description": "Chú giải chế độ Chuyên nghiệp"
+    "message": "Diễn đạt lại suy nghĩ được đọc của bạn với văn phong lịch sự, trau chuốt và trang trọng.",
+    "description": "Mô tả chế độ chuyên nghiệp"
   },
   "modeBulletsLabel": {
     "message": "Tóm tắt",
     "description": "Chế độ giọng nói 3: Tóm tắt gạch đầu dòng"
   },
   "modeBulletsDesc": {
-    "message": "Cấu trúc ý tưởng của bạn thành danh sách gạch đầu dòng rõ ràng",
-    "description": "Chú giải chế độ Tóm tắt"
+    "message": "Chuyển đổi suy nghĩ nói to thành danh sách hành động có trật tự rõ ràng.",
+    "description": "Mô tả chế độ đầu dòng"
   },
   "modeBtnAriaLabel": {
     "message": "Chế độ đọc chính tả đang hoạt động. Nhấp để chuyển đổi giữa Tự nhiên, Chuyên nghiệp và Tóm tắt.",
@@ -428,11 +428,11 @@
     "description": "Nhãn bước 2"
   },
   "step3Label": {
-    "message": "Kiểu Đọc chính tả",
+    "message": "Kiểu dáng & Phím tắt",
     "description": "Nhãn bước 3"
   },
   "step4Label": {
-    "message": "Sẵn sàng!",
+    "message": "Thử nghiệm Phép màu",
     "description": "Nhãn bước 4"
   },
   "step1Title": {
@@ -508,7 +508,7 @@
     "description": "Mô tả bước 3"
   },
   "modeNaturalTitle": {
-    "message": "Chế độ Rambler (Khuyên dùng)",
+    "message": "Chế độ Rambler (Trung thực)",
     "description": "Tiêu đề chế độ tự nhiên"
   },
   "modeProTitle": {
@@ -516,8 +516,8 @@
     "description": "Tiêu đề chế độ chuyên nghiệp"
   },
   "modeBulletsTitle": {
-    "message": "Chế độ Tóm tắt / Gạch đầu dòng",
-    "description": "Tiêu đề chế độ gạch đầu dòng"
+    "message": "Chế độ Tóm tắt / Đầu dòng",
+    "description": "Tiêu đề chế độ đầu dòng"
   },
   "shortcutLabel": {
     "message": "Phím tắt đọc chính tả nhanh:",
@@ -528,11 +528,11 @@
     "description": "Mô tả Giọt Giọng nói"
   },
   "step4Title": {
-    "message": "4. Đã sẵn sàng! 🎉",
+    "message": "4. Trải nghiệm Phép màu trực tiếp! ✨",
     "description": "Tiêu đề bước 4"
   },
   "step4Desc": {
-    "message": "Môi trường nhập liệu bằng giọng nói thông minh của bạn đã được thiết lập hoàn tất.",
+    "message": "Hãy tự mình kiểm tra: đọc to câu này cùng các từ ngập ngừng để xem văn bản được làm sạch theo thời gian thực.",
     "description": "Mô tả bước 4"
   },
   "readyHeading": {
@@ -566,5 +566,81 @@
   "btnFinishSetup": {
     "message": "Lưu & Bắt đầu Nhập liệu ✓",
     "description": "Nút hoàn tất"
+  },
+  "step5Label": {
+    "message": "Sẵn sàng!",
+    "description": "Nhãn bước 5"
+  },
+  "smartBadgeTitle": {
+    "message": "Công nghệ Gemini SMART Bản địa",
+    "description": "Tiêu đề huy hiệu SMART"
+  },
+  "smartExplanationText": {
+    "message": "Với Google Gemini 3.5, giọng nói của bạn được xử lý trong một lượt siêu nhanh duy nhất. Mô hình SMART tự động loại bỏ các từ ngập ngừng ('ờ', 'ừ'), ngập ngừng và lặp lại mà không cần lời nhắc viết lại nhân tạo.",
+    "description": "Giải thích SMART"
+  },
+  "llmModesTitle": {
+    "message": "Phong cách viết lại cho mô hình LLM của bạn:",
+    "description": "Tiêu đề các chế độ LLM"
+  },
+  "demoPromptLabel": {
+    "message": "💬 Đọc to câu này:",
+    "description": "Nhãn hướng dẫn bản demo"
+  },
+  "demoPromptText": {
+    "message": "\"Chào Marc, ờ... bạn có thể phản hồi cho tôi về báo giá... à không xin lỗi, về báo cáo tài chính trước 14 giờ thứ Sáu được không? Cảm ơn bạn trước nhé!\"",
+    "description": "Câu mẫu bản demo"
+  },
+  "demoStatusIdle": {
+    "message": "Nhấp vào 'Đọc câu' và nói to.",
+    "description": "Trạng thái chờ bản demo"
+  },
+  "demoStatusRecording": {
+    "message": "Đang ghi âm… Hãy đọc to câu trên.",
+    "description": "Trạng thái ghi âm bản demo"
+  },
+  "demoStatusProcessing": {
+    "message": "Đang làm sạch ngữ nghĩa… ✨",
+    "description": "Trạng thái xử lý bản demo"
+  },
+  "btnDemoRecord": {
+    "message": "Đọc to câu",
+    "description": "Nút ghi âm bản demo"
+  },
+  "btnDemoStop": {
+    "message": "⏹️ Dừng và xem kết quả",
+    "description": "Nút dừng bản demo"
+  },
+  "demoResultTitle": {
+    "message": "Kết quả làm sạch bởi Magic Voice Scriber:",
+    "description": "Tiêu đề kết quả bản demo"
+  },
+  "demoBadgeHesitations": {
+    "message": "Đã xóa từ ngập ngừng ✓",
+    "description": "Huy hiệu từ ngập ngừng"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Đã xử lý tự sửa lỗi ✓",
+    "description": "Huy hiệu tự sửa lỗi"
+  },
+  "demoBadgePunctuation": {
+    "message": "Đã thêm dấu câu ✓",
+    "description": "Huy hiệu chấm câu"
+  },
+  "btnSkipDemo": {
+    "message": "Bỏ qua thử nghiệm →",
+    "description": "Nút bỏ qua thử nghiệm"
+  },
+  "btnNextReady": {
+    "message": "Tiếp theo: Đã sẵn sàng! →",
+    "description": "Nút tiếp theo sẵn sàng"
+  },
+  "step5Title": {
+    "message": "5. Tất cả đã sẵn sàng! 🎉",
+    "description": "Tiêu đề bước 5"
+  },
+  "step5Desc": {
+    "message": "Môi trường đọc chính tả ngữ nghĩa bằng giọng nói của bạn đã được thiết lập hoàn tất.",
+    "description": "Mô tả bước 5"
   }
 }
