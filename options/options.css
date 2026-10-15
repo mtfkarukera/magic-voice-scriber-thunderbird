@@ -102,6 +102,32 @@ body {
   color: var(--opt-text-muted);
 }
 
+.mvs-wizard-launcher-banner {
+  margin-bottom: 18px;
+}
+
+.mvs-btn-wizard {
+  width: 100%;
+  padding: 12px 18px;
+  background: var(--opt-badge-bg);
+  border: 1px dashed var(--opt-badge-border);
+  color: var(--opt-accent);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mvs-btn-wizard:hover {
+  background: var(--opt-accent);
+  color: #ffffff;
+  border-style: solid;
+}
+
 .mvs-options-form {
   display: flex;
   flex-direction: column;

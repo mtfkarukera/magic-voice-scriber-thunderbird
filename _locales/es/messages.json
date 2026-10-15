@@ -402,5 +402,169 @@
   "btnCopyMicPrefCopied": {
     "message": "Copiado ✓",
     "description": "Confirmación de copia"
+  },
+  "btnLaunchSetup": {
+    "message": "🚀 Relanzar asistente de configuración y diagnóstico",
+    "description": "Botón para abrir el asistente de configuración desde opciones"
+  },
+  "setupPageTitle": {
+    "message": "Magic Voice Scriber — Asistente de Configuración y Diagnóstico",
+    "description": "Título de pestaña de configuración"
+  },
+  "setupHeaderTitle": {
+    "message": "Asistente de Configuración y Diagnóstico",
+    "description": "Título principal del encabezado"
+  },
+  "setupHeaderSubtitle": {
+    "message": "Prepare su dictado por voz inteligente en Thunderbird en unos sencillos pasos.",
+    "description": "Subtítulo del encabezado"
+  },
+  "step1Label": {
+    "message": "Micrófono y SO",
+    "description": "Etiqueta paso 1"
+  },
+  "step2Label": {
+    "message": "Motor de IA",
+    "description": "Etiqueta paso 2"
+  },
+  "step3Label": {
+    "message": "Estilo de Dictado",
+    "description": "Etiqueta paso 3"
+  },
+  "step4Label": {
+    "message": "¡Listo!",
+    "description": "Etiqueta paso 4"
+  },
+  "step1Title": {
+    "message": "1. Diagnóstico del Micrófono y Compatibilidad del Sistema",
+    "description": "Título paso 1"
+  },
+  "step1Desc": {
+    "message": "Compruebe que Thunderbird tiene permiso para acceder a su micrófono antes de comenzar.",
+    "description": "Descripción paso 1"
+  },
+  "osDetecting": {
+    "message": "Detectando sistema operativo…",
+    "description": "Estado de detección de SO"
+  },
+  "micStatusIdle": {
+    "message": "Haga clic en «Probar micrófono» y hable para verificar la señal.",
+    "description": "Estado inicial prueba de micrófono"
+  },
+  "btnTestMic": {
+    "message": "Probar micrófono",
+    "description": "Botón probar micrófono"
+  },
+  "snapAlertTitle": {
+    "message": "Atención usuarios de Ubuntu Linux (Versión Snap)",
+    "description": "Título alerta Snap"
+  },
+  "snapAlertBody": {
+    "message": "El paquete Snap oficial de Thunderbird distribuido por Canonical omite el conector de micrófono (audio-record), impidiendo la captura de audio bajo Snap. Si la prueba no responde, instale el paquete nativo oficial .deb de Mozilla:",
+    "description": "Cuerpo alerta Snap"
+  },
+  "btnCopyCmd": {
+    "message": "Copiar comando",
+    "description": "Botón copiar comando"
+  },
+  "prefGuideTitle": {
+    "message": "Configuración única requerida en Thunderbird:",
+    "description": "Título guía preferencia"
+  },
+  "prefGuideBody": {
+    "message": "Para permitir que las extensiones capturen audio, abra el Editor de configuración (Ajustes > General > botón «Editor de configuración…» abajo), busque la siguiente preferencia y cámbiela a true:",
+    "description": "Cuerpo guía preferencia"
+  },
+  "btnNext": {
+    "message": "Siguiente →",
+    "description": "Botón siguiente paso"
+  },
+  "btnPrev": {
+    "message": "← Volver",
+    "description": "Botón paso anterior"
+  },
+  "step2Title": {
+    "message": "2. Elija su Motor de IA (BYOK)",
+    "description": "Título paso 2"
+  },
+  "step2Desc": {
+    "message": "Seleccione su proveedor de IA e introduzca su clave de API personal.",
+    "description": "Descripción paso 2"
+  },
+  "helpGeminiGet": {
+    "message": "Obtenga su clave gratuita en 30 segundos en ",
+    "description": "Enlace a Google AI Studio"
+  },
+  "helpLocalMode": {
+    "message": "Asegúrese de que su servidor Whisper local y su LLM estén en ejecución.",
+    "description": "Ayuda modo local"
+  },
+  "step3Title": {
+    "message": "3. Preferencias de Dictado y Ergonomía",
+    "description": "Título paso 3"
+  },
+  "step3Desc": {
+    "message": "Elija cómo Magic Voice Scriber transforma sus pensamientos en texto limpio.",
+    "description": "Descripción paso 3"
+  },
+  "modeNaturalTitle": {
+    "message": "Modo Rambler (Recomendado)",
+    "description": "Título modo natural"
+  },
+  "modeProTitle": {
+    "message": "Modo Profesional",
+    "description": "Título modo profesional"
+  },
+  "modeBulletsTitle": {
+    "message": "Modo Síntesis / Viñetas",
+    "description": "Título modo viñetas"
+  },
+  "shortcutLabel": {
+    "message": "Acceso rápido de dictado:",
+    "description": "Etiqueta atajo de teclado"
+  },
+  "shortcutDesc": {
+    "message": "(o haga clic en la Gota Vocal naranja bajo el cursor)",
+    "description": "Descripción de la Gota Vocal"
+  },
+  "step4Title": {
+    "message": "4. ¡Todo listo! 🎉",
+    "description": "Título paso 4"
+  },
+  "step4Desc": {
+    "message": "Su entorno de dictado por voz inteligente está completamente configurado.",
+    "description": "Descripción paso 4"
+  },
+  "readyHeading": {
+    "message": "¿Cómo dictar en sus correos?",
+    "description": "Encabezado cómo dictar"
+  },
+  "readyStep1Title": {
+    "message": "1. Abra una ventana de redacción",
+    "description": "Paso 1 uso"
+  },
+  "readyStep1Desc": {
+    "message": "Coloque el cursor en el cuerpo del mensaje: la pequeña Gota Vocal naranja aparecerá justo debajo.",
+    "description": "Descripción paso 1 uso"
+  },
+  "readyStep2Title": {
+    "message": "2. Empiece a hablar",
+    "description": "Paso 2 uso"
+  },
+  "readyStep2Desc": {
+    "message": "Haga clic en la Gota o pulse Alt+Shift+S (Mac: ⌘⇧S). Hable con naturalidad.",
+    "description": "Descripción paso 2 uso"
+  },
+  "readyStep3Title": {
+    "message": "3. Inserción instantánea",
+    "description": "Paso 3 uso"
+  },
+  "readyStep3Desc": {
+    "message": "Pulse Intro o haga clic en la píldora de sonido: ¡su texto limpio se inserta directamente en el cursor!",
+    "description": "Descripción paso 3 uso"
+  },
+  "btnFinishSetup": {
+    "message": "Guardar y empezar a dictar ✓",
+    "description": "Botón final de configuración"
   }
 }

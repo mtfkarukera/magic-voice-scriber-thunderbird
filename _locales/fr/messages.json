@@ -402,5 +402,169 @@
   "btnCopyMicPrefCopied": {
     "message": "Copié ✓",
     "description": "Confirmation de copie"
+  },
+  "btnLaunchSetup": {
+    "message": "🚀 Relancer l'assistant de configuration & diagnostic",
+    "description": "Bouton pour ouvrir l'assistant de configuration depuis la page d'options"
+  },
+  "setupPageTitle": {
+    "message": "Magic Voice Scriber — Assistant de Configuration & Diagnostic",
+    "description": "Titre de l'onglet de configuration"
+  },
+  "setupHeaderTitle": {
+    "message": "Assistant de Configuration & Diagnostic",
+    "description": "Titre principal de l'en-tête du wizard"
+  },
+  "setupHeaderSubtitle": {
+    "message": "Préparez votre dictée vocale sémantique dans Thunderbird en quelques étapes simples.",
+    "description": "Sous-titre de l'en-tête du wizard"
+  },
+  "step1Label": {
+    "message": "Microphone & OS",
+    "description": "Libellé étape 1"
+  },
+  "step2Label": {
+    "message": "Moteur d'IA",
+    "description": "Libellé étape 2"
+  },
+  "step3Label": {
+    "message": "Style de Dictée",
+    "description": "Libellé étape 3"
+  },
+  "step4Label": {
+    "message": "Prêt !",
+    "description": "Libellé étape 4"
+  },
+  "step1Title": {
+    "message": "1. Diagnostic du Microphone et Compatibilité Système",
+    "description": "Titre étape 1"
+  },
+  "step1Desc": {
+    "message": "Vérifiez que Thunderbird a bien l'autorisation d'accéder à votre matériel microphone avant de commencer.",
+    "description": "Description étape 1"
+  },
+  "osDetecting": {
+    "message": "Détection du système…",
+    "description": "Libellé état détection OS"
+  },
+  "micStatusIdle": {
+    "message": "Cliquez sur « Tester le microphone » et parlez pour vérifier le signal.",
+    "description": "Statut initial du test micro"
+  },
+  "btnTestMic": {
+    "message": "Tester le microphone",
+    "description": "Bouton test micro"
+  },
+  "snapAlertTitle": {
+    "message": "Attention aux utilisateurs Ubuntu Linux (Version Snap)",
+    "description": "Titre alerte Snap"
+  },
+  "snapAlertBody": {
+    "message": "Le paquet Snap officiel de Thunderbird distribué par Canonical omet le plug microphone (audio-record), ce qui empêche toute capture audio sous Snap. Si le test micro ne réagit pas, installez la version native .deb officielle de Mozilla :",
+    "description": "Corps alerte Snap"
+  },
+  "btnCopyCmd": {
+    "message": "Copier la commande",
+    "description": "Bouton copier commande bash"
+  },
+  "prefGuideTitle": {
+    "message": "Configuration unique requise dans Thunderbird :",
+    "description": "Titre guide préférence Thunderbird"
+  },
+  "prefGuideBody": {
+    "message": "Pour autoriser les WebExtensions à capturer l'audio, ouvrez l'Éditeur de configuration (Paramètres > Général > bouton « Éditeur de configuration… » en bas), recherchez la préférence suivante et basculez-la sur true :",
+    "description": "Corps guide préférence Thunderbird"
+  },
+  "btnNext": {
+    "message": "Suivant →",
+    "description": "Bouton étape suivante"
+  },
+  "btnPrev": {
+    "message": "← Retour",
+    "description": "Bouton étape précédente"
+  },
+  "step2Title": {
+    "message": "2. Choix du Moteur d'IA (BYOK)",
+    "description": "Titre étape 2"
+  },
+  "step2Desc": {
+    "message": "Choisissez votre fournisseur d'intelligence artificielle et saisissez votre clé d'API personnelle sécurisée.",
+    "description": "Description étape 2"
+  },
+  "helpGeminiGet": {
+    "message": "Obtenez votre clé gratuite en 30 secondes sur ",
+    "description": "Lien vers Google AI Studio"
+  },
+  "helpLocalMode": {
+    "message": "Assurez-vous que votre serveur Whisper (ex: faster-whisper sur :8000) et votre LLM sont démarrés.",
+    "description": "Aide mode local"
+  },
+  "step3Title": {
+    "message": "3. Préférences de Dictée & Ergonomie",
+    "description": "Titre étape 3"
+  },
+  "step3Desc": {
+    "message": "Choisissez comment Magic Voice Scriber sublime vos paroles au fil du texte.",
+    "description": "Description étape 3"
+  },
+  "modeNaturalTitle": {
+    "message": "Mode Rambler (Recommandé)",
+    "description": "Titre mode naturel"
+  },
+  "modeProTitle": {
+    "message": "Mode Professionnel",
+    "description": "Titre mode pro"
+  },
+  "modeBulletsTitle": {
+    "message": "Mode Synthèse / Puces",
+    "description": "Titre mode synthèse"
+  },
+  "shortcutLabel": {
+    "message": "Raccourci de dictée rapide :",
+    "description": "Libellé raccourci clavier"
+  },
+  "shortcutDesc": {
+    "message": "(ou clic sur la Goutte Vocale orange sous votre curseur)",
+    "description": "Description de la Goutte vocale"
+  },
+  "step4Title": {
+    "message": "4. Tout est prêt ! 🎉",
+    "description": "Titre étape 4"
+  },
+  "step4Desc": {
+    "message": "Votre environnement de dictée vocale sémantique est entièrement configuré.",
+    "description": "Description étape 4"
+  },
+  "readyHeading": {
+    "message": "Comment dicter dans vos courriels ?",
+    "description": "Titre instructions finales"
+  },
+  "readyStep1Title": {
+    "message": "1. Ouvrez une fenêtre de rédaction d'e-mail",
+    "description": "Étape 1 utilisation"
+  },
+  "readyStep1Desc": {
+    "message": "Placez votre curseur dans le corps du message : vous verrez apparaître la petite Goutte Vocale orange juste en dessous.",
+    "description": "Description étape 1 utilisation"
+  },
+  "readyStep2Title": {
+    "message": "2. Lancez la prise de parole",
+    "description": "Étape 2 utilisation"
+  },
+  "readyStep2Desc": {
+    "message": "Cliquez sur la Goutte ou appuyez sur Alt+Shift+S (Mac: ⌘⇧S). Parlez librement sans vous soucier des hésitations.",
+    "description": "Description étape 2 utilisation"
+  },
+  "readyStep3Title": {
+    "message": "3. Insertion instantanée",
+    "description": "Étape 3 utilisation"
+  },
+  "readyStep3Desc": {
+    "message": "Appuyez sur Entrée ou cliquez sur la pilule sonore : votre texte nettoyé et ponctué s'insère directement au curseur !",
+    "description": "Description étape 3 utilisation"
+  },
+  "btnFinishSetup": {
+    "message": "Enregistrer et commencer à dicter ✓",
+    "description": "Bouton final du wizard"
   }
 }

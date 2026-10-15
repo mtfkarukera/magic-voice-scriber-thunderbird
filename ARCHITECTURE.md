@@ -45,6 +45,10 @@ magic-voice-scriber-thunderbird/
 ├── mvs-providers.js               # Orchestrateur des 3 familles de moteurs IA + prompts Rambler
 ├── compose/
 │   └── compose-injected.js        # La Goutte Vocale (14 px) flottante sous le curseur avec Ghost Mode (Closed Shadow DOM)
+├── setup/
+│   ├── setup.html                 # Assistant de configuration initiale & diagnostic système (Onboarding Wizard)
+│   ├── setup.css                  # Styles du wizard (Stepper, visualiseur audio 5 barres, Glassmorphism)
+│   └── setup.js                   # Détection OS (Snap vs .deb), test micro en direct, test d'API instantané
 ├── options/
 │   ├── options.html               # Interface de paramétrage multi-fournisseurs
 │   ├── options.css                # Styles de la page d'options
@@ -119,3 +123,51 @@ L'insertion s'effectue directement depuis `compose/compose-injected.js` dans le 
 - **Zéro exécution dynamique** : Aucune utilisation de `eval()` ou `new Function()`.
 - **Zéro dialogue bloquant** : Aucune utilisation de `window.alert()`, `confirm()` ou `prompt()`.
 - **Validation de l'expéditeur** : `background.js` vérifie systématiquement `expediteur.id === browser.runtime.id`.
+
+---
+
+## 7. Cycle de Vie d'Onboarding & Diagnostic Système (`setup/`)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Utilisateur
+    participant TB as Thunderbird
+    participant BG as background.js
+    participant Wizard as setup/setup.html
+
+    Note over TB,BG: Première installation du module (.xpi)
+    TB->>BG: browser.runtime.onInstalled (reason: "install")
+    BG->>TB: browser.tabs.create("setup/setup.html")
+    TB->>Wizard: Affichage du Wizard interactif
+    
+    rect rgb(240, 248, 255)
+    Note over Wizard: Étape 1 : Microphone & OS
+    Wizard->>TB: browser.runtime.getPlatformInfo()
+    Wizard->>TB: navigator.mediaDevices.getUserMedia()
+    Wizard->>Wizard: Analyse FFT 5 barres (RMS temps réel)
+    alt Linux & Signal = 0 (Snap bloqué)
+        Wizard-->>User: Alerte Snap AppArmor & Guide d'installation .deb
+    else Signal valide
+        Wizard-->>User: Badge vert ✓ Microphone opérationnel
+    end
+    end
+
+    rect rgb(255, 245, 238)
+    Note over Wizard: Étape 2 : Moteur d'IA & Clé API
+    Wizard->>BG: sendMessage({ action: "testProvider", config })
+    BG-->>Wizard: Résultat du test (Connexion réussie ✓)
+    end
+
+    rect rgb(245, 255, 245)
+    Note over Wizard: Étape 3 & 4 : Préférences & Clôture
+    User->>Wizard: Sélection du Mode Rambler & clic "Enregistrer"
+    Wizard->>TB: browser.storage.local.set(config)
+    Wizard->>TB: Fermeture de l'onglet setup
+    end
+```
+
+- **Déclenchement automatique garanti** : Lors du premier démarrage (`onInstalled` avec `details.reason === "install"`), Thunderbird ouvre un onglet dédié présentant l'assistant. Les mises à jour ultérieures (`reason === "update"`) n'ouvrent aucun onglet intempestif afin de respecter la tranquillité de l'utilisateur.
+- **Accès permanent** : L'assistant reste accessible à tout instant depuis la page des options via le bouton « Relancer l'assistant de configuration & diagnostic ».
+- **Détection active du confinement Snap** : En inspectant à la fois l'OS retourné par l'API WebExtension et le niveau d'amplitude du microphone après ouverture du flux, l'assistant identifie immédiatement le silence absolu caractéristique de l'absence de plug `audio-record` dans le paquet Snap d'Ubuntu, orientant l'utilisateur vers la solution native `.deb` officielle sans ambiguïté.
+

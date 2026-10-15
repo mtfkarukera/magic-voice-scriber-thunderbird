@@ -402,5 +402,169 @@
   "btnCopyMicPrefCopied": {
     "message": "Kopiert ✓",
     "description": "Kopierbestätigung"
+  },
+  "btnLaunchSetup": {
+    "message": "🚀 Einrichtungs- und Diagnose-Assistent neu starten",
+    "description": "Schaltfläche zum Öffnen des Assistenten"
+  },
+  "setupPageTitle": {
+    "message": "Magic Voice Scriber — Einrichtungs- & Diagnose-Assistent",
+    "description": "Reitertitel des Assistenten"
+  },
+  "setupHeaderTitle": {
+    "message": "Einrichtungs- & Diagnose-Assistent",
+    "description": "Hauptüberschrift des Assistenten"
+  },
+  "setupHeaderSubtitle": {
+    "message": "Richten Sie Ihre intelligente Sprach-Diktierfunktion in Thunderbird in wenigen Schritten ein.",
+    "description": "Untertitel des Assistenten"
+  },
+  "step1Label": {
+    "message": "Mikrofon & OS",
+    "description": "Schritt 1 Label"
+  },
+  "step2Label": {
+    "message": "KI-Modell",
+    "description": "Schritt 2 Label"
+  },
+  "step3Label": {
+    "message": "Diktierstil",
+    "description": "Schritt 3 Label"
+  },
+  "step4Label": {
+    "message": "Fertig!",
+    "description": "Schritt 4 Label"
+  },
+  "step1Title": {
+    "message": "1. Mikrofon-Diagnose & Systemkompatibilität",
+    "description": "Schritt 1 Titel"
+  },
+  "step1Desc": {
+    "message": "Überprüfen Sie vor dem Start, ob Thunderbird auf Ihr Mikrofon zugreifen darf.",
+    "description": "Schritt 1 Beschreibung"
+  },
+  "osDetecting": {
+    "message": "Betriebssystem wird erkannt…",
+    "description": "Betriebssystemerkennung"
+  },
+  "micStatusIdle": {
+    "message": "Klicken Sie auf «Mikrofon testen» und sprechen Sie zur Überprüfung.",
+    "description": "Mikrofonstatus Ruhezustand"
+  },
+  "btnTestMic": {
+    "message": "Mikrofon testen",
+    "description": "Schaltfläche Mikrofon testen"
+  },
+  "snapAlertTitle": {
+    "message": "Achtung Ubuntu Linux Benutzer (Snap-Paket)",
+    "description": "Snap-Warnung Titel"
+  },
+  "snapAlertBody": {
+    "message": "Das offizielle Thunderbird Snap-Paket von Canonical enthält keinen Mikrofon-Stecker (audio-record), was Tonaufnahmen unter Snap verhindert. Falls der Test stumm bleibt, installieren Sie das offizielle native .deb-Paket von Mozilla:",
+    "description": "Snap-Warnung Text"
+  },
+  "btnCopyCmd": {
+    "message": "Befehl kopieren",
+    "description": "Schaltfläche Befehl kopieren"
+  },
+  "prefGuideTitle": {
+    "message": "Einmalige Thunderbird-Einrichtung erforderlich:",
+    "description": "Titel Einstellungsanleitung"
+  },
+  "prefGuideBody": {
+    "message": "Damit WebExtensions Ton aufnehmen dürfen, öffnen Sie die Konfiguration (Einstellungen > Allgemein > Schaltfläche «Konfiguration bearbeiten…»), suchen Sie die Einstellung und setzen Sie sie auf true:",
+    "description": "Text Einstellungsanleitung"
+  },
+  "btnNext": {
+    "message": "Weiter →",
+    "description": "Schaltfläche Weiter"
+  },
+  "btnPrev": {
+    "message": "← Zurück",
+    "description": "Schaltfläche Zurück"
+  },
+  "step2Title": {
+    "message": "2. KI-Modell wählen (BYOK)",
+    "description": "Schritt 2 Titel"
+  },
+  "step2Desc": {
+    "message": "Wählen Sie Ihren KI-Anbieter und geben Sie Ihren persönlichen API-Schlüssel ein.",
+    "description": "Schritt 2 Beschreibung"
+  },
+  "helpGeminiGet": {
+    "message": "Kostenlosen Schlüssel in 30 Sekunden erhalten auf ",
+    "description": "Link zu Google AI Studio"
+  },
+  "helpLocalMode": {
+    "message": "Stellen Sie sicher, dass Ihr lokaler Whisper-Server und Ihr LLM gestartet sind.",
+    "description": "Lokaler Modus Hilfe"
+  },
+  "step3Title": {
+    "message": "3. Diktierstil & Ergonomie",
+    "description": "Schritt 3 Titel"
+  },
+  "step3Desc": {
+    "message": "Wählen Sie, wie Magic Voice Scriber Ihre gesprochenen Worte optimiert.",
+    "description": "Schritt 3 Beschreibung"
+  },
+  "modeNaturalTitle": {
+    "message": "Rambler-Modus (Empfohlen)",
+    "description": "Titel natürlicher Modus"
+  },
+  "modeProTitle": {
+    "message": "Professioneller Modus",
+    "description": "Titel Profi-Modus"
+  },
+  "modeBulletsTitle": {
+    "message": "Stichpunkte & Zusammenfassung",
+    "description": "Titel Aufzählungsmodus"
+  },
+  "shortcutLabel": {
+    "message": "Diktier-Tastenkürzel:",
+    "description": "Tastenkürzel Label"
+  },
+  "shortcutDesc": {
+    "message": "(oder Klick auf den orangen Stimmtropfen unter dem Cursor)",
+    "description": "Beschreibung Stimmtropfen"
+  },
+  "step4Title": {
+    "message": "4. Alles bereit! 🎉",
+    "description": "Schritt 4 Titel"
+  },
+  "step4Desc": {
+    "message": "Ihre intelligente Diktierumgebung ist vollständig eingerichtet.",
+    "description": "Schritt 4 Beschreibung"
+  },
+  "readyHeading": {
+    "message": "Wie diktiere ich in meinen E-Mails?",
+    "description": "Anleitung Überschrift"
+  },
+  "readyStep1Title": {
+    "message": "1. E-Mail-Verfassen-Fenster öffnen",
+    "description": "Schritt 1 Nutzung"
+  },
+  "readyStep1Desc": {
+    "message": "Cursor im Text platzieren: Der orange Stimmtropfen erscheint direkt darunter.",
+    "description": "Beschreibung Schritt 1"
+  },
+  "readyStep2Title": {
+    "message": "2. Diktat starten",
+    "description": "Schritt 2 Nutzung"
+  },
+  "readyStep2Desc": {
+    "message": "Auf den Tropfen klicken oder Alt+Shift+S drücken (Mac: ⌘⇧S). Frei sprechen.",
+    "description": "Beschreibung Schritt 2"
+  },
+  "readyStep3Title": {
+    "message": "3. Sofortige Einfügung",
+    "description": "Schritt 3 Nutzung"
+  },
+  "readyStep3Desc": {
+    "message": "Eingabetaste drücken: Der bereinigte, punktierte Text wird direkt am Cursor eingefügt!",
+    "description": "Beschreibung Schritt 3"
+  },
+  "btnFinishSetup": {
+    "message": "Speichern & Diktieren starten ✓",
+    "description": "Schaltfläche Fertigstellen"
   }
 }

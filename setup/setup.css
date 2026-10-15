@@ -1,0 +1,584 @@
+/**
+ * Magic Voice Scriber — Feuille de Style de l'Assistant de Configuration (Wizard)
+ * ═════════════════════════════════════════════════════════════════════════════════
+ *
+ * Design épuré, Glassmorphism, animations fluides et pleine conformité WCAG 2.1 AA.
+ * Auteur : MTF Karukera
+ */
+
+:root {
+  --setup-bg: #f8fafc;
+  --setup-card-bg: #ffffff;
+  --setup-card-border: #e2e8f0;
+  --setup-panel-bg: #f1f5f9;
+  --setup-text-main: #0f172a;
+  --setup-text-sub: #334155;
+  --setup-text-muted: #64748b;
+  --setup-accent: #ea6512;
+  --setup-accent-hover: #c2410c;
+  --setup-accent-subtle: rgba(234, 101, 18, 0.1);
+  --setup-success: #10b981;
+  --setup-success-bg: rgba(16, 185, 129, 0.12);
+  --setup-warning: #f59e0b;
+  --setup-warning-bg: rgba(245, 158, 11, 0.12);
+  --setup-info: #0284c7;
+  --setup-info-bg: rgba(2, 132, 199, 0.1);
+  --setup-code-bg: #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --setup-bg: #0b1120;
+    --setup-card-bg: #1e293b;
+    --setup-card-border: #334155;
+    --setup-panel-bg: #0f172a;
+    --setup-text-main: #f8fafc;
+    --setup-text-sub: #cbd5e1;
+    --setup-text-muted: #94a3b8;
+    --setup-accent: #f97316;
+    --setup-accent-hover: #fb923c;
+    --setup-accent-subtle: rgba(249, 115, 22, 0.18);
+    --setup-success: #34d399;
+    --setup-success-bg: rgba(52, 211, 153, 0.16);
+    --setup-warning: #fbbf24;
+    --setup-warning-bg: rgba(251, 191, 36, 0.16);
+    --setup-info: #38bdf8;
+    --setup-info-bg: rgba(56, 189, 248, 0.16);
+    --setup-code-bg: #0f172a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--setup-bg);
+  color: var(--setup-text-main);
+  line-height: 1.5;
+  padding: 32px 16px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.mvs-setup-container {
+  width: 100%;
+  max-width: 760px;
+}
+
+/* ── En-tête ── */
+.mvs-setup-header {
+  margin-bottom: 28px;
+}
+
+.mvs-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.mvs-setup-logo {
+  flex-shrink: 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(234, 101, 18, 0.2);
+}
+
+.mvs-header-brand h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.mvs-setup-subtitle {
+  font-size: 14px;
+  color: var(--setup-text-sub);
+  margin-top: 2px;
+}
+
+/* ── Stepper ── */
+.mvs-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--setup-card-bg);
+  border: 1px solid var(--setup-card-border);
+  border-radius: 14px;
+  padding: 10px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.mvs-step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--setup-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.mvs-step-indicator:hover {
+  color: var(--setup-text-main);
+  background: var(--setup-panel-bg);
+}
+
+.mvs-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--setup-panel-bg);
+  color: var(--setup-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.mvs-step-indicator.active {
+  color: var(--setup-accent);
+}
+
+.mvs-step-indicator.active .mvs-step-num {
+  background: var(--setup-accent);
+  color: #ffffff;
+}
+
+.mvs-step-indicator.completed .mvs-step-num {
+  background: var(--setup-success);
+  color: #ffffff;
+}
+
+.mvs-step-line {
+  flex: 1;
+  height: 2px;
+  background: var(--setup-card-border);
+  margin: 0 8px;
+}
+
+/* ── Panneaux d'Étapes ── */
+.mvs-step-panel {
+  display: none;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.mvs-step-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mvs-panel-intro {
+  margin-bottom: 16px;
+}
+
+.mvs-panel-intro h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--setup-text-main);
+}
+
+.mvs-panel-desc {
+  font-size: 14px;
+  color: var(--setup-text-sub);
+  margin-top: 4px;
+}
+
+/* ── Cards ── */
+.mvs-card {
+  background: var(--setup-card-bg);
+  border: 1px solid var(--setup-card-border);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
+}
+
+/* ── Système OS info ── */
+.mvs-system-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--setup-panel-bg);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.mvs-os-icon {
+  font-size: 24px;
+}
+
+.mvs-os-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+/* ── Testeur Microphone & Visualiseur ── */
+.mvs-mic-tester {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  border: 2px dashed var(--setup-card-border);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background: var(--setup-panel-bg);
+}
+
+.mvs-mic-visualizer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 48px;
+  margin-bottom: 14px;
+}
+
+.mvs-waveform-bar {
+  width: 6px;
+  min-height: 6px;
+  background: var(--setup-accent);
+  border-radius: 3px;
+  transition: height 0.08s ease;
+}
+
+.mvs-mic-status {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--setup-text-sub);
+  margin-bottom: 16px;
+}
+
+/* ── Alertes ── */
+.mvs-alert {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mvs-alert-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.mvs-alert-warning {
+  background: var(--setup-warning-bg);
+  border: 1px solid var(--setup-warning);
+  color: var(--setup-text-main);
+}
+
+.mvs-alert-info {
+  background: var(--setup-info-bg);
+  border: 1px solid var(--setup-info);
+  color: var(--setup-text-main);
+}
+
+.mvs-code-snippet,
+.mvs-pref-copy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--setup-code-bg);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  overflow-x: auto;
+}
+
+.mvs-btn-inline-copy {
+  flex-shrink: 0;
+  background: var(--setup-card-bg);
+  border: 1px solid var(--setup-card-border);
+  color: var(--setup-text-main);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mvs-btn-inline-copy:hover {
+  background: var(--setup-accent-subtle);
+  border-color: var(--setup-accent);
+  color: var(--setup-accent);
+}
+
+/* ── Formulaires & Sélecteurs ── */
+.mvs-field {
+  margin-bottom: 16px;
+}
+
+.mvs-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--setup-text-main);
+  margin-bottom: 6px;
+}
+
+.mvs-input,
+.mvs-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--setup-card-border);
+  border-radius: 8px;
+  background: var(--setup-panel-bg);
+  color: var(--setup-text-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.mvs-input:focus,
+.mvs-select:focus {
+  border-color: var(--setup-accent);
+  box-shadow: 0 0 0 3px var(--setup-accent-subtle);
+}
+
+.mvs-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.mvs-btn-icon {
+  background: var(--setup-panel-bg);
+  border: 1px solid var(--setup-card-border);
+  border-radius: 8px;
+  padding: 0 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mvs-help {
+  font-size: 12px;
+  color: var(--setup-text-muted);
+  margin-top: 6px;
+}
+
+.mvs-help a {
+  color: var(--setup-accent);
+  text-decoration: underline;
+}
+
+.mvs-api-tester {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.mvs-api-status {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mvs-api-status.success {
+  color: var(--setup-success);
+}
+
+.mvs-api-status.error {
+  color: #ef4444;
+}
+
+/* ── Modes de Dictée Cards ── */
+.mvs-modes-selection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.mvs-mode-option {
+  cursor: pointer;
+}
+
+.mvs-mode-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mvs-mode-card {
+  padding: 16px;
+  border: 2px solid var(--setup-card-border);
+  border-radius: 10px;
+  background: var(--setup-panel-bg);
+  transition: all 0.2s ease;
+}
+
+.mvs-mode-option.selected .mvs-mode-card,
+.mvs-mode-option input:checked + .mvs-mode-card {
+  border-color: var(--setup-accent);
+  background: var(--setup-accent-subtle);
+}
+
+.mvs-mode-icon {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.mvs-mode-card strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.mvs-mode-card p {
+  font-size: 12px;
+  color: var(--setup-text-sub);
+  line-height: 1.4;
+}
+
+/* ── Shortcut Preview ── */
+.mvs-divider {
+  border: none;
+  border-top: 1px solid var(--setup-card-border);
+  margin: 20px 0;
+}
+
+.mvs-shortcut-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--setup-panel-bg);
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.mvs-shortcut-icon {
+  font-size: 24px;
+}
+
+kbd {
+  display: inline-block;
+  background: var(--setup-card-bg);
+  border: 1px solid var(--setup-card-border);
+  border-bottom-width: 2px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--setup-accent);
+  margin: 0 4px;
+}
+
+/* ── Étape 4 Récapitulatif ── */
+.mvs-ready-card {
+  text-align: left;
+}
+
+.mvs-ready-badge {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.mvs-ready-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.mvs-ready-steps {
+  list-style: none;
+  counter-reset: ready-step;
+}
+
+.mvs-ready-steps li {
+  margin-bottom: 16px;
+  padding-left: 8px;
+  border-left: 2px solid var(--setup-accent);
+}
+
+.mvs-ready-steps li strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.mvs-ready-steps li p {
+  font-size: 13px;
+  color: var(--setup-text-sub);
+}
+
+/* ── Boutons d'Action ── */
+.mvs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.mvs-btn-primary {
+  background: var(--setup-accent);
+  color: #ffffff;
+}
+
+.mvs-btn-primary:hover {
+  background: var(--setup-accent-hover);
+}
+
+.mvs-btn-secondary {
+  background: var(--setup-panel-bg);
+  border: 1px solid var(--setup-card-border);
+  color: var(--setup-text-main);
+}
+
+.mvs-btn-secondary:hover {
+  background: var(--setup-card-border);
+}
+
+.mvs-step-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* ── Utilitaires ── */
+.mvs-hidden {
+  display: none !important;
+}
+
+.mvs-text-muted {
+  color: var(--setup-text-muted);
+  font-size: 12px;
+}

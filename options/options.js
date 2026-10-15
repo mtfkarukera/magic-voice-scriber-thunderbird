@@ -408,6 +408,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // ── Lancement du Wizard d'onboarding & diagnostic ──────────────────────────
+  const btnOpenSetup = document.getElementById("btn-open-setup");
+  if (btnOpenSetup) {
+    btnOpenSetup.addEventListener("click", () => {
+      if (api && api.runtime && typeof api.runtime.sendMessage === "function") {
+        api.runtime.sendMessage({ action: "openSetup" });
+      } else {
+        const urlSetup = api.runtime.getURL("setup/setup.html");
+        window.open(urlSetup, "_blank");
+      }
+    });
+  }
+
   // ── Sauvegarde des Paramètres ──────────────────────────────────────────────
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

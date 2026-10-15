@@ -410,7 +410,8 @@ describe("3. Internationalisation (Parité des 6 langues & Zéro texte en dur)",
       fs.readFileSync(path.join(RACINE, "_locales/en/messages.json"), "utf8")
     );
     const fichiersHtml = [
-      path.join(RACINE, "options/options.html")
+      path.join(RACINE, "options/options.html"),
+      path.join(RACINE, "setup/setup.html")
     ];
 
     const regexAttr = /data-i18n(?:-[a-z-]+)?="([^"]+)"/g;
@@ -433,7 +434,8 @@ describe("4. Sécurité DOM, CSP & Garde-fou DEBUG (Règles 11, 12, 14)", () => 
     "background.js",
     "mvs-providers.js",
     "compose/compose-injected.js",
-    "options/options.js"
+    "options/options.js",
+    "setup/setup.js"
   ];
 
   it("n'utilise jamais innerHTML, outerHTML, insertAdjacentHTML, eval, alert, confirm ou prompt", () => {

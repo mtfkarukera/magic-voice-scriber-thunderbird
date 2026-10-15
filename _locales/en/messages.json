@@ -402,5 +402,169 @@
   "btnCopyMicPrefCopied": {
     "message": "Copied ✓",
     "description": "Confirmation when preference name is copied"
+  },
+  "btnLaunchSetup": {
+    "message": "🚀 Relaunch Setup & Diagnostic Wizard",
+    "description": "Button to open the setup wizard from options page"
+  },
+  "setupPageTitle": {
+    "message": "Magic Voice Scriber — Setup & Diagnostic Wizard",
+    "description": "Tab title for setup wizard"
+  },
+  "setupHeaderTitle": {
+    "message": "Setup & Diagnostic Wizard",
+    "description": "Main title for setup wizard header"
+  },
+  "setupHeaderSubtitle": {
+    "message": "Get ready for intelligent semantic voice dictation in Thunderbird in a few simple steps.",
+    "description": "Subtitle for setup wizard header"
+  },
+  "step1Label": {
+    "message": "Microphone & OS",
+    "description": "Step 1 label"
+  },
+  "step2Label": {
+    "message": "AI Engine",
+    "description": "Step 2 label"
+  },
+  "step3Label": {
+    "message": "Dictation Style",
+    "description": "Step 3 label"
+  },
+  "step4Label": {
+    "message": "Ready!",
+    "description": "Step 4 label"
+  },
+  "step1Title": {
+    "message": "1. Microphone Diagnostic & System Compatibility",
+    "description": "Step 1 title"
+  },
+  "step1Desc": {
+    "message": "Check that Thunderbird has permission to access your microphone hardware before starting.",
+    "description": "Step 1 description"
+  },
+  "osDetecting": {
+    "message": "Detecting operating system…",
+    "description": "OS detecting state"
+  },
+  "micStatusIdle": {
+    "message": "Click \"Test Microphone\" and speak to check the audio signal.",
+    "description": "Initial mic status"
+  },
+  "btnTestMic": {
+    "message": "Test Microphone",
+    "description": "Button to test mic"
+  },
+  "snapAlertTitle": {
+    "message": "Attention Ubuntu Linux Users (Snap Package)",
+    "description": "Snap alert title"
+  },
+  "snapAlertBody": {
+    "message": "The official Thunderbird Snap distributed by Canonical omits the microphone plug (audio-record), preventing any audio capture under Snap. If the mic test does not react, install Mozilla's official native .deb package:",
+    "description": "Snap alert body"
+  },
+  "btnCopyCmd": {
+    "message": "Copy Command",
+    "description": "Copy command button"
+  },
+  "prefGuideTitle": {
+    "message": "One-time Thunderbird configuration required:",
+    "description": "Preference guide title"
+  },
+  "prefGuideBody": {
+    "message": "To allow WebExtensions to capture audio, open Config Editor (Settings > General > \"Config Editor…\" button at the bottom), search for the following preference and toggle it to true:",
+    "description": "Preference guide body"
+  },
+  "btnNext": {
+    "message": "Next →",
+    "description": "Next step button"
+  },
+  "btnPrev": {
+    "message": "← Back",
+    "description": "Previous step button"
+  },
+  "step2Title": {
+    "message": "2. Choose your AI Engine (BYOK)",
+    "description": "Step 2 title"
+  },
+  "step2Desc": {
+    "message": "Select your AI provider and enter your secure personal API key.",
+    "description": "Step 2 description"
+  },
+  "helpGeminiGet": {
+    "message": "Get your free API key in 30 seconds on ",
+    "description": "Link to Google AI Studio"
+  },
+  "helpLocalMode": {
+    "message": "Make sure your local Whisper server (e.g. faster-whisper on :8000) and LLM are running.",
+    "description": "Local mode help"
+  },
+  "step3Title": {
+    "message": "3. Dictation Preferences & Ergonomics",
+    "description": "Step 3 title"
+  },
+  "step3Desc": {
+    "message": "Choose how Magic Voice Scriber enhances your spoken thoughts into clean text.",
+    "description": "Step 3 description"
+  },
+  "modeNaturalTitle": {
+    "message": "Rambler Mode (Recommended)",
+    "description": "Natural mode title"
+  },
+  "modeProTitle": {
+    "message": "Professional Mode",
+    "description": "Pro mode title"
+  },
+  "modeBulletsTitle": {
+    "message": "Bullets & Summary Mode",
+    "description": "Bullets mode title"
+  },
+  "shortcutLabel": {
+    "message": "Quick Dictation Shortcut:",
+    "description": "Keyboard shortcut label"
+  },
+  "shortcutDesc": {
+    "message": "(or click the orange Smart Voice Gem below your cursor)",
+    "description": "Smart Voice Gem description"
+  },
+  "step4Title": {
+    "message": "4. All set! 🎉",
+    "description": "Step 4 title"
+  },
+  "step4Desc": {
+    "message": "Your intelligent semantic dictation environment is fully configured.",
+    "description": "Step 4 description"
+  },
+  "readyHeading": {
+    "message": "How to dictate in your emails?",
+    "description": "How to dictate heading"
+  },
+  "readyStep1Title": {
+    "message": "1. Open an email compose window",
+    "description": "Ready step 1 title"
+  },
+  "readyStep1Desc": {
+    "message": "Place your cursor in the message body: the orange Voice Gem will appear right below.",
+    "description": "Ready step 1 desc"
+  },
+  "readyStep2Title": {
+    "message": "2. Start speaking",
+    "description": "Ready step 2 title"
+  },
+  "readyStep2Desc": {
+    "message": "Click the Gem or press Alt+Shift+S (Mac: ⌘⇧S). Speak freely without worrying about hesitations.",
+    "description": "Ready step 2 desc"
+  },
+  "readyStep3Title": {
+    "message": "3. Instant insertion",
+    "description": "Ready step 3 title"
+  },
+  "readyStep3Desc": {
+    "message": "Press Enter or click the audio pill: your clean, punctuated text is inserted directly at your cursor!",
+    "description": "Ready step 3 desc"
+  },
+  "btnFinishSetup": {
+    "message": "Save & Start Dictating ✓",
+    "description": "Final setup button"
   }
 }

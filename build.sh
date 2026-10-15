@@ -31,6 +31,7 @@ FILES=(
   background.js
   mvs-providers.js
   compose
+  setup
   options
   icons
   icon.png
@@ -39,7 +40,7 @@ FILES=(
 )
 
 # ── 3. Garde-fou Anti-Leak : interdire DEBUG = true en production ───────────
-if grep -nE '(const|let|var)?[[:space:]]*DEBUG[[:space:]]*=[[:space:]]*true' background.js mvs-providers.js compose/compose-injected.js options/options.js; then
+if grep -nE '(const|let|var)?[[:space:]]*DEBUG[[:space:]]*=[[:space:]]*true' background.js mvs-providers.js compose/compose-injected.js options/options.js setup/setup.js; then
   echo "❌ ABANDON : DEBUG = true détecté dans le code source. Repasser à false avant de packager." >&2
   exit 1
 fi

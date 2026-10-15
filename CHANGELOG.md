@@ -3,6 +3,21 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.3.0] - 2026-10-15
+
+### Assistant de Configuration & Diagnostic Dédié (Onboarding Wizard)
+- **Nouvel Assistant interactif en 4 étapes (`setup/setup.html`, `setup/setup.css`, `setup/setup.js`)** :
+  - **Étape 1 : Microphone & Compatibilité Système** : Diagnostic audio en direct avec visualiseur FFT réactif à 5 barres, détection d'amplitude en temps réel et accompagnement à la configuration de la préférence `media.navigator.permission.disabled` (avec bouton de copie double-détente).
+  - **Étape 2 : Moteur d'IA & Validation des Clés (BYOK)** : Choix guidé entre Google Gemini, Cloud IA (Mistral, Groq, OpenAI) et serveurs locaux (Whisper / Ollama), avec test de connexion instantané.
+  - **Étape 3 : Style de Dictée & Raccourcis** : Présentation interactive du **Mode Rambler** (recommandé), du Mode Professionnel et du Mode Synthèse / Puces, avec rappel visuel du raccourci clavier (`Alt+Shift+S` / `⌘⇧S`) et de la Goutte Vocale.
+  - **Étape 4 : Clôture & Sauvegarde** : Sauvegarde centralisée dans `browser.storage.local` et transition fluide vers la rédaction.
+- **Ouverture automatique au premier démarrage (`background.js`)** : Déclenchement garanti via `browser.runtime.onInstalled` lorsque `details.reason === "install"`, sans aucune réouverture intempestive lors des mises à jour ultérieures.
+- **Accès permanent depuis les Options (`options/options.html`, `options/options.js`, `options/options.css`)** : Ajout du bouton « *🚀 Relancer l'assistant de configuration & diagnostic* » permettant de reconfigurer ou de tester son matériel à tout moment.
+
+### Diagnostic & Documentation Linux Ubuntu (Snap vs .deb)
+- **Détection active du blocage AppArmor Snap (`setup/setup.js`)** : Détection combinée de la plateforme Linux et du silence absolu persistant (> 1,8 s avec amplitude < 1,5), alertant l'utilisateur sur l'absence du plug `audio-record` dans le paquet Snap officiel de Thunderbird Canonical.
+- **Procédure d'installation native .deb documentée (`README.md`, `ARCHITECTURE.md`, `setup/setup.html`)** : Documentation claire de la commande pour installer le PPA officiel Mozilla et contourner le confinement Snap bloquant le microphone.
+
 ## [1.2.9] - 2026-10-15
 
 ### Permissions & Aide Configuration Microphone (Bugzilla #2080573)

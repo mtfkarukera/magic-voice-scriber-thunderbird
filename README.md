@@ -30,17 +30,48 @@
 ## 🚀 Installation & Démarrage Rapide
 
 ### Depuis un fichier `.xpi`
-1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.2.7.xpi`.
+1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.3.0.xpi`.
 2. Dans Thunderbird, ouvrez **Outils > Modules complémentaires et thèmes** (`Ctrl+Maj+A`).
 3. Cliquez sur la roue dentée ⚙️ > **Installer un module depuis un fichier…** et sélectionnez le fichier `.xpi`.
 
-### Configuration Initiale
-1. Ouvrez une fenêtre de rédaction de courriel dans Thunderbird.
-2. Cliquez sur le bouton **Magic Voice Scriber** ou appuyez sur `Alt+Shift+S`.
-3. Cliquez sur **Configurer en 1 clic** pour renseigner :
-   - Soit votre clé API **Google AI Studio (Gemini)**,
-   - Soit vos accès **OpenAI / Mistral / Groq**,
-   - Soit vos URLs locales **Whisper + Ollama / LM Studio**.
+### Assistant de Configuration & Diagnostic Automatique
+Dès l'installation, Magic Voice Scriber ouvre automatiquement son **Assistant de Configuration & Diagnostic** interactif en 4 étapes :
+1. **Diagnostic du Microphone & OS** : Teste le flux audio en direct avec un vumètre 5 barres et guide l'autorisation unique `media.navigator.permission.disabled`.
+2. **Choix du Moteur d'IA (BYOK)** : Saisie et validation en 1 clic de votre clé API Google Gemini, Mistral, Groq, OpenAI ou de vos endpoints locaux.
+3. **Style de Dictée & Raccourcis** : Choix entre le **Mode Rambler** (recommandé) et la **Dictée Pure**.
+4. **Prêt à dicter** : Vous pouvez commencer immédiatement dans votre fenêtre de rédaction !
+
+Vous pouvez réouvrir cet assistant à tout moment depuis les options de l'extension.
+
+---
+
+### 🐧 Note Essentielle pour les Utilisateurs Linux Ubuntu (Snap vs .deb)
+
+> [!WARNING]
+> **Le paquet Snap de Thunderbird bloque l'accès au microphone**
+> Sur Ubuntu (22.04 / 24.04), Canonical distribue Thunderbird sous forme de paquet **Snap** confiné. Dans la recette officielle Snap (`snapcraft.yaml`), les mainteneurs de Canonical ont déclaré la sortie audio (`audio-playback`), mais ont **omis le connecteur d'enregistrement microphone (`audio-record`)**.
+> 
+> En conséquence, aucune WebExtension ne peut capturer le son sous Thunderbird Snap (le profil AppArmor bloque le micro et `sudo snap connect thunderbird:audio-record` échoue car le plug n'existe pas).
+
+#### Solution : Utiliser la version native `.deb` officielle de Mozilla
+Pour profiter pleinement de la dictée vocale sous Ubuntu Linux, installez la version native `.deb` officielle de Mozilla (sans confinement Snap) :
+
+```bash
+# 1. Ajouter le PPA officiel de l'équipe Mozilla pour Thunderbird
+sudo add-apt-repository ppa:mozillateam/ppa
+
+# 2. Configurer la priorité APT pour privilégier le paquet .deb natif
+echo '
+Package: thunderbird*
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001
+' | sudo tee /etc/apt/preferences.d/mozillateam-thunderbird
+
+# 3. Mettre à jour et installer Thunderbird natif
+sudo apt update
+sudo apt install thunderbird
+```
+Sur la version native `.deb`, l'accès microphone via PipeWire / PulseAudio fonctionne parfaitement !
 
 ---
 

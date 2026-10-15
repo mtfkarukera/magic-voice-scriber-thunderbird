@@ -206,6 +206,21 @@ if (api && api.tabs && api.tabs.onRemoved) {
   });
 }
 
+// ── Ouverture automatique du Wizard d'onboarding au premier démarrage ───────
+if (api && api.runtime && api.runtime.onInstalled) {
+  api.runtime.onInstalled.addListener(async (details) => {
+    if (details && details.reason === "install") {
+      try {
+        const urlSetup = api.runtime.getURL("setup/setup.html");
+        await api.tabs.create({ url: urlSetup });
+      } catch (err) {
+        if (DEBUG) console.warn("[MagicVoiceScriber] Note onInstalled setup tab :", err);
+      }
+    }
+  });
+}
+
+
 // ═══════════════════════════════════════════════════════════════════════════
 // 3. MOTEUR DE CAPTURE AUDIO, ONDES VOCALES & STREAMING GEMINI LIVE
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1272,8 +1287,8 @@ async function traiterMessage(message, expediteur) {
   // ── Action 8 : Tester la connexion à un fournisseur depuis les options ─────
   if (message.action === "testProvider") {
     // Protection SSRF : dans Thunderbird, la page d'options s'exécute dans un onglet (about:addons ou tab).
-    // On s'assure que le message provient bien de la page de paramètres interne et non d'un autre contexte.
-    if (expediteur && expediteur.url && !expediteur.url.includes("options")) {
+    // On s'assure que le message provient bien de la page de paramètres ou du wizard interne et non d'un autre contexte.
+    if (expediteur && expediteur.url && !expediteur.url.includes("options") && !expediteur.url.includes("setup")) {
       return { success: false, error: "UNAUTHORIZED", message: "UNAUTHORIZED" };
     }
     if (!message.config || typeof message.config !== "object") {
@@ -1287,6 +1302,18 @@ async function traiterMessage(message, expediteur) {
     libererSessionAudio();
     try {
       await api.runtime.openOptionsPage();
+      return { success: true };
+    } catch {
+      return { success: false, error: "SERVICE_UNAVAILABLE" };
+    }
+  }
+
+  // ── Action 10 : Ouvrir l'assistant de configuration & diagnostic ───────────
+  if (message.action === "openSetup") {
+    libererSessionAudio();
+    try {
+      const urlSetup = api.runtime.getURL("setup/setup.html");
+      await api.tabs.create({ url: urlSetup });
       return { success: true };
     } catch {
       return { success: false, error: "SERVICE_UNAVAILABLE" };

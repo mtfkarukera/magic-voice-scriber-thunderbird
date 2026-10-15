@@ -1,0 +1,607 @@
+/**
+ * Magic Voice Scriber — Logique Métier de l'Assistant de Configuration & Diagnostic
+ * ═══════════════════════════════════════════════════════════════════════════════════
+ *
+ * Responsabilités :
+ *   1. Guider l'utilisateur pas-à-pas à travers un stepper interactif (4 étapes)
+ *   2. Diagnostiquer l'accès microphone avec visualiseur 5 barres en direct et détection de silence Linux Snap
+ *   3. Offrir la copie double-détente sécurisée pour les préférences et commandes système
+ *   4. Valider en 1 clic la connexion aux APIs d'IA (Gemini, Mistral, Groq, OpenAI, Local)
+ *   5. Enregistrer les préférences globales dans browser.storage.local
+ *
+ * Auteur : MTF Karukera
+ */
+
+"use strict";
+
+const DEBUG = false;
+const api = globalThis.browser || globalThis.messenger;
+
+/**
+ * Récupère une chaîne traduite depuis les dictionnaires i18n.
+ * @param {string} cle - Clé de traduction
+ * @returns {string}
+ */
+function t(cle) {
+  try {
+    if (api && api.i18n && typeof api.i18n.getMessage === "function") {
+      const msg = api.i18n.getMessage(cle);
+      if (msg) return msg;
+    }
+  } catch {
+    /* Fallback silencieux */
+  }
+  return "";
+}
+
+/**
+ * Applique l'internationalisation sur tous les éléments déclaratifs du DOM.
+ */
+function appliquerI18n() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const cle = el.getAttribute("data-i18n");
+    const msg = t(cle);
+    if (msg) el.textContent = msg;
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const cle = el.getAttribute("data-i18n-placeholder");
+    const msg = t(cle);
+    if (msg) el.setAttribute("placeholder", msg);
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    const cle = el.getAttribute("data-i18n-title");
+    const msg = t(cle);
+    if (msg) el.setAttribute("title", msg);
+  });
+}
+
+/**
+ * Copie du texte dans le presse-papiers avec repli textarea (double-détente).
+ * @param {string} texte - Chaîne à copier
+ * @returns {Promise<boolean>}
+ */
+async function copierDansPressePapier(texte) {
+  let succes = false;
+  try {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      await navigator.clipboard.writeText(texte);
+      succes = true;
+    }
+  } catch {
+    /* Repli execCommand */
+  }
+
+  if (!succes) {
+    try {
+      const zone = document.createElement("textarea");
+      zone.value = texte;
+      zone.setAttribute("readonly", "");
+      zone.style.position = "fixed";
+      zone.style.left = "-9999px";
+      zone.style.opacity = "0";
+      document.body.appendChild(zone);
+      zone.focus();
+      zone.select();
+      succes = document.execCommand("copy");
+      zone.remove();
+    } catch {
+      succes = false;
+    }
+  }
+  return succes;
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (api && api.i18n && typeof api.i18n.getUILanguage === "function") {
+    const lang = api.i18n.getUILanguage().slice(0, 2);
+    document.documentElement.lang = lang;
+  }
+  appliquerI18n();
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // 1. GESTION DU STEPPER (NAVIGATION PAS-À-PAS)
+  // ═════════════════════════════════════════════════════════════════════════
+
+  let etapeCourante = 1;
+  const totalEtapes = 4;
+
+  const panels = {
+    1: document.getElementById("step-panel-1"),
+    2: document.getElementById("step-panel-2"),
+    3: document.getElementById("step-panel-3"),
+    4: document.getElementById("step-panel-4")
+  };
+
+  const stepIndicators = {
+    1: document.getElementById("step-btn-1"),
+    2: document.getElementById("step-btn-2"),
+    3: document.getElementById("step-btn-3"),
+    4: document.getElementById("step-btn-4")
+  };
+
+  function afficherEtape(numero) {
+    if (numero < 1 || numero > totalEtapes) return;
+
+    // Arrêt propre du test micro si on quitte l'étape 1
+    if (etapeCourante === 1 && numero !== 1) {
+      arreterTestMicro();
+    }
+
+    etapeCourante = numero;
+
+    // Mise à jour des panneaux
+    Object.keys(panels).forEach((k) => {
+      const n = parseInt(k, 10);
+      if (panels[n]) {
+        panels[n].classList.toggle("active", n === numero);
+      }
+    });
+
+    // Mise à jour des indicateurs du stepper
+    Object.keys(stepIndicators).forEach((k) => {
+      const n = parseInt(k, 10);
+      const btn = stepIndicators[n];
+      if (btn) {
+        btn.classList.toggle("active", n === numero);
+        btn.classList.toggle("completed", n < numero);
+      }
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Écouteurs des boutons "Suivant" et "Retour"
+  document.querySelectorAll(".mvs-btn-next").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const cible = parseInt(btn.getAttribute("data-next"), 10);
+      afficherEtape(cible);
+    });
+  });
+
+  document.querySelectorAll(".mvs-btn-prev").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const cible = parseInt(btn.getAttribute("data-prev"), 10);
+      afficherEtape(cible);
+    });
+  });
+
+  // Clic sur les pastilles du stepper
+  Object.keys(stepIndicators).forEach((k) => {
+    const n = parseInt(k, 10);
+    const btn = stepIndicators[n];
+    if (btn) {
+      btn.addEventListener("click", () => afficherEtape(n));
+    }
+  });
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // 2. ÉTAPE 1 : DÉTECTION OS & TEST MICROPHONE EN DIRECT
+  // ═════════════════════════════════════════════════════════════════════════
+
+  let platformOS = "unknown";
+  const osIcon = document.getElementById("os-icon");
+  const osNameLabel = document.getElementById("os-name-label");
+  const osDetailText = document.getElementById("os-detail-text");
+  const linuxSnapAlert = document.getElementById("linux-snap-alert");
+  const setupShortcutBadge = document.getElementById("setup-shortcut-badge");
+
+  try {
+    if (api && api.runtime && typeof api.runtime.getPlatformInfo === "function") {
+      const info = await api.runtime.getPlatformInfo();
+      platformOS = info.os || "unknown";
+    }
+  } catch {
+    /* Fallback userAgent */
+    if (navigator.userAgent.includes("Linux")) platformOS = "linux";
+    else if (navigator.userAgent.includes("Mac")) platformOS = "mac";
+    else if (navigator.userAgent.includes("Win")) platformOS = "win";
+  }
+
+  if (platformOS === "linux") {
+    if (osIcon) osIcon.textContent = "🐧";
+    if (osNameLabel) osNameLabel.textContent = "Système Linux détecté";
+    if (osDetailText) osDetailText.textContent = "Ubuntu, Debian ou dérivé Linux";
+    if (linuxSnapAlert) linuxSnapAlert.classList.remove("mvs-hidden");
+  } else if (platformOS === "mac") {
+    if (osIcon) osIcon.textContent = "🍏";
+    if (osNameLabel) osNameLabel.textContent = "Système macOS détecté";
+    if (osDetailText) osDetailText.textContent = "Apple Silicon ou Intel";
+    if (setupShortcutBadge) setupShortcutBadge.textContent = "⌘ + Shift + S";
+  } else if (platformOS === "win") {
+    if (osIcon) osIcon.textContent = "🪟";
+    if (osNameLabel) osNameLabel.textContent = "Système Windows détecté";
+    if (osDetailText) osDetailText.textContent = "Microsoft Windows 10/11";
+  } else {
+    if (osIcon) osIcon.textContent = "💻";
+    if (osNameLabel) osNameLabel.textContent = "Système détecté";
+  }
+
+  // Copie de la préférence Thunderbird
+  const btnCopyPref = document.getElementById("btn-copy-pref");
+  if (btnCopyPref) {
+    btnCopyPref.addEventListener("click", async () => {
+      const nomPref = "media.navigator.permission.disabled";
+      const succes = await copierDansPressePapier(nomPref);
+      if (succes) {
+        btnCopyPref.textContent = t("btnCopyMicPrefCopied") || "Copié ✓";
+        setTimeout(() => {
+          btnCopyPref.textContent = t("btnCopyMicPref") || "Copier le nom de la préférence";
+        }, 3000);
+      }
+    });
+  }
+
+  // Copie de la commande deb pour Linux
+  const btnCopyDebCmd = document.getElementById("btn-copy-deb-cmd");
+  if (btnCopyDebCmd) {
+    btnCopyDebCmd.addEventListener("click", async () => {
+      const commande = "sudo add-apt-repository ppa:mozillateam/ppa && sudo apt update && sudo apt install thunderbird";
+      const succes = await copierDansPressePapier(commande);
+      if (succes) {
+        btnCopyDebCmd.textContent = "Commande copiée ✓";
+        setTimeout(() => {
+          btnCopyDebCmd.textContent = "Copier la commande";
+        }, 3000);
+      }
+    });
+  }
+
+  // Moteur audio de test live
+  let testAudioStream = null;
+  let testAudioCtx = null;
+  let testAudioAnalyser = null;
+  let testAudioInterval = null;
+  let testAudioMaxAmplitude = 0;
+  let testAudioStartTime = 0;
+
+  const btnTestMic = document.getElementById("btn-test-mic");
+  const micStatusText = document.getElementById("mic-status-text");
+  const waveformBars = document.querySelectorAll(".mvs-waveform-bar");
+
+  function definirContenuBoutonMicro(btn, icone, texte) {
+    if (!btn) return;
+    const spanIcone = document.createElement("span");
+    spanIcone.className = "mvs-btn-icon-symbol";
+    spanIcone.setAttribute("aria-hidden", "true");
+    spanIcone.textContent = icone;
+    const spanTexte = document.createElement("span");
+    spanTexte.textContent = texte;
+    btn.replaceChildren(spanIcone, spanTexte);
+  }
+
+  function definirStatutMicro(element, titre, sousTitre, couleur) {
+    if (!element) return;
+    element.replaceChildren();
+    if (titre) {
+      const s = document.createElement("strong");
+      if (couleur) s.style.color = couleur;
+      s.textContent = titre;
+      element.appendChild(s);
+    }
+    if (sousTitre) {
+      if (titre) element.appendChild(document.createElement("br"));
+      const span = document.createElement("span");
+      span.textContent = sousTitre;
+      element.appendChild(span);
+    }
+  }
+
+  function arreterTestMicro() {
+    if (testAudioInterval) {
+      clearInterval(testAudioInterval);
+      testAudioInterval = null;
+    }
+    if (testAudioStream) {
+      testAudioStream.getTracks().forEach((track) => track.stop());
+      testAudioStream = null;
+    }
+    if (testAudioCtx && testAudioCtx.state !== "closed") {
+      testAudioCtx.close().catch(() => {});
+      testAudioCtx = null;
+    }
+    waveformBars.forEach((bar) => {
+      bar.style.height = "6px";
+    });
+    if (btnTestMic) {
+      definirContenuBoutonMicro(btnTestMic, "🎙️", t("btnTestMic") || "Tester le microphone");
+      btnTestMic.classList.remove("mvs-btn-secondary");
+      btnTestMic.classList.add("mvs-btn-primary");
+    }
+  }
+
+  async function demarrerTestMicro() {
+    if (testAudioStream) {
+      arreterTestMicro();
+      if (micStatusText) micStatusText.textContent = t("micStatusIdle") || "Test terminé. Cliquez pour relancer.";
+      return;
+    }
+
+    if (micStatusText) micStatusText.textContent = "Accès au microphone en cours…";
+    testAudioMaxAmplitude = 0;
+    testAudioStartTime = Date.now();
+
+    try {
+      testAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+      testAudioCtx = new AudioCtxClass();
+      if (testAudioCtx.state === "suspended") {
+        await testAudioCtx.resume();
+      }
+
+      const sourceNode = testAudioCtx.createMediaStreamSource(testAudioStream);
+      testAudioAnalyser = testAudioCtx.createAnalyser();
+      testAudioAnalyser.fftSize = 64;
+      sourceNode.connect(testAudioAnalyser);
+
+      const freqData = new Uint8Array(testAudioAnalyser.frequencyBinCount);
+
+      if (btnTestMic) {
+        definirContenuBoutonMicro(btnTestMic, "⏹️", "Arrêter le test");
+        btnTestMic.classList.remove("mvs-btn-primary");
+        btnTestMic.classList.add("mvs-btn-secondary");
+      }
+      if (micStatusText) micStatusText.textContent = "Parlez dans votre micro : les barres doivent réagir !";
+
+      testAudioInterval = setInterval(() => {
+        if (!testAudioAnalyser) return;
+        testAudioAnalyser.getByteFrequencyData(freqData);
+
+        let total = 0;
+        for (let i = 0; i < freqData.length; i++) total += freqData[i];
+        const moyenne = total / freqData.length;
+        if (moyenne > testAudioMaxAmplitude) {
+          testAudioMaxAmplitude = moyenne;
+        }
+
+        // Animation des 5 barres
+        waveformBars.forEach((bar, idx) => {
+          const val = freqData[idx * 2] || moyenne;
+          const h = Math.max(6, Math.min(42, Math.round((val / 255) * 44)));
+          bar.style.height = `${h}px`;
+        });
+
+        // Détection de silence après 1,8 s
+        const ecoule = Date.now() - testAudioStartTime;
+        if (ecoule > 1800) {
+          if (testAudioMaxAmplitude < 1.5) {
+            if (platformOS === "linux") {
+              definirStatutMicro(
+                micStatusText,
+                "⚠️ Silence absolu détecté sous Linux.",
+                "Si vous utilisez Thunderbird Snap, le paquet bloque le micro. Basculez en version .deb.",
+                "#ef4444"
+              );
+              if (linuxSnapAlert) linuxSnapAlert.classList.remove("mvs-hidden");
+            } else {
+              if (micStatusText) {
+                micStatusText.textContent = "Aucun son capté. Vérifiez que votre micro n'est pas coupé.";
+              }
+            }
+          } else {
+            definirStatutMicro(
+              micStatusText,
+              "Microphone parfaitement opérationnel ✓",
+              "Signal audio capté avec succès !",
+              "#10b981"
+            );
+          }
+        }
+      }, 70);
+    } catch (err) {
+      if (DEBUG) console.warn("[Setup] Erreur test micro :", err);
+      definirStatutMicro(
+        micStatusText,
+        "Impossible d'accéder au microphone.",
+        "Vérifiez la préférence media.navigator.permission.disabled ci-dessous.",
+        "#ef4444"
+      );
+      arreterTestMicro();
+    }
+  }
+
+  if (btnTestMic) {
+    btnTestMic.addEventListener("click", demarrerTestMicro);
+  }
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // 3. ÉTAPE 2 : CONFIGURATION DU FOURNISSEUR & TEST DE CONNEXION API
+  // ═════════════════════════════════════════════════════════════════════════
+
+  const selectProvider = document.getElementById("setup-select-provider");
+  const panelGemini = document.getElementById("setup-panel-gemini");
+  const panelOpenai = document.getElementById("setup-panel-openai");
+  const panelLocal = document.getElementById("setup-panel-local");
+
+  const inputGeminiKey = document.getElementById("setup-gemini-key");
+  const btnToggleGeminiKey = document.getElementById("btn-toggle-setup-gemini-key");
+  const inputOpenaiKey = document.getElementById("setup-openai-key");
+  const btnToggleOpenaiKey = document.getElementById("btn-toggle-setup-openai-key");
+  const selectOpenaiPreset = document.getElementById("setup-openai-preset");
+  const selectLocalPreset = document.getElementById("setup-local-preset");
+
+  const btnTestApi = document.getElementById("btn-test-api");
+  const apiTestStatus = document.getElementById("api-test-status");
+
+  // Masquer / afficher mot de passe
+  if (btnToggleGeminiKey && inputGeminiKey) {
+    btnToggleGeminiKey.addEventListener("click", () => {
+      inputGeminiKey.type = inputGeminiKey.type === "password" ? "text" : "password";
+    });
+  }
+  if (btnToggleOpenaiKey && inputOpenaiKey) {
+    btnToggleOpenaiKey.addEventListener("click", () => {
+      inputOpenaiKey.type = inputOpenaiKey.type === "password" ? "text" : "password";
+    });
+  }
+
+  function actualiserAffichageFournisseur() {
+    const val = selectProvider ? selectProvider.value : "gemini";
+    if (panelGemini) panelGemini.classList.toggle("mvs-hidden", val !== "gemini");
+    if (panelOpenai) panelOpenai.classList.toggle("mvs-hidden", val !== "openai");
+    if (panelLocal) panelLocal.classList.toggle("mvs-hidden", val !== "local");
+    if (apiTestStatus) {
+      apiTestStatus.textContent = "";
+      apiTestStatus.className = "mvs-api-status";
+    }
+  }
+
+  if (selectProvider) {
+    selectProvider.addEventListener("change", actualiserAffichageFournisseur);
+  }
+
+  // Pré-remplissage depuis le storage existant
+  try {
+    const configExistante = await api.storage.local.get([
+      "provider",
+      "geminiApiKey",
+      "sttApiKey",
+      "llmApiKey",
+      "openaiPreset",
+      "defaultVoiceMode"
+    ]);
+
+    if (configExistante.provider && selectProvider) {
+      selectProvider.value = configExistante.provider;
+    }
+    if (configExistante.geminiApiKey && inputGeminiKey) {
+      inputGeminiKey.value = configExistante.geminiApiKey;
+    }
+    if (configExistante.sttApiKey && inputOpenaiKey) {
+      inputOpenaiKey.value = configExistante.sttApiKey;
+    }
+    if (configExistante.openaiPreset && selectOpenaiPreset) {
+      selectOpenaiPreset.value = configExistante.openaiPreset;
+    }
+    actualiserAffichageFournisseur();
+
+    if (configExistante.defaultVoiceMode) {
+      const radio = document.querySelector(`input[name="setup-voice-mode"][value="${configExistante.defaultVoiceMode}"]`);
+      if (radio) {
+        radio.checked = true;
+        document.querySelectorAll(".mvs-mode-option").forEach((opt) => {
+          opt.classList.toggle("selected", opt.contains(radio));
+        });
+      }
+    }
+  } catch (errStockage) {
+    if (DEBUG) console.warn("[Setup] Impossible de lire le storage :", errStockage);
+  }
+
+  // Test de connexion direct
+  if (btnTestApi) {
+    btnTestApi.addEventListener("click", async () => {
+      const provider = selectProvider ? selectProvider.value : "gemini";
+      if (apiTestStatus) {
+        apiTestStatus.textContent = "Vérification en cours…";
+        apiTestStatus.className = "mvs-api-status";
+      }
+
+      const configTest = {
+        provider,
+        geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
+        geminiModel: "gemini-3.5-transcribe-live",
+        openaiPreset: selectOpenaiPreset ? selectOpenaiPreset.value : "openai",
+        sttApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : "",
+        llmApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : ""
+      };
+
+      try {
+        let res;
+        if (api && api.runtime && typeof api.runtime.sendMessage === "function") {
+          res = await api.runtime.sendMessage({ action: "testProvider", config: configTest });
+        } else if (globalThis.MVSProviders) {
+          res = await globalThis.MVSProviders.testerConnexion(configTest);
+        }
+
+        if (res && res.success) {
+          if (apiTestStatus) {
+            apiTestStatus.textContent = "Connexion réussie ✓ Prêt à l'emploi";
+            apiTestStatus.className = "mvs-api-status success";
+          }
+        } else {
+          const detail = res && res.message ? res.message : "Vérifiez votre clé d'API";
+          if (apiTestStatus) {
+            apiTestStatus.textContent = `Échec de connexion : ${detail}`;
+            apiTestStatus.className = "mvs-api-status error";
+          }
+        }
+      } catch (errApi) {
+        if (apiTestStatus) {
+          apiTestStatus.textContent = `Erreur réseau : ${errApi.message || "Impossible de joindre le service"}`;
+          apiTestStatus.className = "mvs-api-status error";
+        }
+      }
+    });
+  }
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // 4. ÉTAPE 3 : STYLES DE DICTÉE (CARDS RADIO)
+  // ═════════════════════════════════════════════════════════════════════════
+
+  document.querySelectorAll(".mvs-mode-option").forEach((opt) => {
+    opt.addEventListener("click", () => {
+      document.querySelectorAll(".mvs-mode-option").forEach((o) => o.classList.remove("selected"));
+      opt.classList.add("selected");
+      const input = opt.querySelector("input");
+      if (input) input.checked = true;
+    });
+  });
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // 5. ÉTAPE 4 : FINALISATION & SAUVEGARDE GLOBALE
+  // ═════════════════════════════════════════════════════════════════════════
+
+  const btnFinish = document.getElementById("btn-finish-setup");
+  if (btnFinish) {
+    btnFinish.addEventListener("click", async () => {
+      btnFinish.disabled = true;
+      btnFinish.textContent = "Enregistrement en cours…";
+
+      const provider = selectProvider ? selectProvider.value : "gemini";
+      const modeRadio = document.querySelector('input[name="setup-voice-mode"]:checked');
+      const voiceMode = modeRadio ? modeRadio.value : "natural";
+
+      const configSauvegarde = {
+        provider,
+        geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
+        geminiModel: "gemini-3.5-transcribe-live",
+        defaultVoiceMode: voiceMode,
+        lastVoiceMode: voiceMode,
+        voiceModePolicy: "default"
+      };
+
+      if (provider === "openai") {
+        configSauvegarde.openaiPreset = selectOpenaiPreset ? selectOpenaiPreset.value : "openai";
+        configSauvegarde.sttApiKey = inputOpenaiKey ? inputOpenaiKey.value.trim() : "";
+        configSauvegarde.llmApiKey = inputOpenaiKey ? inputOpenaiKey.value.trim() : "";
+      }
+
+      try {
+        await api.storage.local.set(configSauvegarde);
+        btnFinish.textContent = "Configuration enregistrée ✓";
+
+        // Fermer l'onglet après 800 ms
+        setTimeout(async () => {
+          try {
+            if (api && api.tabs && typeof api.tabs.getCurrent === "function") {
+              const ongletActuel = await api.tabs.getCurrent();
+              if (ongletActuel && ongletActuel.id) {
+                await api.tabs.remove(ongletActuel.id);
+                return;
+              }
+            }
+          } catch {
+            /* Fallback window.close */
+          }
+          window.close();
+        }, 800);
+      } catch (errSave) {
+        btnFinish.disabled = false;
+        btnFinish.textContent = "Erreur lors de la sauvegarde";
+        if (DEBUG) console.error("[Setup] Erreur de sauvegarde :", errSave);
+      }
+    });
+  }
+});
