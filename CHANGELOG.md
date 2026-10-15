@@ -3,6 +3,12 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.2.9] - 2026-10-15
+
+### Permissions & Aide Configuration Microphone (Bugzilla #2080573)
+- **Déclaration de la permission `clipboardWrite` (`manifest.json`)** : Ajout de la permission officielle pour autoriser l'écriture dans le presse-papiers sans blocage de sécurité Gecko lors du geste utilisateur.
+- **Fonction de copie double détente & feedback visuel (`compose/compose-injected.js`)** : Le bouton « Copier le nom de la préférence » (`media.navigator.permission.disabled`) exploite `navigator.clipboard.writeText` avec repli automatique sur `execCommand("copy")` et feedback temporaire « *Copié ✓* » pendant 3 secondes, éliminant tout échec silencieux lors de l'onboarding microphone sur Thunderbird 128+ ESR.
+
 ## [1.2.8] - 2026-10-15
 
 ### Ergonomie Multi-OS (Linux GTK / macOS) & Déblocage Pièces Jointes

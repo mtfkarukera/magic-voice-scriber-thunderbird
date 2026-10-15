@@ -815,11 +815,41 @@ const DEBUG = false;
       e.preventDefault();
       e.stopPropagation();
       if (etatCourant === "MIC_PREF_GUIDE") {
+        const prefNom = "media.navigator.permission.disabled";
+        let copieReussie = false;
         try {
-          await navigator.clipboard.writeText("media.navigator.permission.disabled");
-          btnActionOnboardingEl.textContent = t("btnCopyMicPrefCopied") || "Copié ✓";
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            await navigator.clipboard.writeText(prefNom);
+            copieReussie = true;
+          }
         } catch {
-          /* Ignorer */
+          /* Fallback textarea execCommand */
+        }
+        if (!copieReussie) {
+          try {
+            const zoneCopie = document.createElement("textarea");
+            zoneCopie.value = prefNom;
+            zoneCopie.setAttribute("readonly", "");
+            zoneCopie.style.position = "fixed";
+            zoneCopie.style.left = "-9999px";
+            zoneCopie.style.top = "-9999px";
+            zoneCopie.style.opacity = "0";
+            document.body.appendChild(zoneCopie);
+            zoneCopie.focus();
+            zoneCopie.select();
+            copieReussie = document.execCommand("copy");
+            zoneCopie.remove();
+          } catch {
+            copieReussie = false;
+          }
+        }
+        if (copieReussie) {
+          btnActionOnboardingEl.textContent = t("btnCopyMicPrefCopied") || "Copié ✓";
+          setTimeout(() => {
+            if (etatCourant === "MIC_PREF_GUIDE") {
+              btnActionOnboardingEl.textContent = t("btnCopyMicPref") || "Copier le nom de la préférence";
+            }
+          }, 3000);
         }
         return;
       }
