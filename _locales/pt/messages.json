@@ -608,7 +608,7 @@
     "description": "Botão gravar demo"
   },
   "btnDemoStop": {
-    "message": "⏹️ Parar e ver resultado",
+    "message": "Parar e ver resultado",
     "description": "Botão parar demo"
   },
   "demoResultTitle": {

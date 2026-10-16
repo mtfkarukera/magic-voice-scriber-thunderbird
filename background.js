@@ -1287,8 +1287,13 @@ async function traiterMessage(message, expediteur) {
   // ── Action 8 : Tester la connexion à un fournisseur depuis les options ─────
   if (message.action === "testProvider") {
     // Protection SSRF : dans Thunderbird, la page d'options s'exécute dans un onglet (about:addons ou tab).
-    // On s'assure que le message provient bien de la page de paramètres ou du wizard interne et non d'un autre contexte.
-    if (expediteur && expediteur.url && !expediteur.url.includes("options") && !expediteur.url.includes("setup")) {
+    // On s'assure que le message provient strictement de nos pages internes (options ou setup)
+    const urlOptions = (api && api.runtime && typeof api.runtime.getURL === "function") ? api.runtime.getURL("options/") : "";
+    const urlSetup = (api && api.runtime && typeof api.runtime.getURL === "function") ? api.runtime.getURL("setup/") : "";
+    const expediteurValide = expediteur && (!api.runtime.id || expediteur.id === api.runtime.id) && expediteur.url &&
+      ((urlOptions && expediteur.url.startsWith(urlOptions)) || (urlSetup && expediteur.url.startsWith(urlSetup)));
+
+    if (!expediteurValide) {
       return { success: false, error: "UNAUTHORIZED", message: "UNAUTHORIZED" };
     }
     if (!message.config || typeof message.config !== "object") {

@@ -3,6 +3,25 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.3.3] - 2026-10-17
+
+### Consolidation Post-Audit & Sécurisation Globale
+- **Correction UX / i18n Coquille Bouton Arrêt (`_locales/*/messages.json`)** : Suppression du pictogramme ⏹️ en double dans les messages localisés `btnDemoStop` pour les 6 langues (`fr`, `en`, `de`, `es`, `pt`, `vi`).
+- **Résolution P0 Configuration Multi-Fournisseurs dans le Wizard (`setup/setup.js`)** : Introduction de la fonction `construireConfigActive()` intégrant les préréglages Cloud (Groq, Mistral) et serveurs locaux (Ollama, LM Studio) avec endpoints complets, débloquant les tests d'API et la transcription du bac à sable pour l'ensemble des moteurs.
+- **Robustesse Audio & Verrous Anti-Rebond (`setup/setup.js`, `compose/compose-injected.js`)** :
+  - Verrous synchrones anti-double-clic sur le démarrage du test microphone et du bac à sable.
+  - Libération automatique des pistes microphone sur l'événement `pagehide` si l'onglet est fermé pendant un enregistrement.
+  - Vidage systématique de la mémoire tampon audio (`demoAudioChunks = []`) après transcription ou arrêt.
+  - Garde de sécurité contre l'insertion de texte fantôme dans l'éditeur d'e-mail si la dictée est annulée pendant la phase de réflexion LLM (`etatCourant !== "THINKING"`).
+- **Sécurisation des Clés API & Anti-Fuite Réseau (`mvs-providers.js`, `background.js`)** :
+  - Élimination du paramètre `?key=...` dans les URLs REST de Google Gemini (authentification exclusivement par en-tête `x-goog-api-key`, évitant l'exposition de clés dans les journaux de requêtes et proxys).
+  - Verrouillage anti-SSRF de l'action privilégiée `testProvider` vérifiant strictement l'origine interne (`options/` ou `setup/`).
+- **Accessibilité WCAG 2.1 AA & Finitions Graphiques (`setup/setup.html`, `setup/setup.css`)** :
+  - Contrastes de couleurs renforcés (`--setup-accent: #b44304`, texte bouton sombre en dark mode, texte atténué `#475569`).
+  - Annonces dynamiques pour lecteurs d'écran via `role="status"` et `aria-live="polite"` sur les retours d'état micro et bac à sable.
+  - Support de navigation clavier avec anneaux de focus visible (`:focus-visible` et `:focus-within`).
+  - Règle responsive masquant les libellés du stepper sur écrans étroits (`max-width: 640px`).
+
 ## [1.3.2] - 2026-10-16
 
 ### Sécurisation APT Pinning Ubuntu & Intégration du Tutoriel Pas-à-Pas

@@ -608,7 +608,7 @@
     "description": "Button Demo Aufnahme"
   },
   "btnDemoStop": {
-    "message": "⏹️ Beenden und Ergebnis anzeigen",
+    "message": "Beenden und Ergebnis anzeigen",
     "description": "Button Demo Stopp"
   },
   "demoResultTitle": {

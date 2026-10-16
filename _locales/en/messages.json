@@ -608,7 +608,7 @@
     "description": "Btn demo record"
   },
   "btnDemoStop": {
-    "message": "⏹️ Stop and view result",
+    "message": "Stop and view result",
     "description": "Btn demo stop"
   },
   "demoResultTitle": {

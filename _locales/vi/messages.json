@@ -608,7 +608,7 @@
     "description": "Nút ghi âm bản demo"
   },
   "btnDemoStop": {
-    "message": "⏹️ Dừng và xem kết quả",
+    "message": "Dừng và xem kết quả",
     "description": "Nút dừng bản demo"
   },
   "demoResultTitle": {

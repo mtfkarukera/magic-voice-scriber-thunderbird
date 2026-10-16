@@ -176,6 +176,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (btn) {
         btn.classList.toggle("active", n === numero);
         btn.classList.toggle("completed", n < numero);
+        if (n === numero) {
+          btn.setAttribute("aria-current", "step");
+        } else {
+          btn.removeAttribute("aria-current");
+        }
       }
     });
 
@@ -203,6 +208,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btn = stepIndicators[n];
     if (btn) {
       btn.addEventListener("click", () => afficherEtape(n));
+    }
+  });
+
+  // Libération propre des flux micro si la fenêtre est fermée
+  window.addEventListener("pagehide", () => {
+    arreterTestMicro();
+    if (typeof arreterEnregistrementDemo === "function") {
+      arreterEnregistrementDemo(true);
     }
   });
 
@@ -341,13 +354,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  let testDemarrageEnCours = false;
   async function demarrerTestMicro() {
+    if (testDemarrageEnCours) return;
     if (testAudioStream) {
       arreterTestMicro();
       if (micStatusText) micStatusText.textContent = t("micStatusIdle") || "Test terminé. Cliquez pour relancer.";
       return;
     }
 
+    testDemarrageEnCours = true;
     if (micStatusText) micStatusText.textContent = "Accès au microphone en cours…";
     testAudioMaxAmplitude = 0;
     testAudioStartTime = Date.now();
@@ -428,6 +444,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         "#ef4444"
       );
       arreterTestMicro();
+    } finally {
+      testDemarrageEnCours = false;
     }
   }
 
@@ -454,15 +472,100 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnTestApi = document.getElementById("btn-test-api");
   const apiTestStatus = document.getElementById("api-test-status");
 
+  // Préréglages Cloud et Local identiques aux Options
+  const PRESETS_CLOUD = {
+    openai: {
+      sttUrl: "https://api.openai.com",
+      sttModel: "whisper-1",
+      llmUrl: "https://api.openai.com",
+      llmModel: "gpt-4o-mini"
+    },
+    groq: {
+      sttUrl: "https://api.groq.com/openai",
+      sttModel: "whisper-large-v3-turbo",
+      llmUrl: "https://api.groq.com/openai",
+      llmModel: "llama-3.3-70b-versatile"
+    },
+    mistral: {
+      sttUrl: "https://api.groq.com/openai",
+      sttModel: "whisper-large-v3-turbo",
+      llmUrl: "https://api.mistral.ai",
+      llmModel: "mistral-small-latest"
+    },
+    custom: {
+      sttUrl: "https://api.openai.com",
+      sttModel: "whisper-1",
+      llmUrl: "https://api.openai.com",
+      llmModel: "gpt-4o-mini"
+    }
+  };
+
+  const PRESETS_LOCAL = {
+    ollama: {
+      sttUrl: "http://localhost:8000",
+      sttModel: "whisper-1",
+      llmUrl: "http://localhost:11434",
+      llmModel: "llama3.2"
+    },
+    lmstudio: {
+      sttUrl: "http://localhost:8000",
+      sttModel: "whisper-1",
+      llmUrl: "http://localhost:1234",
+      llmModel: "local-model"
+    },
+    custom: {
+      sttUrl: "http://localhost:8000",
+      sttModel: "whisper-1",
+      llmUrl: "http://localhost:11434",
+      llmModel: "llama3.2"
+    }
+  };
+
+  function construireConfigActive(modeleGemini = "gemini-3.5-transcribe-live") {
+    const provider = selectProvider ? selectProvider.value : "gemini";
+    const config = {
+      provider,
+      geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
+      geminiModel: modeleGemini
+    };
+
+    if (provider === "openai") {
+      const presetKey = selectOpenaiPreset ? selectOpenaiPreset.value : "openai";
+      const preset = PRESETS_CLOUD[presetKey] || PRESETS_CLOUD.openai;
+      config.openaiPreset = presetKey;
+      config.sttBaseUrl = preset.sttUrl;
+      config.sttModel = preset.sttModel;
+      config.llmBaseUrl = preset.llmUrl;
+      config.llmModel = preset.llmModel;
+      const key = inputOpenaiKey ? inputOpenaiKey.value.trim() : "";
+      config.sttApiKey = key;
+      config.llmApiKey = key;
+    } else if (provider === "local") {
+      const presetKey = selectLocalPreset ? selectLocalPreset.value : "ollama";
+      const preset = PRESETS_LOCAL[presetKey] || PRESETS_LOCAL.ollama;
+      config.localLlmPreset = presetKey;
+      config.localSttUrl = preset.sttUrl;
+      config.localSttModel = preset.sttModel;
+      config.localLlmUrl = preset.llmUrl;
+      config.localLlmModel = preset.llmModel;
+      config.localApiKey = "";
+    }
+    return config;
+  }
+
   // Masquer / afficher mot de passe
   if (btnToggleGeminiKey && inputGeminiKey) {
     btnToggleGeminiKey.addEventListener("click", () => {
-      inputGeminiKey.type = inputGeminiKey.type === "password" ? "text" : "password";
+      const estMasque = inputGeminiKey.type === "password";
+      inputGeminiKey.type = estMasque ? "text" : "password";
+      btnToggleGeminiKey.setAttribute("aria-pressed", estMasque ? "true" : "false");
     });
   }
   if (btnToggleOpenaiKey && inputOpenaiKey) {
     btnToggleOpenaiKey.addEventListener("click", () => {
-      inputOpenaiKey.type = inputOpenaiKey.type === "password" ? "text" : "password";
+      const estMasque = inputOpenaiKey.type === "password";
+      inputOpenaiKey.type = estMasque ? "text" : "password";
+      btnToggleOpenaiKey.setAttribute("aria-pressed", estMasque ? "true" : "false");
     });
   }
 
@@ -496,6 +599,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       "sttApiKey",
       "llmApiKey",
       "openaiPreset",
+      "localLlmPreset",
       "defaultVoiceMode"
     ]);
 
@@ -510,6 +614,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     if (configExistante.openaiPreset && selectOpenaiPreset) {
       selectOpenaiPreset.value = configExistante.openaiPreset;
+    }
+    if (configExistante.localLlmPreset && selectLocalPreset) {
+      selectLocalPreset.value = configExistante.localLlmPreset;
     }
     actualiserAffichageFournisseur();
 
@@ -529,20 +636,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Test de connexion direct
   if (btnTestApi) {
     btnTestApi.addEventListener("click", async () => {
-      const provider = selectProvider ? selectProvider.value : "gemini";
       if (apiTestStatus) {
         apiTestStatus.textContent = "Vérification en cours…";
         apiTestStatus.className = "mvs-api-status";
       }
 
-      const configTest = {
-        provider,
-        geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
-        geminiModel: "gemini-3.5-transcribe-live",
-        openaiPreset: selectOpenaiPreset ? selectOpenaiPreset.value : "openai",
-        sttApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : "",
-        llmApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : ""
-      };
+      const configTest = construireConfigActive("gemini-3.5-transcribe-live");
 
       try {
         let res;
@@ -586,6 +685,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  document.querySelectorAll('input[name="setup-voice-mode"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      document.querySelectorAll(".mvs-mode-option").forEach((opt) => {
+        opt.classList.toggle("selected", opt.contains(input));
+      });
+    });
+  });
+
   // ═════════════════════════════════════════════════════════════════════════
   // 5. ÉTAPE 4 : BAC À SABLE INTERACTIF (ESSAYEZ LA MAGIE EN DIRECT !)
   // ═════════════════════════════════════════════════════════════════════════
@@ -626,6 +733,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     demoWaveformBars.forEach((bar) => {
       bar.style.height = "6px";
     });
+    demoAudioChunks = [];
 
     if (btnDemoRecord) {
       btnDemoRecord.disabled = false;
@@ -639,7 +747,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  let demoDemarrageEnCours = false;
   async function demarrerEnregistrementDemo() {
+    if (demoDemarrageEnCours) return;
     if (demoIsRecording) {
       // Deuxième clic = arrêt de l'enregistrement et lancement du nettoyage sémantique
       if (demoStatusText) {
@@ -674,6 +784,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    demoDemarrageEnCours = true;
     // Réinitialisation de la zone de résultat
     if (demoResultBox) demoResultBox.classList.add("mvs-hidden");
     if (demoResultContent) demoResultContent.textContent = "";
@@ -722,6 +833,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       demoMediaRecorder = new MediaRecorder(demoAudioStream, { mimeType: mime });
+      demoMediaRecorder.onerror = (e) => {
+        if (DEBUG) console.warn("[Setup] Erreur MediaRecorder démo :", e);
+        arreterEnregistrementDemo(true);
+      };
       demoMediaRecorder.ondataavailable = (e) => {
         if (e.data && e.data.size > 0) {
           demoAudioChunks.push(e.data);
@@ -744,6 +859,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (demoStatusText) {
         demoStatusText.textContent = "Impossible d'accéder au micro. Veuillez vérifier vos autorisations à l'étape 1.";
       }
+    } finally {
+      demoDemarrageEnCours = false;
     }
   }
 
@@ -761,6 +878,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const blobFinal = new Blob(demoAudioChunks, { type: mime });
 
     if (blobFinal.size < 200) {
+      demoAudioChunks = [];
       if (demoStatusText) {
         demoStatusText.textContent = "Aucun son suffisant capté. Réessayez en parlant bien distinctement.";
       }
@@ -775,18 +893,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const base64Audio = await blobVersBase64(blobFinal);
-      const provider = selectProvider ? selectProvider.value : "gemini";
       const modeRadio = document.querySelector('input[name="setup-voice-mode"]:checked');
       const voiceMode = modeRadio ? modeRadio.value : "natural";
-
-      const configDemo = {
-        provider,
-        geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
-        geminiModel: "gemini-3.5-transcribe",
-        openaiPreset: selectOpenaiPreset ? selectOpenaiPreset.value : "openai",
-        sttApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : "",
-        llmApiKey: inputOpenaiKey ? inputOpenaiKey.value.trim() : ""
-      };
+      const configDemo = construireConfigActive("gemini-3.5-transcribe");
 
       let resultat;
       if (globalThis.MVSProviders) {
@@ -797,6 +906,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           voiceMode
         );
       }
+
+      // Si l'utilisateur a changé d'étape pendant la requête réseau, ne pas altérer le DOM masqué
+      if (etapeCourante !== 4) return;
 
       if (resultat && resultat.text && resultat.text.trim()) {
         if (demoResultContent) {
@@ -815,11 +927,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } catch (errTranscription) {
       if (DEBUG) console.warn("[Setup] Erreur transcription démo :", errTranscription);
-      if (demoStatusText) {
+      if (etapeCourante === 4 && demoStatusText) {
         const msg = errTranscription && errTranscription.message ? errTranscription.message : "Erreur réseau";
         demoStatusText.textContent = `Échec de transcription : ${msg}. Vérifiez votre clé d'API.`;
       }
     } finally {
+      demoAudioChunks = [];
       if (btnDemoRecord) {
         btnDemoRecord.disabled = false;
         definirContenuBoutonMicro(btnDemoRecord, "🎙️", t("btnDemoRecord") || "Lire la phrase à voix haute");
@@ -843,24 +956,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       btnFinish.disabled = true;
       btnFinish.textContent = "Enregistrement en cours…";
 
-      const provider = selectProvider ? selectProvider.value : "gemini";
       const modeRadio = document.querySelector('input[name="setup-voice-mode"]:checked');
       const voiceMode = modeRadio ? modeRadio.value : "natural";
 
       const configSauvegarde = {
-        provider,
-        geminiApiKey: inputGeminiKey ? inputGeminiKey.value.trim() : "",
-        geminiModel: "gemini-3.5-transcribe-live",
+        ...construireConfigActive("gemini-3.5-transcribe-live"),
         defaultVoiceMode: voiceMode,
         lastVoiceMode: voiceMode,
         voiceModePolicy: "default"
       };
-
-      if (provider === "openai") {
-        configSauvegarde.openaiPreset = selectOpenaiPreset ? selectOpenaiPreset.value : "openai";
-        configSauvegarde.sttApiKey = inputOpenaiKey ? inputOpenaiKey.value.trim() : "";
-        configSauvegarde.llmApiKey = inputOpenaiKey ? inputOpenaiKey.value.trim() : "";
-      }
 
       try {
         await api.storage.local.set(configSauvegarde);

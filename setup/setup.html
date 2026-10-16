@@ -71,13 +71,13 @@
           <!-- Zone de Test Microphone en direct -->
           <div class="mvs-mic-tester">
             <div class="mvs-mic-visualizer" id="mic-visualizer">
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
             </div>
-            <p id="mic-status-text" class="mvs-mic-status" data-i18n="micStatusIdle">Cliquez sur « Tester le microphone » et parlez pour vérifier le signal.</p>
+            <p id="mic-status-text" class="mvs-mic-status" role="status" aria-live="polite" data-i18n="micStatusIdle">Cliquez sur « Tester le microphone » et parlez pour vérifier le signal.</p>
             <button type="button" id="btn-test-mic" class="mvs-btn mvs-btn-primary">
               <span class="mvs-btn-icon-symbol" aria-hidden="true">🎙️</span>
               <span data-i18n="btnTestMic">Tester le microphone</span>
@@ -151,7 +151,7 @@
               <label for="setup-gemini-key" data-i18n="labelGeminiApiKey">Clé API Google Gemini (AI Studio) :</label>
               <div class="mvs-input-group">
                 <input type="password" id="setup-gemini-key" class="mvs-input" placeholder="AIzaSy..." autocomplete="off">
-                <button type="button" id="btn-toggle-setup-gemini-key" class="mvs-btn-icon" title="Afficher/Masquer">👁</button>
+                <button type="button" id="btn-toggle-setup-gemini-key" class="mvs-btn-icon" title="Afficher/Masquer" aria-label="Afficher ou masquer la clé API Gemini" aria-pressed="false">👁</button>
               </div>
               <p class="mvs-help">
                 <span data-i18n="helpGeminiGet">Obtenez votre clé gratuite en 30 secondes sur </span>
@@ -175,7 +175,7 @@
               <label for="setup-openai-key" data-i18n="labelSttApiKey">Clé API :</label>
               <div class="mvs-input-group">
                 <input type="password" id="setup-openai-key" class="mvs-input" placeholder="sk-..." autocomplete="off">
-                <button type="button" id="btn-toggle-setup-openai-key" class="mvs-btn-icon" title="Afficher/Masquer">👁</button>
+                <button type="button" id="btn-toggle-setup-openai-key" class="mvs-btn-icon" title="Afficher/Masquer" aria-label="Afficher ou masquer la clé API Cloud" aria-pressed="false">👁</button>
               </div>
             </div>
           </div>
@@ -309,14 +309,14 @@
           <!-- Zone d'enregistrement démonstration -->
           <div class="mvs-demo-recorder">
             <div class="mvs-mic-visualizer" id="demo-visualizer">
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
-              <div class="mvs-waveform-bar" style="height: 6px;"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
+              <div class="mvs-waveform-bar"></div>
             </div>
 
-            <p id="demo-status-text" class="mvs-mic-status" data-i18n="demoStatusIdle">Cliquez sur « Lire la phrase » et parlez à voix haute.</p>
+            <p id="demo-status-text" class="mvs-mic-status" role="status" aria-live="polite" data-i18n="demoStatusIdle">Cliquez sur « Lire la phrase » et parlez à voix haute.</p>
 
             <button type="button" id="btn-demo-record" class="mvs-btn mvs-btn-primary">
               <span class="mvs-btn-icon-symbol" aria-hidden="true">🎙️</span>
@@ -330,7 +330,7 @@
               <span class="mvs-badge-icon" aria-hidden="true">✨</span>
               <strong data-i18n="demoResultTitle">Résultat nettoyé par Magic Voice Scriber :</strong>
             </div>
-            <div class="mvs-demo-result-content" id="demo-result-content"></div>
+            <div class="mvs-demo-result-content" id="demo-result-content" aria-live="polite"></div>
             <div class="mvs-demo-badges">
               <span class="mvs-result-pill" data-i18n="demoBadgeHesitations">Hésitations « euh » gommées ✓</span>
               <span class="mvs-result-pill" data-i18n="demoBadgeAutocorrect">Auto-correction résolue ✓</span>

@@ -1316,6 +1316,11 @@ const DEBUG = false;
       reponse = { success: false, error: "SERVICE_UNAVAILABLE" };
     }
 
+    if (etatCourant !== "THINKING") {
+      // La session a été annulée (ex: touche Échap ou fermeture) pendant le traitement
+      return;
+    }
+
     if (!reponse || !reponse.success || !reponse.text) {
       // Si la réponse échoue mais que des mots avaient déjà été dictés et affichés en direct,
       // on CONSERVE et on FIGE ce texte sans jamais le détruire !
@@ -1679,8 +1684,8 @@ const DEBUG = false;
   // Réception des messages depuis background.js (toggleVoicePill, updateVoiceBars, updateLiveTranscript)
   if (api && api.runtime && api.runtime.onMessage) {
     api.runtime.onMessage.addListener((message, expediteur, sendResponse) => {
-      // Filtrer les messages externes : accepter uniquement l'extension elle-même
-      if (expediteur && expediteur.id && expediteur.id !== api.runtime.id) {
+      // Filtrer les messages externes : accepter strictement l'extension elle-même
+      if (!expediteur || expediteur.id !== api.runtime.id) {
         return false;
       }
 

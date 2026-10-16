@@ -576,7 +576,7 @@
     "description": "Bouton enregistrement démo"
   },
   "btnDemoStop": {
-    "message": "⏹️ Arrêter et voir le résultat",
+    "message": "Arrêter et voir le résultat",
     "description": "Bouton arrêt démo"
   },
   "demoResultTitle": {
