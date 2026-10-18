@@ -3,6 +3,14 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.4.2] - 2026-10-18
+
+### Ergonomie Visuelle — Interrupteurs Toggle Switches Modernes
+- **Modernisation des Interrupteurs (`setup/setup.css`, `options/options.css`)** :
+  - Remplacement visuel de la case à cocher native brute par un véritable interrupteur à glissière moderne (Toggle Switch 44px x 24px) avec pastille mobile ombrée, aligné à droite de la carte.
+  - Harmonisation complète entre l'Étape 3 du Wizard d'onboarding (`setup.html`) et la Section 2 des Options (`options.html`).
+  - Animation fluide 60 FPS, rétroéclairage accentué au survol et gestion de l'accessibilité au clavier (`focus-visible`).
+
 ## [1.4.1] - 2026-10-18
 
 ### Parité 1:1 Firefox & Épuration des Modes de Style Résiduels

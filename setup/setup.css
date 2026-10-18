@@ -510,6 +510,100 @@ body {
   line-height: 1.4;
 }
 
+/* ── Interrupteurs Switches (Toggle Switches) ── */
+.mvs-switch-field {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px;
+  padding: 16px;
+  background: var(--setup-panel-bg);
+  border: 1px solid var(--setup-card-border);
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.mvs-switch-field:hover {
+  border-color: rgba(249, 115, 22, 0.35);
+  background: rgba(249, 115, 22, 0.04);
+}
+
+.mvs-field-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.mvs-field-info label {
+  cursor: pointer;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--setup-text-main);
+}
+
+.mvs-field-info .mvs-help {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--setup-text-muted);
+  line-height: 1.4;
+}
+
+.mvs-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.mvs-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.mvs-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--setup-card-border);
+  transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 24px;
+}
+
+.mvs-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.mvs-switch input:checked + .mvs-slider {
+  background-color: var(--setup-accent);
+}
+
+.mvs-switch input:checked + .mvs-slider:before {
+  transform: translateX(20px);
+}
+
+.mvs-switch input:focus-visible + .mvs-slider {
+  outline: 2px solid var(--setup-accent);
+  outline-offset: 2px;
+}
+
 /* ── Shortcut Preview ── */
 .mvs-divider {
   border: none;
