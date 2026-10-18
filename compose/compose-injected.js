@@ -33,6 +33,7 @@ const DEBUG = false;
   // ── État interne du widget flottant ───────────────────────────────────────
   // "IDLE_FLOATING" | "ONBOARDING" | "MIC_PREF_GUIDE" | "RECORDING" | "PAUSED" | "THINKING" | "DONE" | "ERROR"
   let etatCourant = "IDLE_FLOATING";
+  let caretGemEnabled = false;
   let fournisseurActif = "gemini";
   let modeVoixActif = "natural";
   let secondesEcoulees = 0;
@@ -250,9 +251,15 @@ const DEBUG = false;
   function positionnerPresDuCurseur() {
     if (!conteneurFlottant) return;
 
+    const estEnVeille = etatCourant === "IDLE_FLOATING";
+    if (estEnVeille && !caretGemEnabled) {
+      conteneurFlottant.classList.add("mvs-hidden");
+      if (vueCapsule) vueCapsule.classList.add("mvs-hidden");
+      return;
+    }
+
     const rectCurseur = obtenirRectangleCurseur();
     const rectWidget = conteneurFlottant.getBoundingClientRect();
-    const estEnVeille = etatCourant === "IDLE_FLOATING";
     const largeurW = rectWidget.width || (estEnVeille ? 14 : 210);
     const hauteurW = rectWidget.height || (estEnVeille ? 14 : 38);
 
@@ -368,6 +375,7 @@ const DEBUG = false;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
+      .mvs-floating-root.mvs-hidden,
       .mvs-pill.mvs-hidden {
         display: none !important;
       }
@@ -600,7 +608,7 @@ const DEBUG = false;
     `;
 
     conteneurFlottant = document.createElement("div");
-    conteneurFlottant.className = "mvs-floating-root";
+    conteneurFlottant.className = caretGemEnabled ? "mvs-floating-root" : "mvs-floating-root mvs-hidden";
     conteneurFlottant.setAttribute("role", "region");
     conteneurFlottant.setAttribute("aria-label", t("composeActionLabel"));
 
@@ -627,7 +635,7 @@ const DEBUG = false;
 
     // ── 1. Capsule flottante (Veille compacte ou Enregistrement déployé) ──────
     vueCapsule = document.createElement("div");
-    vueCapsule.className = "mvs-pill mvs-pill-idle";
+    vueCapsule.className = caretGemEnabled ? "mvs-pill mvs-pill-idle" : "mvs-pill mvs-pill-idle mvs-hidden";
 
     // Bouton principal rond avec micro SVG en veille et 5 barres verticales blanches en enregistrement
     btnOndeRouge = document.createElement("button");
@@ -1080,6 +1088,7 @@ const DEBUG = false;
       reinitialiserAttenuatonFrappe();
       nettoyerConteneurLiveDOM();
 
+      if (conteneurFlottant) conteneurFlottant.classList.remove("mvs-hidden");
       vueOnboarding.classList.add("mvs-hidden");
       vueCapsule.classList.remove("mvs-hidden", "mvs-pill-idle");
 
@@ -1392,8 +1401,19 @@ const DEBUG = false;
       vueOnboarding.classList.add("mvs-hidden");
     }
     if (vueCapsule) {
-      vueCapsule.classList.remove("mvs-hidden");
-      vueCapsule.classList.add("mvs-pill-idle");
+      if (caretGemEnabled) {
+        vueCapsule.classList.remove("mvs-hidden");
+        vueCapsule.classList.add("mvs-pill-idle");
+      } else {
+        vueCapsule.classList.add("mvs-hidden");
+      }
+    }
+    if (conteneurFlottant) {
+      if (caretGemEnabled) {
+        conteneurFlottant.classList.remove("mvs-hidden");
+      } else {
+        conteneurFlottant.classList.add("mvs-hidden");
+      }
     }
     if (btnOndeRouge) {
       btnOndeRouge.className = "mvs-red-wave-btn state-idle";
@@ -1412,7 +1432,9 @@ const DEBUG = false;
     if (btnAnnuler) btnAnnuler.style.display = "none";
 
     restaurerPositionCurseur();
-    positionnerPresDuCurseur();
+    if (caretGemEnabled) {
+      positionnerPresDuCurseur();
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1423,7 +1445,7 @@ const DEBUG = false;
   let timerFinFrappe = null;
 
   function gererAttenuatonFrappe() {
-    if (!conteneurFlottant || etatCourant !== "IDLE_FLOATING") return;
+    if (!conteneurFlottant || etatCourant !== "IDLE_FLOATING" || !caretGemEnabled) return;
     conteneurFlottant.classList.add("is-typing");
     if (timerFinFrappe) {
       clearTimeout(timerFinFrappe);
@@ -1451,6 +1473,7 @@ const DEBUG = false;
   let rafPositionnement = null;
 
   function planifierPositionnementCurseur() {
+    if (etatCourant === "IDLE_FLOATING" && !caretGemEnabled) return;
     if (rafPositionnement) return;
     rafPositionnement = requestAnimationFrame(() => {
       rafPositionnement = null;
@@ -1613,15 +1636,59 @@ const DEBUG = false;
     });
   }
 
-  // Initialisation immédiate du petit bouton flottant permanent dès l'ouverture du mail
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      construireInterfaceShadowDom();
-      setTimeout(positionnerPresDuCurseur, 120);
+  /**
+   * Charge la préférence caretGemEnabled depuis browser.storage.local et ajuste la visibilité.
+   */
+  async function chargerPreferencesErgonomie() {
+    try {
+      if (api && api.storage && api.storage.local) {
+        const res = await api.storage.local.get("caretGemEnabled");
+        caretGemEnabled = Boolean(res && res.caretGemEnabled);
+      }
+    } catch {
+      caretGemEnabled = false;
+    }
+    appliquerVisibiliteGoutte();
+  }
+
+  /**
+   * Applique la visibilité de la Goutte Vocale en fonction de caretGemEnabled et de l'état courant.
+   */
+  function appliquerVisibiliteGoutte() {
+    if (!conteneurFlottant || !vueCapsule) return;
+    if (etatCourant === "IDLE_FLOATING") {
+      if (caretGemEnabled) {
+        conteneurFlottant.classList.remove("mvs-hidden");
+        vueCapsule.classList.remove("mvs-hidden");
+        vueCapsule.classList.add("mvs-pill-idle");
+        positionnerPresDuCurseur();
+      } else {
+        conteneurFlottant.classList.add("mvs-hidden");
+        vueCapsule.classList.add("mvs-hidden");
+      }
+    }
+  }
+
+  // Écoute en direct des changements dans browser.storage.local
+  if (api && api.storage && api.storage.onChanged) {
+    api.storage.onChanged.addListener((changes, area) => {
+      if (area === "local" && changes && "caretGemEnabled" in changes) {
+        caretGemEnabled = Boolean(changes.caretGemEnabled.newValue);
+        appliquerVisibiliteGoutte();
+      }
     });
-  } else {
+  }
+
+  // Initialisation du widget flottant dès l'ouverture du mail
+  async function initialiserWidget() {
     construireInterfaceShadowDom();
-    setTimeout(positionnerPresDuCurseur, 120);
+    await chargerPreferencesErgonomie();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialiserWidget);
+  } else {
+    initialiserWidget();
   }
 
   // Libération propre à la fermeture de la fenêtre de rédaction

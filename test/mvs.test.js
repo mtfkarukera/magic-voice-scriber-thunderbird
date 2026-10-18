@@ -579,7 +579,18 @@ describe("4. Sécurité DOM, CSP & Garde-fou DEBUG (Règles 11, 12, 14)", () => 
     assert.equal(hosts.includes("https://generativelanguage.googleapis.com/*"), true, "Gemini doit figurer dans host_permissions");
     assert.equal(hosts.includes("https://api.mistral.ai/*"), true, "Mistral doit figurer dans host_permissions");
     assert.equal(hosts.includes("http://localhost/*"), true, "Localhost doit figurer dans host_permissions");
-    assert.equal(manifest.version, "1.4.2", "La version du manifest doit être 1.4.2");
+    assert.equal(manifest.version, "1.4.3", "La version du manifest doit être 1.4.3");
+  });
+
+  it("gère caretGemEnabled dans background.js et compose-injected.js", () => {
+    const bgSrc = fs.readFileSync(path.join(RACINE, "background.js"), "utf8");
+    assert.ok(bgSrc.includes("caretGemEnabled: false"), "caretGemEnabled: false doit figurer dans CONFIG_DEFAUT");
+
+    const composeSrc = fs.readFileSync(path.join(RACINE, "compose/compose-injected.js"), "utf8");
+    assert.ok(composeSrc.includes("let caretGemEnabled = false;"), "caretGemEnabled doit être déclaré dans compose-injected.js");
+    assert.ok(composeSrc.includes("chargerPreferencesErgonomie"), "chargerPreferencesErgonomie doit être présent dans compose-injected.js");
+    assert.ok(composeSrc.includes("appliquerVisibiliteGoutte"), "appliquerVisibiliteGoutte doit être présent dans compose-injected.js");
+    assert.ok(composeSrc.includes(".mvs-floating-root.mvs-hidden"), "mvs-floating-root.mvs-hidden doit être présent dans les styles Shadow DOM");
   });
 });
 

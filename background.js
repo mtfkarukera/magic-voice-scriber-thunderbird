@@ -53,7 +53,10 @@ const CONFIG_DEFAUT = {
   localLlmModel: "llama3.2",
   localApiKey: "",
 
-  // 4. Préférences du Sélecteur de Mode de Voix (pour OpenAI/Tiers et Local)
+  // 4. Préférences Ergonomie & Affichage (Goutte Vocale au repos sous le curseur)
+  caretGemEnabled: false,
+
+  // 5. Préférences du Sélecteur de Mode de Voix (pour OpenAI/Tiers et Local)
   voiceModePolicy: "remember", // "remember" | "default"
   defaultVoiceMode: "natural", // "natural" | "pro" | "bullets"
   lastVoiceMode: "natural"     // "natural" | "pro" | "bullets"

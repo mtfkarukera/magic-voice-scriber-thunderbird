@@ -3,6 +3,18 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.4.3] - 2026-10-18
+
+### Correction Bug & Respect Strict du Switch Goutte Vocale au Repos
+- **Furtivité Intégrale dans le Composeur (`compose/compose-injected.js`)** :
+  - Raccordement du script de composition à `browser.storage.local` pour charger la préférence `caretGemEnabled`.
+  - Écoute en direct des modifications via `api.storage.onChanged` pour afficher ou masquer la Goutte Vocale immédiatement sans recharger la fenêtre.
+  - Masquage complet (`display: none !important`) de la Goutte Vocale au repos sous le curseur lorsque l'interrupteur est désactivé (mode furtif par défaut).
+  - Déploiement normal et fluide de la capsule d'enregistrement lors du déclenchement clavier (`Alt+Shift+D` / `⌘+Shift+S`) ou du bouton de barre d'outils, puis repli automatique en état invisible à l'insertion du texte.
+  - Élimination des calculs de positionnement inutiles au repos lorsque la goutte est désactivée.
+- **Synchronisation de Configuration (`background.js`)** :
+  - Déclaration de `caretGemEnabled: false` dans `CONFIG_DEFAUT`.
+
 ## [1.4.2] - 2026-10-18
 
 ### Ergonomie Visuelle — Interrupteurs Toggle Switches Modernes
