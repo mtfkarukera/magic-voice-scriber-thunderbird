@@ -20,7 +20,7 @@
   - Toute chaîne visible par l'utilisateur (texte, placeholder, `title`, `aria-label`) doit être déclarée dans les 6 fichiers `_locales/{en,fr,es,pt,de,vi}/messages.json`.
   - Utiliser les attributs déclaratifs `data-i18n`, `data-i18n-title`, `data-i18n-aria-label`, `data-i18n-placeholder` et l'utilitaire `t(cle, repli)`.
 - **Accessibilité WCAG 2.1 AA** :
-  - Contraste minimal de 4.5:1, indicateurs `:focus-visible` explicites et mise à jour dynamique des attributs ARIA sur le bouton morphing de mode et le bouton d'enregistrement/pause.
+  - Contraste minimal de 4.5:1, indicateurs `:focus-visible` explicites et mise à jour dynamique des attributs ARIA sur la Goutte Vocale et les contrôles de la capsule vocale.
 - **Sécurité DOM & CSP** :
   - Interdiction stricte de `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `eval()` et `new Function()`.
   - Interdiction de `window.alert()`, `confirm()` et `prompt()`.
@@ -50,4 +50,4 @@ bash build.sh
 ### Procédure de test manuel dans Thunderbird 128+ ESR
 1. Ouvrir `Outils > Modules complémentaires et thèmes > Déboguer des modules > Charger un module temporaire…` et sélectionner `manifest.json`.
 2. Ouvrir une fenêtre de rédaction de message (`Ctrl+N`) et appuyer sur `Alt+Shift+S`.
-3. Tester la pause/reprise avec la barre `Espace`, le changement de mode morphing (`Naturel` / `Professionnel` / `Synthèse`) et l'insertion à la position du curseur.
+3. Tester la pause/reprise avec la barre `Espace`, l'animation de l'onde réactive 5 barres et l'insertion automatique du texte au curseur.
