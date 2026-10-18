@@ -1,159 +1,7 @@
 {
-  "extName": {
-    "message": "Magic Voice Scriber",
-    "description": "Tên tiện ích mở rộng"
-  },
-  "extDescription": {
-    "message": "Nhập liệu bằng giọng nói ngữ nghĩa thông minh lấy cảm hứng từ Google Rambler cho Thunderbird (Gemini, OpenAI/Mistral/Groq hoặc Ollama/Whisper cục bộ).",
-    "description": "Mô tả tiện ích mở rộng"
-  },
-  "composeActionLabel": {
-    "message": "Đọc",
-    "description": "Nhãn ngắn cho nút trên thanh công cụ soạn thảo"
-  },
-  "composeActionTitle": {
-    "message": "PC: Alt+Shift+S • Mac: ⌘⇧S hoặc ⌥⇧S",
-    "description": "Chú giải nút trên thanh công cụ soạn thảo"
-  },
-  "menuOptionsTitle": {
-    "message": "Cài đặt Magic Voice Scriber…",
-    "description": "Mục menu ngữ cảnh mở cài đặt"
-  },
-  "onboardingMessage": {
-    "message": "Chào mừng đến với Magic Voice Scriber! Nhập khóa API Gemini (khuyên dùng), OpenAI/Bên thứ ba hoặc cục bộ chỉ với 1 cú nhấp để bật nhập liệu giọng nói thông minh.",
-    "description": "Thông báo chào mừng khi chưa có khóa API"
-  },
-  "btnOpenSettings": {
-    "message": "Cấu hình với 1 cú nhấp",
-    "description": "Nút mở cài đặt"
-  },
-  "btnSettingsTitle": {
-    "message": "Mở cài đặt",
-    "description": "Chú giải nút cài đặt"
-  },
-  "modeNaturalLabel": {
-    "message": "Tự nhiên",
-    "description": "Chế độ giọng nói 1: Tự nhiên"
-  },
-  "modeNaturalDesc": {
-    "message": "Loại bỏ ngập ngừng và chấm câu trong khi vẫn giữ nguyên lời nói chính xác của bạn.",
-    "description": "Mô tả chế độ tự nhiên"
-  },
-  "modeProLabel": {
-    "message": "Chuyên nghiệp",
-    "description": "Chế độ giọng nói 2: Chuyên nghiệp"
-  },
-  "modeProDesc": {
-    "message": "Diễn đạt lại suy nghĩ được đọc của bạn với văn phong lịch sự, trau chuốt và trang trọng.",
-    "description": "Mô tả chế độ chuyên nghiệp"
-  },
-  "modeBulletsLabel": {
-    "message": "Tóm tắt",
-    "description": "Chế độ giọng nói 3: Tóm tắt gạch đầu dòng"
-  },
-  "modeBulletsDesc": {
-    "message": "Chuyển đổi suy nghĩ nói to thành danh sách hành động có trật tự rõ ràng.",
-    "description": "Mô tả chế độ đầu dòng"
-  },
-  "modeBtnAriaLabel": {
-    "message": "Chế độ đọc chính tả đang hoạt động. Nhấp để chuyển đổi giữa Tự nhiên, Chuyên nghiệp và Tóm tắt.",
-    "description": "Nhãn trợ năng của nút chọn chế độ"
-  },
-  "statusReady": {
-    "message": "Sẵn sàng lắng nghe",
-    "description": "Trạng thái sẵn sàng"
-  },
-  "statusRecording": {
-    "message": "Đang nghe… (Phím cách: Tạm dừng)",
-    "description": "Trạng thái đang ghi âm"
-  },
-  "statusPaused": {
-    "message": "Đã tạm dừng — Nhấn Phím cách để tiếp tục",
-    "description": "Trạng thái tạm dừng"
-  },
-  "statusThinking": {
-    "message": "Đang làm sạch và định dạng văn bản…",
-    "description": "Trạng thái xử lý AI"
-  },
-  "statusLiveStreaming": {
-    "message": "Đang phiên âm trực tiếp…",
-    "description": "Trạng thái truyền trực tiếp WebSocket"
-  },
-  "statusInserted": {
-    "message": "Đã chèn văn bản tại con trỏ ✓",
-    "description": "Trạng thái chèn thành công"
-  },
-  "statusMaxDurationReached": {
-    "message": "Đã đạt dung lượng tối ưu (5 phút) — Đang hoàn tất…",
-    "description": "Trạng thái đạt giới hạn 5 phút"
-  },
-  "statusPermissionRequired": {
-    "message": "Cần quyền truy cập mạng — Nhấp vào huy hiệu công cụ",
-    "description": "Trạng thái thiếu quyền mạng"
-  },
-  "btnPauseTitle": {
-    "message": "Tạm dừng / Tiếp tục ghi âm (Phím cách)",
-    "description": "Chú giải nút tạm dừng"
-  },
-  "btnStopLabel": {
-    "message": "Hoàn tất & Chèn",
-    "description": "Nhãn nút hoàn tất"
-  },
-  "btnStopTitle": {
-    "message": "Dừng ghi âm và chèn văn bản đã làm sạch (Enter)",
-    "description": "Chú giải nút hoàn tất"
-  },
-  "btnCancelLabel": {
-    "message": "Hủy",
-    "description": "Nhãn nút hủy"
-  },
-  "btnCancelTitle": {
-    "message": "Hủy bỏ bản ghi và đóng (Escape)",
-    "description": "Chú giải nút hủy"
-  },
-  "hintShortcuts": {
-    "message": "Phím cách: Tạm dừng • Enter: Chèn • Esc: Hủy",
-    "description": "Thanh gợi ý phím tắt"
-  },
-  "errorMicPermission": {
-    "message": "Quyền truy cập micrô bị từ chối. Vui lòng cấp quyền sử dụng micrô.",
-    "description": "Lỗi quyền micrô"
-  },
-  "errorNoAudio": {
-    "message": "Không phát hiện âm thanh. Vui lòng nói và thử lại.",
-    "description": "Lỗi không có âm thanh"
-  },
-  "errorEmptyRecording": {
-    "message": "Bản ghi quá ngắn hoặc không có âm thanh. Vui lòng thử lại.",
-    "description": "Lỗi khi bản ghi âm không chứa dữ liệu khả dụng"
-  },
-  "errorSessionLost": {
-    "message": "Phiên ghi âm bị gián đoạn. Vui lòng khởi động lại chính tả.",
-    "description": "Lỗi khi phiên ghi âm nền bị mất"
-  },
-  "errorUnauthorized": {
-    "message": "Khóa API không hợp lệ hoặc bị thiếu. Vui lòng kiểm tra cài đặt.",
-    "description": "Lỗi 401/403"
-  },
-  "errorRateLimited": {
-    "message": "Đã vượt quá hạn ngạch hoặc giới hạn yêu cầu API (429). Vui lòng đợi.",
-    "description": "Lỗi 429"
-  },
-  "errorTimeout": {
-    "message": "Yêu cầu đã hết thời gian chờ. Vui lòng kiểm tra kết nối.",
-    "description": "Lỗi hết thời gian chờ"
-  },
-  "errorNetwork": {
-    "message": "Lỗi mạng. Kiểm tra kết nối Internet hoặc máy chủ cục bộ của bạn.",
-    "description": "Lỗi mạng"
-  },
-  "errorServiceUnavailable": {
-    "message": "Dịch vụ phiên âm tạm thời không khả dụng.",
-    "description": "Lỗi dịch vụ"
-  },
-  "errorInsertFailed": {
-    "message": "Không thể chèn văn bản vào trình soạn thảo email.",
-    "description": "Lỗi chèn DOM"
+  "badgeDefault": {
+    "message": "Mặc định",
+    "description": "Huy hiệu mặc định"
   },
   "badgePermissionWarnTitle": {
     "message": "Cần cấp quyền — Nhấp để cấp quyền với 1 cú nhấp",
@@ -163,237 +11,17 @@
     "message": "Công cụ đang hoạt động (Nhấp để thay đổi trong cài đặt)",
     "description": "Chú giải huy hiệu công cụ"
   },
-  "optionsPageTitle": {
-    "message": "Cài đặt — Magic Voice Scriber",
-    "description": "Tiêu đề trang cài đặt"
+  "btnCancelLabel": {
+    "message": "Hủy",
+    "description": "Nhãn nút hủy"
   },
-  "optionsHeaderSubtitle": {
-    "message": "Nhập liệu giọng nói ngữ nghĩa lấy cảm hứng từ Google Rambler cho Thunderbird",
-    "description": "Phụ đề trang cài đặt"
+  "btnCancelTitle": {
+    "message": "Hủy bỏ bản ghi và đóng (Escape)",
+    "description": "Chú giải nút hủy"
   },
-  "sectionProviderTitle": {
-    "message": "1. Công cụ Trí tuệ Giọng nói",
-    "description": "Tiêu đề phần nhà cung cấp"
-  },
-  "labelSelectProvider": {
-    "message": "Nhà cung cấp đang hoạt động",
-    "description": "Nhãn chọn nhà cung cấp"
-  },
-  "providerOptionGemini": {
-    "message": "Google Gemini API (Khuyên dùng — Mặc định)",
-    "description": "Tùy chọn Gemini"
-  },
-  "providerOptionOpenai": {
-    "message": "OpenAI / Đám mây Bên thứ ba (Mistral, Groq, OpenAI…)",
-    "description": "Tùy chọn OpenAI"
-  },
-  "providerOptionLocal": {
-    "message": "Mô hình 100 % Cục bộ (Ollama, LM Studio, Whisper cục bộ)",
-    "description": "Tùy chọn Cục bộ"
-  },
-  "badgeDefault": {
-    "message": "Mặc định",
-    "description": "Huy hiệu mặc định"
-  },
-  "helpProviderGemini": {
-    "message": "Sử dụng trực tiếp các mô hình Gemini 3.5 Transcribe ở chế độ SMART (loại bỏ từ đệm, tự sửa lỗi và định dạng chỉ trong một bước).",
-    "description": "Trợ giúp Gemini"
-  },
-  "helpProviderOpenai": {
-    "message": "Kết hợp công cụ nhận dạng giọng nói nhanh (Whisper trên OpenAI hoặc Groq) với mô hình ngôn ngữ (Mistral, OpenAI, Groq) để làm sạch văn bản.",
-    "description": "Trợ giúp OpenAI"
-  },
-  "helpProviderLocal": {
-    "message": "Xử lý ngoại tuyến 100 % và bảo mật tuyệt đối trên máy tính của bạn qua máy chủ Whisper cục bộ và Ollama hoặc LM Studio.",
-    "description": "Trợ giúp Cục bộ"
-  },
-  "sectionGeminiTitle": {
-    "message": "Cấu hình Google Gemini",
-    "description": "Tiêu đề Gemini"
-  },
-  "labelGeminiApiKey": {
-    "message": "Khóa API Google AI Studio",
-    "description": "Nhãn khóa Gemini"
-  },
-  "placeholderGeminiApiKey": {
-    "message": "AIzaSy...",
-    "description": "Gợi ý khóa Gemini"
-  },
-  "helpGeminiApiKey": {
-    "message": "Nhận khóa miễn phí tại aistudio.google.com",
-    "description": "Trợ giúp khóa Gemini"
-  },
-  "labelGeminiModel": {
-    "message": "Mô hình phiên âm Gemini",
-    "description": "Nhãn mô hình Gemini"
-  },
-  "geminiModelBatch": {
-    "message": "gemini-3.5-transcribe — Bản ghi đầy đủ (Push-to-Talk qua REST)",
-    "description": "Tùy chọn 1 mô hình Gemini"
-  },
-  "geminiModelLive": {
-    "message": "gemini-3.5-transcribe-live — Hiển thị từng từ khi bạnพูด/nói (WebSocket)",
-    "description": "Tùy chọn 2 mô hình Gemini"
-  },
-  "helpGeminiModel": {
-    "message": "Mô hình REST xử lý toàn bộ bản ghi với độ ổn định tối đa. Mô hình Live truyền trực tiếp từng từ theo thời gian thực qua WebSocket.",
-    "description": "Trợ giúp mô hình Gemini"
-  },
-  "sectionOpenaiTitle": {
-    "message": "Cấu hình OpenAI / Đám mây Bên thứ ba",
-    "description": "Tiêu đề OpenAI"
-  },
-  "labelOpenaiPreset": {
-    "message": "Thiết lập sẵn trên Đám mây",
-    "description": "Nhãn thiết lập đám mây"
-  },
-  "presetOpenai": {
-    "message": "OpenAI (Whisper-1 + GPT-4o-mini)",
-    "description": "Thiết lập OpenAI"
-  },
-  "presetGroq": {
-    "message": "Groq (Whisper Large v3 Turbo + Llama 3.3 70B)",
-    "description": "Thiết lập Groq"
-  },
-  "presetMistral": {
-    "message": "Mistral AI (Whisper/Groq STT + Mistral Small)",
-    "description": "Thiết lập Mistral"
-  },
-  "presetCustomCloud": {
-    "message": "Tùy chỉnh (Tương thích OpenAI)",
-    "description": "Thiết lập tùy chỉnh"
-  },
-  "labelSttEndpoint": {
-    "message": "URL cơ sở Âm thanh (STT / Whisper)",
-    "description": "Nhãn URL STT"
-  },
-  "labelSttApiKey": {
-    "message": "Khóa API Âm thanh (STT)",
-    "description": "Nhãn khóa STT"
-  },
-  "labelSttModel": {
-    "message": "Mô hình Âm thanh (STT)",
-    "description": "Nhãn mô hình STT"
-  },
-  "labelLlmEndpoint": {
-    "message": "URL cơ sở Văn bản (LLM làm sạch)",
-    "description": "Nhãn URL LLM"
-  },
-  "labelLlmApiKey": {
-    "message": "Khóa API Văn bản (LLM)",
-    "description": "Nhãn khóa LLM"
-  },
-  "labelLlmModel": {
-    "message": "Mô hình Văn bản (LLM)",
-    "description": "Nhãn mô hình LLM"
-  },
-  "helpOpenaiPipeline": {
-    "message": "Mẹo: Nếu bạn dùng Mistral để làm sạch văn bản, hãy nhập khóa Groq hoặc OpenAI (hoặc máy chủ Whisper cục bộ) cho bước phiên âm giọng nói.",
-    "description": "Mẹo quy trình 2 bước"
-  },
-  "sectionLocalTitle": {
-    "message": "Cấu hình Mô hình 100 % Cục bộ",
-    "description": "Tiêu đề Cục bộ"
-  },
-  "labelLocalSttUrl": {
-    "message": "URL máy chủ STT cục bộ (Whisper.cpp / Speaches / Faster-Whisper)",
-    "description": "Nhãn URL STT cục bộ"
-  },
-  "labelLocalSttModel": {
-    "message": "Tên mô hình STT cục bộ",
-    "description": "Nhãn mô hình STT cục bộ"
-  },
-  "labelLocalLlmPreset": {
-    "message": "Máy chủ LLM cục bộ",
-    "description": "Nhãn máy chủ LLM cục bộ"
-  },
-  "presetOllama": {
-    "message": "Ollama (http://localhost:11434)",
-    "description": "Thiết lập Ollama"
-  },
-  "presetLmStudio": {
-    "message": "LM Studio (http://localhost:1234)",
-    "description": "Thiết lập LM Studio"
-  },
-  "presetCustomLocal": {
-    "message": "Máy chủ cục bộ tùy chỉnh",
-    "description": "Thiết lập cục bộ tùy chỉnh"
-  },
-  "labelLocalLlmUrl": {
-    "message": "URL cơ sở máy chủ LLM cục bộ",
-    "description": "Nhãn URL LLM cục bộ"
-  },
-  "labelLocalLlmModel": {
-    "message": "Mô hình LLM cục bộ (ví dụ: llama3.2, qwen2.5, mistral)",
-    "description": "Nhãn mô hình LLM cục bộ"
-  },
-  "labelLocalApiKey": {
-    "message": "Khóa API cục bộ (tùy chọn)",
-    "description": "Nhãn khóa cục bộ"
-  },
-  "placeholderLocalApiKey": {
-    "message": "Để trống nếu không yêu cầu khóa",
-    "description": "Gợi ý khóa cục bộ"
-  },
-  "sectionVoiceModeTitle": {
-    "message": "2. Tùy chọn Chế độ Giọng nói",
-    "description": "Tiêu đề tùy chọn chế độ"
-  },
-  "labelVoiceModePolicy": {
-    "message": "Hành vi khi mở hộp thoại ghi âm",
-    "description": "Nhãn chính sách ghi nhớ"
-  },
-  "policyRememberLast": {
-    "message": "Ghi nhớ và giữ chế độ đã chọn lần cuối (Khuyên dùng)",
-    "description": "Tùy chọn nhớ chế độ cuối"
-  },
-  "policyUseDefault": {
-    "message": "Luôn quay về chế độ mặc định được chọn bên dưới",
-    "description": "Tùy chọn dùng chế độ mặc định"
-  },
-  "labelDefaultVoiceMode": {
-    "message": "Chế độ mặc định",
-    "description": "Nhãn chế độ mặc định"
-  },
-  "btnToggleKeyTitle": {
-    "message": "Hiện / Ẩn khóa API",
-    "description": "Chú giải nút hiện/ẩn"
-  },
-  "btnTestConnection": {
-    "message": "Kiểm tra kết nối",
-    "description": "Nút kiểm tra kết nối"
-  },
-  "btnSaveOptions": {
-    "message": "Lưu cài đặt",
-    "description": "Nút lưu cài đặt"
-  },
-  "statusTesting": {
-    "message": "Đang kiểm tra kết nối…",
-    "description": "Trạng thái đang kiểm tra"
-  },
-  "statusTestSuccess": {
-    "message": "Kết nối với công cụ thành công ✓",
-    "description": "Trạng thái kiểm tra thành công"
-  },
-  "statusTestFailed": {
-    "message": "Kiểm tra kết nối thất bại:",
-    "description": "Tiền tố kiểm tra thất bại"
-  },
-  "statusSaved": {
-    "message": "Đã lưu cài đặt thành công ✓",
-    "description": "Trạng thái đã lưu"
-  },
-  "permissionBannerText": {
-    "message": "Cần cấp quyền mạng để kết nối với tên miền này:",
-    "description": "Văn bản biểu ngữ quyền"
-  },
-  "btnGrantPermission": {
-    "message": "Cấp quyền với 1 cú nhấp",
-    "description": "Nút cấp quyền"
-  },
-  "micPrefRequiredMessage": {
-    "message": "Thiết lập một lần trên Thunderbird: mở Cài đặt (⌘, hoặc Công cụ > Cài đặt) → thẻ Chung (cuộn xuống dưới cùng) → nút «Trình chỉnh sửa cấu hình…», dán media.navigator.permission.disabled và đặt thành true.",
-    "description": "Hướng dẫn bật micro một lần trong Thunderbird"
+  "btnCopyCmd": {
+    "message": "Sao chép lệnh",
+    "description": "Nút sao chép lệnh"
   },
   "btnCopyMicPref": {
     "message": "Sao chép tên tùy chọn",
@@ -403,185 +31,105 @@
     "message": "Đã sao chép ✓",
     "description": "Xác nhận đã sao chép"
   },
-  "btnLaunchSetup": {
-    "message": "🚀 Mở lại trình hướng dẫn thiết lập & chẩn đoán",
-    "description": "Nút mở trình hướng dẫn thiết lập"
+  "btnDemoRecord": {
+    "message": "Đọc to câu",
+    "description": "Nút ghi âm bản demo"
   },
-  "setupPageTitle": {
-    "message": "Magic Voice Scriber — Hướng dẫn Thiết lập & Chẩn đoán",
-    "description": "Tiêu đề tab thiết lập"
-  },
-  "setupHeaderTitle": {
-    "message": "Hướng dẫn Thiết lập & Chẩn đoán",
-    "description": "Tiêu đề chính đầu trang"
-  },
-  "setupHeaderSubtitle": {
-    "message": "Chuẩn bị tính năng nhập liệu bằng giọng nói thông minh trong Thunderbird chỉ với vài bước đơn giản.",
-    "description": "Phụ đề đầu trang"
-  },
-  "step1Label": {
-    "message": "Micro & HĐH",
-    "description": "Nhãn bước 1"
-  },
-  "step2Label": {
-    "message": "Mô hình AI",
-    "description": "Nhãn bước 2"
-  },
-  "step3Label": {
-    "message": "Kiểu dáng & Phím tắt",
-    "description": "Nhãn bước 3"
-  },
-  "step4Label": {
-    "message": "Thử nghiệm Phép màu",
-    "description": "Nhãn bước 4"
-  },
-  "step1Title": {
-    "message": "1. Chẩn đoán Micro và Tương thích Hệ thống",
-    "description": "Tiêu đề bước 1"
-  },
-  "step1Desc": {
-    "message": "Kiểm tra xem Thunderbird đã được cấp quyền truy cập micro trước khi bắt đầu.",
-    "description": "Mô tả bước 1"
-  },
-  "osDetecting": {
-    "message": "Đang nhận diện hệ điều hành…",
-    "description": "Trạng thái nhận diện HĐH"
-  },
-  "micStatusIdle": {
-    "message": "Nhấp vào «Kiểm tra micro» và nói để kiểm tra tín hiệu âm thanh.",
-    "description": "Trạng thái nghỉ kiểm tra micro"
-  },
-  "btnTestMic": {
-    "message": "Kiểm tra micro",
-    "description": "Nút kiểm tra micro"
-  },
-  "snapAlertTitle": {
-    "message": "Lưu ý cho người dùng Ubuntu Linux (Bản Snap)",
-    "description": "Tiêu đề cảnh báo Snap"
-  },
-  "snapAlertBody": {
-    "message": "Gói Snap chính thức của Thunderbird chặn quyền truy cập micrô (thiếu cổng audio-record). Để chuyển đổi an toàn sang phiên bản .deb gốc mà không bị cài lại Snap khi cập nhật hoặc mất email:",
-    "description": "Corps alerte Snap"
-  },
-  "btnCopyCmd": {
-    "message": "Sao chép lệnh",
-    "description": "Nút sao chép lệnh"
-  },
-  "prefGuideTitle": {
-    "message": "Thiết lập một lần trên Thunderbird:",
-    "description": "Tiêu đề hướng dẫn tùy chọn"
-  },
-  "prefGuideBody": {
-    "message": "Để cho phép WebExtensions ghi âm, mở Trình chỉnh sửa cấu hình (Cài đặt > Chung > nút «Trình chỉnh sửa cấu hình…»), tìm tùy chọn sau và đặt thành true:",
-    "description": "Nội dung hướng dẫn tùy chọn"
-  },
-  "btnNext": {
-    "message": "Tiếp theo →",
-    "description": "Nút tiếp theo"
-  },
-  "btnPrev": {
-    "message": "← Quay lại",
-    "description": "Nút quay lại"
-  },
-  "step2Title": {
-    "message": "2. Chọn Mô hình AI (BYOK)",
-    "description": "Tiêu đề bước 2"
-  },
-  "step2Desc": {
-    "message": "Chọn nhà cung cấp AI và nhập khóa API cá nhân của bạn.",
-    "description": "Mô tả bước 2"
-  },
-  "helpGeminiGet": {
-    "message": "Nhận khóa API miễn phí trong 30 giây tại ",
-    "description": "Liên kết Google AI Studio"
-  },
-  "helpLocalMode": {
-    "message": "Đảm bảo máy chủ Whisper cục bộ và LLM của bạn đang chạy.",
-    "description": "Trợ giúp chế độ cục bộ"
-  },
-  "step3Title": {
-    "message": "3. Tùy chọn Nhập liệu Giọng nói & Tiện ích",
-    "description": "Tiêu đề bước 3"
-  },
-  "step3Desc": {
-    "message": "Chọn cách Magic Voice Scriber biến suy nghĩ của bạn thành văn bản rõ ràng.",
-    "description": "Mô tả bước 3"
-  },
-  "modeNaturalTitle": {
-    "message": "Chế độ Rambler (Trung thực)",
-    "description": "Tiêu đề chế độ tự nhiên"
-  },
-  "modeProTitle": {
-    "message": "Chế độ Chuyên nghiệp",
-    "description": "Tiêu đề chế độ chuyên nghiệp"
-  },
-  "modeBulletsTitle": {
-    "message": "Chế độ Tóm tắt / Đầu dòng",
-    "description": "Tiêu đề chế độ đầu dòng"
-  },
-  "shortcutLabel": {
-    "message": "Phím tắt đọc chính tả nhanh:",
-    "description": "Nhãn phím tắt"
-  },
-  "shortcutDesc": {
-    "message": "(hoặc nhấp vào Giọt Giọng nói màu cam dưới con trỏ)",
-    "description": "Mô tả Giọt Giọng nói"
-  },
-  "step4Title": {
-    "message": "4. Trải nghiệm Phép màu trực tiếp! ✨",
-    "description": "Tiêu đề bước 4"
-  },
-  "step4Desc": {
-    "message": "Hãy tự mình kiểm tra: đọc to câu này cùng các từ ngập ngừng để xem văn bản được làm sạch theo thời gian thực.",
-    "description": "Mô tả bước 4"
-  },
-  "readyHeading": {
-    "message": "Cách đọc chính tả trong e-mail?",
-    "description": "Tiêu đề cách đọc chính tả"
-  },
-  "readyStep1Title": {
-    "message": "1. Mở cửa sổ soạn thư e-mail",
-    "description": "Bước 1 sử dụng"
-  },
-  "readyStep1Desc": {
-    "message": "Đặt con trỏ vào nội dung thư: Giọt Giọng nói màu cam nhỏ sẽ xuất hiện ngay bên dưới.",
-    "description": "Mô tả bước 1 sử dụng"
-  },
-  "readyStep2Title": {
-    "message": "2. Bắt đầu nói",
-    "description": "Bước 2 sử dụng"
-  },
-  "readyStep2Desc": {
-    "message": "Nhấp vào Giọt hoặc nhấn Alt+Shift+S (Mac: ⌘⇧S). Nói tự nhiên không lo ấp úng.",
-    "description": "Mô tả bước 2 sử dụng"
-  },
-  "readyStep3Title": {
-    "message": "3. Chèn văn bản tức thì",
-    "description": "Bước 3 sử dụng"
-  },
-  "readyStep3Desc": {
-    "message": "Nhấn Enter hoặc nhấp vào viên thuốc âm thanh: văn bản đã hoàn thiện được chèn ngay tại con trỏ!",
-    "description": "Mô tả bước 3 sử dụng"
+  "btnDemoStop": {
+    "message": "Dừng và xem kết quả",
+    "description": "Nút dừng bản demo"
   },
   "btnFinishSetup": {
     "message": "Lưu & Bắt đầu Nhập liệu ✓",
     "description": "Nút hoàn tất"
   },
-  "step5Label": {
-    "message": "Sẵn sàng!",
-    "description": "Nhãn bước 5"
+  "btnGrantPermission": {
+    "message": "Cấp quyền với 1 cú nhấp",
+    "description": "Nút cấp quyền"
   },
-  "smartBadgeTitle": {
-    "message": "Công nghệ Gemini SMART Bản địa",
-    "description": "Tiêu đề huy hiệu SMART"
+  "btnLaunchSetup": {
+    "message": "🚀 Mở lại trình hướng dẫn thiết lập & chẩn đoán",
+    "description": "Nút mở trình hướng dẫn thiết lập"
   },
-  "smartExplanationText": {
-    "message": "Với Google Gemini 3.5, giọng nói của bạn được xử lý trong một lượt siêu nhanh duy nhất. Mô hình SMART tự động loại bỏ các từ ngập ngừng ('ờ', 'ừ'), ngập ngừng và lặp lại mà không cần lời nhắc viết lại nhân tạo.",
-    "description": "Giải thích SMART"
+  "btnNext": {
+    "message": "Tiếp theo →",
+    "description": "Nút tiếp theo"
   },
-  "llmModesTitle": {
-    "message": "Phong cách viết lại cho mô hình LLM của bạn:",
-    "description": "Tiêu đề các chế độ LLM"
+  "btnNextReady": {
+    "message": "Tiếp theo: Đã sẵn sàng! →",
+    "description": "Nút tiếp theo sẵn sàng"
+  },
+  "btnOpenSettings": {
+    "message": "Cấu hình với 1 cú nhấp",
+    "description": "Nút mở cài đặt"
+  },
+  "btnPauseTitle": {
+    "message": "Tạm dừng / Tiếp tục ghi âm (Phím cách)",
+    "description": "Chú giải nút tạm dừng"
+  },
+  "btnPrev": {
+    "message": "← Quay lại",
+    "description": "Nút quay lại"
+  },
+  "btnReadUbuntuTutorial": {
+    "message": "📖 Xem hướng dẫn từng bước (Sao lưu hồ sơ & APT Pinning) →",
+    "description": "Bouton tutoriel Ubuntu Snap deb"
+  },
+  "btnSaveOptions": {
+    "message": "Lưu cài đặt",
+    "description": "Nút lưu cài đặt"
+  },
+  "btnSettingsTitle": {
+    "message": "Mở cài đặt",
+    "description": "Chú giải nút cài đặt"
+  },
+  "btnSkipDemo": {
+    "message": "Bỏ qua thử nghiệm →",
+    "description": "Nút bỏ qua thử nghiệm"
+  },
+  "btnStopLabel": {
+    "message": "Hoàn tất & Chèn",
+    "description": "Nhãn nút hoàn tất"
+  },
+  "btnStopTitle": {
+    "message": "Dừng ghi âm và chèn văn bản đã làm sạch (Enter)",
+    "description": "Chú giải nút hoàn tất"
+  },
+  "btnTestConnection": {
+    "message": "Kiểm tra kết nối",
+    "description": "Nút kiểm tra kết nối"
+  },
+  "btnTestMic": {
+    "message": "Kiểm tra micro",
+    "description": "Nút kiểm tra micro"
+  },
+  "btnToggleKeyTitle": {
+    "message": "Hiện / Ẩn khóa API",
+    "description": "Chú giải nút hiện/ẩn"
+  },
+  "cmdCopied": {
+    "message": "Đã sao chép lệnh ✓",
+    "description": "Notification copie commande bash"
+  },
+  "composeActionLabel": {
+    "message": "Đọc",
+    "description": "Nhãn ngắn cho nút trên thanh công cụ soạn thảo"
+  },
+  "composeActionTitle": {
+    "message": "PC: Alt+Shift+S • Mac: ⌘⇧S hoặc ⌥⇧S",
+    "description": "Chú giải nút trên thanh công cụ soạn thảo"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Đã xử lý tự sửa lỗi ✓",
+    "description": "Huy hiệu tự sửa lỗi"
+  },
+  "demoBadgeHesitations": {
+    "message": "Đã xóa từ ngập ngừng ✓",
+    "description": "Huy hiệu từ ngập ngừng"
+  },
+  "demoBadgePunctuation": {
+    "message": "Đã thêm dấu câu ✓",
+    "description": "Huy hiệu chấm câu"
   },
   "demoPromptLabel": {
     "message": "💬 Đọc to câu này:",
@@ -591,68 +139,544 @@
     "message": "\"Chào Marc, ờ... bạn có thể phản hồi cho tôi về báo giá... à không xin lỗi, về báo cáo tài chính trước 14 giờ thứ Sáu được không? Cảm ơn bạn trước nhé!\"",
     "description": "Câu mẫu bản demo"
   },
+  "demoResultTitle": {
+    "message": "Kết quả làm sạch bởi Magic Voice Scriber:",
+    "description": "Tiêu đề kết quả bản demo"
+  },
   "demoStatusIdle": {
     "message": "Nhấp vào 'Đọc câu' và nói to.",
     "description": "Trạng thái chờ bản demo"
-  },
-  "demoStatusRecording": {
-    "message": "Đang ghi âm… Hãy đọc to câu trên.",
-    "description": "Trạng thái ghi âm bản demo"
   },
   "demoStatusProcessing": {
     "message": "Đang làm sạch ngữ nghĩa… ✨",
     "description": "Trạng thái xử lý bản demo"
   },
-  "btnDemoRecord": {
-    "message": "Đọc to câu",
-    "description": "Nút ghi âm bản demo"
+  "demoStatusRecording": {
+    "message": "Đang ghi âm… Hãy đọc to câu trên.",
+    "description": "Trạng thái ghi âm bản demo"
   },
-  "btnDemoStop": {
-    "message": "Dừng và xem kết quả",
-    "description": "Nút dừng bản demo"
+  "errorEmptyRecording": {
+    "message": "Bản ghi quá ngắn hoặc không có âm thanh. Vui lòng thử lại.",
+    "description": "Lỗi khi bản ghi âm không chứa dữ liệu khả dụng"
   },
-  "demoResultTitle": {
-    "message": "Kết quả làm sạch bởi Magic Voice Scriber:",
-    "description": "Tiêu đề kết quả bản demo"
+  "errorInsertFailed": {
+    "message": "Không thể chèn văn bản vào trình soạn thảo email.",
+    "description": "Lỗi chèn DOM"
   },
-  "demoBadgeHesitations": {
-    "message": "Đã xóa từ ngập ngừng ✓",
-    "description": "Huy hiệu từ ngập ngừng"
+  "errorMicPermission": {
+    "message": "Quyền truy cập micrô bị từ chối. Vui lòng cấp quyền sử dụng micrô.",
+    "description": "Lỗi quyền micrô"
   },
-  "demoBadgeAutocorrect": {
-    "message": "Đã xử lý tự sửa lỗi ✓",
-    "description": "Huy hiệu tự sửa lỗi"
+  "errorNetwork": {
+    "message": "Lỗi mạng. Kiểm tra kết nối Internet hoặc máy chủ cục bộ của bạn.",
+    "description": "Lỗi mạng"
   },
-  "demoBadgePunctuation": {
-    "message": "Đã thêm dấu câu ✓",
-    "description": "Huy hiệu chấm câu"
+  "errorNoAudio": {
+    "message": "Không phát hiện âm thanh. Vui lòng nói và thử lại.",
+    "description": "Lỗi không có âm thanh"
   },
-  "btnSkipDemo": {
-    "message": "Bỏ qua thử nghiệm →",
-    "description": "Nút bỏ qua thử nghiệm"
+  "errorRateLimited": {
+    "message": "Đã vượt quá hạn ngạch hoặc giới hạn yêu cầu API (429). Vui lòng đợi.",
+    "description": "Lỗi 429"
   },
-  "btnNextReady": {
-    "message": "Tiếp theo: Đã sẵn sàng! →",
-    "description": "Nút tiếp theo sẵn sàng"
+  "errorServiceUnavailable": {
+    "message": "Dịch vụ phiên âm tạm thời không khả dụng.",
+    "description": "Lỗi dịch vụ"
   },
-  "step5Title": {
-    "message": "5. Tất cả đã sẵn sàng! 🎉",
-    "description": "Tiêu đề bước 5"
+  "errorSessionLost": {
+    "message": "Phiên ghi âm bị gián đoạn. Vui lòng khởi động lại chính tả.",
+    "description": "Lỗi khi phiên ghi âm nền bị mất"
   },
-  "step5Desc": {
-    "message": "Môi trường đọc chính tả ngữ nghĩa bằng giọng nói của bạn đã được thiết lập hoàn tất.",
-    "description": "Mô tả bước 5"
+  "errorTimeout": {
+    "message": "Yêu cầu đã hết thời gian chờ. Vui lòng kiểm tra kết nối.",
+    "description": "Lỗi hết thời gian chờ"
   },
-  "btnReadUbuntuTutorial": {
-    "message": "📖 Xem hướng dẫn từng bước (Sao lưu hồ sơ & APT Pinning) →",
-    "description": "Bouton tutoriel Ubuntu Snap deb"
+  "errorUnauthorized": {
+    "message": "Khóa API không hợp lệ hoặc bị thiếu. Vui lòng kiểm tra cài đặt.",
+    "description": "Lỗi 401/403"
+  },
+  "extDescription": {
+    "message": "Nhập liệu bằng giọng nói ngữ nghĩa thông minh lấy cảm hứng từ Google Rambler cho Thunderbird (Gemini, OpenAI/Mistral/Groq hoặc Ollama/Whisper cục bộ).",
+    "description": "Mô tả tiện ích mở rộng"
+  },
+  "extName": {
+    "message": "Magic Voice Scriber",
+    "description": "Tên tiện ích mở rộng"
+  },
+  "geminiModelBatch": {
+    "message": "gemini-3.5-transcribe — Bản ghi đầy đủ (Push-to-Talk qua REST)",
+    "description": "Tùy chọn 1 mô hình Gemini"
+  },
+  "geminiModelLive": {
+    "message": "gemini-3.5-transcribe-live — Hiển thị từng từ khi bạnพูด/nói (WebSocket)",
+    "description": "Tùy chọn 2 mô hình Gemini"
+  },
+  "helpGeminiApiKey": {
+    "message": "Nhận khóa miễn phí tại aistudio.google.com",
+    "description": "Trợ giúp khóa Gemini"
+  },
+  "helpGeminiGet": {
+    "message": "Nhận khóa API miễn phí trong 30 giây tại ",
+    "description": "Liên kết Google AI Studio"
+  },
+  "helpGeminiModel": {
+    "message": "Mô hình REST xử lý toàn bộ bản ghi với độ ổn định tối đa. Mô hình Live truyền trực tiếp từng từ theo thời gian thực qua WebSocket.",
+    "description": "Trợ giúp mô hình Gemini"
+  },
+  "helpLocalMode": {
+    "message": "Đảm bảo máy chủ Whisper cục bộ và LLM của bạn đang chạy.",
+    "description": "Trợ giúp chế độ cục bộ"
+  },
+  "helpMistralKey": {
+    "message": "Lấy khóa API cá nhân của bạn tại console.mistral.ai.",
+    "description": "Key helpMistralKey"
+  },
+  "helpOpenaiPipeline": {
+    "message": "Mẹo: Nếu bạn dùng Mistral để làm sạch văn bản, hãy nhập khóa Groq hoặc OpenAI (hoặc máy chủ Whisper cục bộ) cho bước phiên âm giọng nói.",
+    "description": "Mẹo quy trình 2 bước"
+  },
+  "helpProviderGemini": {
+    "message": "Sử dụng trực tiếp các mô hình Gemini 3.5 Transcribe ở chế độ SMART (loại bỏ từ đệm, tự sửa lỗi và định dạng chỉ trong một bước).",
+    "description": "Trợ giúp Gemini"
+  },
+  "helpProviderLocal": {
+    "message": "Xử lý ngoại tuyến 100 % và bảo mật tuyệt đối trên máy tính của bạn qua máy chủ Whisper cục bộ và Ollama hoặc LM Studio.",
+    "description": "Trợ giúp Cục bộ"
+  },
+  "helpProviderMistral": {
+    "message": "Phiên âm độ trung thực cao siêu nhanh qua Voxtral Mini Realtime (WebSocket) hoặc Mini (REST).",
+    "description": "Aide pour Mistral"
+  },
+  "helpProviderOpenai": {
+    "message": "Kết hợp công cụ nhận dạng giọng nói nhanh (Whisper trên OpenAI hoặc Groq) với mô hình ngôn ngữ (Mistral, OpenAI, Groq) để làm sạch văn bản.",
+    "description": "Trợ giúp OpenAI"
+  },
+  "hintShortcuts": {
+    "message": "Phím cách: Tạm dừng • Enter: Chèn • Esc: Hủy",
+    "description": "Thanh gợi ý phím tắt"
+  },
+  "labelDefaultVoiceMode": {
+    "message": "Chế độ mặc định",
+    "description": "Nhãn chế độ mặc định"
+  },
+  "labelGeminiApiKey": {
+    "message": "Khóa API Google AI Studio",
+    "description": "Nhãn khóa Gemini"
+  },
+  "labelGeminiModel": {
+    "message": "Mô hình phiên âm Gemini",
+    "description": "Nhãn mô hình Gemini"
+  },
+  "labelLlmApiKey": {
+    "message": "Khóa API Văn bản (LLM)",
+    "description": "Nhãn khóa LLM"
+  },
+  "labelLlmEndpoint": {
+    "message": "URL cơ sở Văn bản (LLM làm sạch)",
+    "description": "Nhãn URL LLM"
+  },
+  "labelLlmModel": {
+    "message": "Mô hình Văn bản (LLM)",
+    "description": "Nhãn mô hình LLM"
+  },
+  "labelLocalApiKey": {
+    "message": "Khóa API cục bộ (tùy chọn)",
+    "description": "Nhãn khóa cục bộ"
+  },
+  "labelLocalLlmModel": {
+    "message": "Mô hình LLM cục bộ (ví dụ: llama3.2, qwen2.5, mistral)",
+    "description": "Nhãn mô hình LLM cục bộ"
+  },
+  "labelLocalLlmPreset": {
+    "message": "Máy chủ LLM cục bộ",
+    "description": "Nhãn máy chủ LLM cục bộ"
+  },
+  "labelLocalLlmUrl": {
+    "message": "URL cơ sở máy chủ LLM cục bộ",
+    "description": "Nhãn URL LLM cục bộ"
+  },
+  "labelLocalSttModel": {
+    "message": "Tên mô hình STT cục bộ",
+    "description": "Nhãn mô hình STT cục bộ"
+  },
+  "labelLocalSttUrl": {
+    "message": "URL máy chủ STT cục bộ (Whisper.cpp / Speaches / Faster-Whisper)",
+    "description": "Nhãn URL STT cục bộ"
+  },
+  "labelMistralApiKey": {
+    "message": "Khóa API Mistral:",
+    "description": "Key labelMistralApiKey"
+  },
+  "labelOpenaiPreset": {
+    "message": "Thiết lập sẵn trên Đám mây",
+    "description": "Nhãn thiết lập đám mây"
+  },
+  "labelSelectProvider": {
+    "message": "Nhà cung cấp đang hoạt động",
+    "description": "Nhãn chọn nhà cung cấp"
+  },
+  "labelSttApiKey": {
+    "message": "Khóa API Âm thanh (STT)",
+    "description": "Nhãn khóa STT"
+  },
+  "labelSttEndpoint": {
+    "message": "URL cơ sở Âm thanh (STT / Whisper)",
+    "description": "Nhãn URL STT"
+  },
+  "labelSttModel": {
+    "message": "Mô hình Âm thanh (STT)",
+    "description": "Nhãn mô hình STT"
+  },
+  "labelVoiceModePolicy": {
+    "message": "Hành vi khi mở hộp thoại ghi âm",
+    "description": "Nhãn chính sách ghi nhớ"
+  },
+  "llmModesTitle": {
+    "message": "Phong cách viết lại cho mô hình LLM của bạn:",
+    "description": "Tiêu đề các chế độ LLM"
+  },
+  "menuOptionsTitle": {
+    "message": "Cài đặt Magic Voice Scriber…",
+    "description": "Mục menu ngữ cảnh mở cài đặt"
+  },
+  "micPrefRequiredMessage": {
+    "message": "Thiết lập một lần trên Thunderbird: mở Cài đặt (⌘, hoặc Công cụ > Cài đặt) → thẻ Chung (cuộn xuống dưới cùng) → nút «Trình chỉnh sửa cấu hình…», dán media.navigator.permission.disabled và đặt thành true.",
+    "description": "Hướng dẫn bật micro một lần trong Thunderbird"
+  },
+  "micStatusIdle": {
+    "message": "Nhấp vào «Kiểm tra micro» và nói để kiểm tra tín hiệu âm thanh.",
+    "description": "Trạng thái nghỉ kiểm tra micro"
+  },
+  "modeBtnAriaLabel": {
+    "message": "Chế độ đọc chính tả đang hoạt động. Nhấp để chuyển đổi giữa Tự nhiên, Chuyên nghiệp và Tóm tắt.",
+    "description": "Nhãn trợ năng của nút chọn chế độ"
+  },
+  "modeBulletsDesc": {
+    "message": "Chuyển đổi suy nghĩ nói to thành danh sách hành động có trật tự rõ ràng.",
+    "description": "Mô tả chế độ đầu dòng"
+  },
+  "modeBulletsLabel": {
+    "message": "Tóm tắt",
+    "description": "Chế độ giọng nói 3: Tóm tắt gạch đầu dòng"
+  },
+  "modeBulletsTitle": {
+    "message": "Chế độ Tóm tắt / Đầu dòng",
+    "description": "Tiêu đề chế độ đầu dòng"
+  },
+  "modeNaturalDesc": {
+    "message": "Loại bỏ ngập ngừng và chấm câu trong khi vẫn giữ nguyên lời nói chính xác của bạn.",
+    "description": "Mô tả chế độ tự nhiên"
+  },
+  "modeNaturalLabel": {
+    "message": "Tự nhiên",
+    "description": "Chế độ giọng nói 1: Tự nhiên"
+  },
+  "modeNaturalTitle": {
+    "message": "Chế độ Rambler (Trung thực)",
+    "description": "Tiêu đề chế độ tự nhiên"
+  },
+  "modeProDesc": {
+    "message": "Diễn đạt lại suy nghĩ được đọc của bạn với văn phong lịch sự, trau chuốt và trang trọng.",
+    "description": "Mô tả chế độ chuyên nghiệp"
+  },
+  "modeProLabel": {
+    "message": "Chuyên nghiệp",
+    "description": "Chế độ giọng nói 2: Chuyên nghiệp"
+  },
+  "modeProTitle": {
+    "message": "Chế độ Chuyên nghiệp",
+    "description": "Tiêu đề chế độ chuyên nghiệp"
+  },
+  "onboardingMessage": {
+    "message": "Chào mừng đến với Magic Voice Scriber! Nhập khóa API Gemini (khuyên dùng), OpenAI/Bên thứ ba hoặc cục bộ chỉ với 1 cú nhấp để bật nhập liệu giọng nói thông minh.",
+    "description": "Thông báo chào mừng khi chưa có khóa API"
+  },
+  "optionsHeaderSubtitle": {
+    "message": "Nhập liệu giọng nói ngữ nghĩa lấy cảm hứng từ Google Rambler cho Thunderbird",
+    "description": "Phụ đề trang cài đặt"
+  },
+  "optionsPageTitle": {
+    "message": "Cài đặt — Magic Voice Scriber",
+    "description": "Tiêu đề trang cài đặt"
+  },
+  "osDetecting": {
+    "message": "Đang nhận diện hệ điều hành…",
+    "description": "Trạng thái nhận diện HĐH"
+  },
+  "permissionBannerText": {
+    "message": "Cần cấp quyền mạng để kết nối với tên miền này:",
+    "description": "Văn bản biểu ngữ quyền"
+  },
+  "placeholderGeminiApiKey": {
+    "message": "AIzaSy...",
+    "description": "Gợi ý khóa Gemini"
+  },
+  "placeholderLocalApiKey": {
+    "message": "Để trống nếu không yêu cầu khóa",
+    "description": "Gợi ý khóa cục bộ"
+  },
+  "placeholderMistralApiKey": {
+    "message": "Khóa API Mistral của bạn...",
+    "description": "Key placeholderMistralApiKey"
+  },
+  "policyRememberLast": {
+    "message": "Ghi nhớ và giữ chế độ đã chọn lần cuối (Khuyên dùng)",
+    "description": "Tùy chọn nhớ chế độ cuối"
+  },
+  "policyUseDefault": {
+    "message": "Luôn quay về chế độ mặc định được chọn bên dưới",
+    "description": "Tùy chọn dùng chế độ mặc định"
+  },
+  "prefGuideBody": {
+    "message": "Để cho phép WebExtensions ghi âm, mở Trình chỉnh sửa cấu hình (Cài đặt > Chung > nút «Trình chỉnh sửa cấu hình…»), tìm tùy chọn sau và đặt thành true:",
+    "description": "Nội dung hướng dẫn tùy chọn"
+  },
+  "prefGuideTitle": {
+    "message": "Thiết lập một lần trên Thunderbird:",
+    "description": "Tiêu đề hướng dẫn tùy chọn"
+  },
+  "presetCustomCloud": {
+    "message": "Tùy chỉnh (Tương thích OpenAI)",
+    "description": "Thiết lập tùy chỉnh"
+  },
+  "presetCustomLocal": {
+    "message": "Máy chủ cục bộ tùy chỉnh",
+    "description": "Thiết lập cục bộ tùy chỉnh"
+  },
+  "presetGroq": {
+    "message": "Groq (Whisper Large v3 Turbo + Llama 3.3 70B)",
+    "description": "Thiết lập Groq"
+  },
+  "presetLmStudio": {
+    "message": "LM Studio (http://localhost:1234)",
+    "description": "Thiết lập LM Studio"
+  },
+  "presetMistral": {
+    "message": "Mistral AI (Whisper/Groq STT + Mistral Small)",
+    "description": "Thiết lập Mistral"
+  },
+  "presetOllama": {
+    "message": "Ollama (http://localhost:11434)",
+    "description": "Thiết lập Ollama"
+  },
+  "presetOpenai": {
+    "message": "OpenAI (Whisper-1 + GPT-4o-mini)",
+    "description": "Thiết lập OpenAI"
+  },
+  "providerOptionGemini": {
+    "message": "Google Gemini API (Khuyên dùng — Mặc định)",
+    "description": "Tùy chọn Gemini"
+  },
+  "providerOptionLocal": {
+    "message": "Mô hình 100 % Cục bộ (Ollama, LM Studio, Whisper cục bộ)",
+    "description": "Tùy chọn Cục bộ"
+  },
+  "providerOptionMistral": {
+    "message": "Mistral AI (Độ trung thực cao — Voxtral Mini Realtime & Mini)",
+    "description": "Key providerOptionMistral"
+  },
+  "providerOptionOpenai": {
+    "message": "OpenAI / Đám mây Bên thứ ba (Mistral, Groq, OpenAI…)",
+    "description": "Tùy chọn OpenAI"
+  },
+  "readyHeading": {
+    "message": "Cách đọc chính tả trong e-mail?",
+    "description": "Tiêu đề cách đọc chính tả"
+  },
+  "readyStep1Desc": {
+    "message": "Đặt con trỏ vào nội dung thư: Giọt Giọng nói màu cam nhỏ sẽ xuất hiện ngay bên dưới.",
+    "description": "Mô tả bước 1 sử dụng"
+  },
+  "readyStep1Title": {
+    "message": "1. Mở cửa sổ soạn thư e-mail",
+    "description": "Bước 1 sử dụng"
+  },
+  "readyStep2Desc": {
+    "message": "Nhấp vào Giọt hoặc nhấn Alt+Shift+S (Mac: ⌘⇧S). Nói tự nhiên không lo ấp úng.",
+    "description": "Mô tả bước 2 sử dụng"
+  },
+  "readyStep2Title": {
+    "message": "2. Bắt đầu nói",
+    "description": "Bước 2 sử dụng"
+  },
+  "readyStep3Desc": {
+    "message": "Nhấn Enter hoặc nhấp vào viên thuốc âm thanh: văn bản đã hoàn thiện được chèn ngay tại con trỏ!",
+    "description": "Mô tả bước 3 sử dụng"
+  },
+  "readyStep3Title": {
+    "message": "3. Chèn văn bản tức thì",
+    "description": "Bước 3 sử dụng"
+  },
+  "sectionGeminiTitle": {
+    "message": "Cấu hình Google Gemini",
+    "description": "Tiêu đề Gemini"
+  },
+  "sectionLocalTitle": {
+    "message": "Cấu hình Mô hình 100 % Cục bộ",
+    "description": "Tiêu đề Cục bộ"
+  },
+  "sectionMistralTitle": {
+    "message": "Cấu hình Mistral AI (Khuyên dùng)",
+    "description": "Key sectionMistralTitle"
+  },
+  "sectionOpenaiTitle": {
+    "message": "Cấu hình OpenAI / Đám mây Bên thứ ba",
+    "description": "Tiêu đề OpenAI"
+  },
+  "sectionProviderTitle": {
+    "message": "1. Công cụ Trí tuệ Giọng nói",
+    "description": "Tiêu đề phần nhà cung cấp"
+  },
+  "sectionVoiceModeTitle": {
+    "message": "2. Tùy chọn Chế độ Giọng nói",
+    "description": "Tiêu đề tùy chọn chế độ"
+  },
+  "setupHeaderSubtitle": {
+    "message": "Chuẩn bị tính năng nhập liệu bằng giọng nói thông minh trong Thunderbird chỉ với vài bước đơn giản.",
+    "description": "Phụ đề đầu trang"
+  },
+  "setupHeaderTitle": {
+    "message": "Hướng dẫn Thiết lập & Chẩn đoán",
+    "description": "Tiêu đề chính đầu trang"
+  },
+  "setupPageTitle": {
+    "message": "Magic Voice Scriber — Hướng dẫn Thiết lập & Chẩn đoán",
+    "description": "Tiêu đề tab thiết lập"
+  },
+  "shortcutDesc": {
+    "message": "(hoặc nhấp vào Giọt Giọng nói màu cam dưới con trỏ)",
+    "description": "Mô tả Giọt Giọng nói"
+  },
+  "shortcutLabel": {
+    "message": "Phím tắt đọc chính tả nhanh:",
+    "description": "Nhãn phím tắt"
+  },
+  "smartBadgeTitle": {
+    "message": "Công nghệ Gemini SMART Bản địa",
+    "description": "Tiêu đề huy hiệu SMART"
+  },
+  "smartExplanationText": {
+    "message": "Với Google Gemini 3.5, giọng nói của bạn được xử lý trong một lượt siêu nhanh duy nhất. Mô hình SMART tự động loại bỏ các từ ngập ngừng ('ờ', 'ừ'), ngập ngừng và lặp lại mà không cần lời nhắc viết lại nhân tạo.",
+    "description": "Giải thích SMART"
+  },
+  "snapAlertBody": {
+    "message": "Gói Snap chính thức của Thunderbird chặn quyền truy cập micrô (thiếu cổng audio-record). Để chuyển đổi an toàn sang phiên bản .deb gốc mà không bị cài lại Snap khi cập nhật hoặc mất email:",
+    "description": "Corps alerte Snap"
   },
   "snapAlertTerminalSubtext": {
     "message": "Hoặc đối với người dùng nâng cao, chạy lệnh di chuyển đầy đủ với ưu tiên APT 1001:",
     "description": "Sous-texte commande terminal Ubuntu"
   },
-  "cmdCopied": {
-    "message": "Đã sao chép lệnh ✓",
-    "description": "Notification copie commande bash"
+  "snapAlertTitle": {
+    "message": "Lưu ý cho người dùng Ubuntu Linux (Bản Snap)",
+    "description": "Tiêu đề cảnh báo Snap"
+  },
+  "statusInserted": {
+    "message": "Đã chèn văn bản tại con trỏ ✓",
+    "description": "Trạng thái chèn thành công"
+  },
+  "statusLiveStreaming": {
+    "message": "Đang phiên âm trực tiếp…",
+    "description": "Trạng thái truyền trực tiếp WebSocket"
+  },
+  "statusMaxDurationReached": {
+    "message": "Đã đạt dung lượng tối ưu (5 phút) — Đang hoàn tất…",
+    "description": "Trạng thái đạt giới hạn 5 phút"
+  },
+  "statusPaused": {
+    "message": "Đã tạm dừng — Nhấn Phím cách để tiếp tục",
+    "description": "Trạng thái tạm dừng"
+  },
+  "statusPermissionRequired": {
+    "message": "Cần quyền truy cập mạng — Nhấp vào huy hiệu công cụ",
+    "description": "Trạng thái thiếu quyền mạng"
+  },
+  "statusReady": {
+    "message": "Sẵn sàng lắng nghe",
+    "description": "Trạng thái sẵn sàng"
+  },
+  "statusRecording": {
+    "message": "Đang nghe… (Phím cách: Tạm dừng)",
+    "description": "Trạng thái đang ghi âm"
+  },
+  "statusSaved": {
+    "message": "Đã lưu cài đặt thành công ✓",
+    "description": "Trạng thái đã lưu"
+  },
+  "statusTestFailed": {
+    "message": "Kiểm tra kết nối thất bại:",
+    "description": "Tiền tố kiểm tra thất bại"
+  },
+  "statusTestSuccess": {
+    "message": "Kết nối với công cụ thành công ✓",
+    "description": "Trạng thái kiểm tra thành công"
+  },
+  "statusTesting": {
+    "message": "Đang kiểm tra kết nối…",
+    "description": "Trạng thái đang kiểm tra"
+  },
+  "statusThinking": {
+    "message": "Đang làm sạch và định dạng văn bản…",
+    "description": "Trạng thái xử lý AI"
+  },
+  "step1Desc": {
+    "message": "Kiểm tra xem Thunderbird đã được cấp quyền truy cập micro trước khi bắt đầu.",
+    "description": "Mô tả bước 1"
+  },
+  "step1Label": {
+    "message": "Micro & HĐH",
+    "description": "Nhãn bước 1"
+  },
+  "step1Title": {
+    "message": "1. Chẩn đoán Micro và Tương thích Hệ thống",
+    "description": "Tiêu đề bước 1"
+  },
+  "step2Desc": {
+    "message": "Chọn nhà cung cấp AI và nhập khóa API cá nhân của bạn.",
+    "description": "Mô tả bước 2"
+  },
+  "step2Label": {
+    "message": "Mô hình AI",
+    "description": "Nhãn bước 2"
+  },
+  "step2Title": {
+    "message": "2. Chọn Mô hình AI (BYOK)",
+    "description": "Tiêu đề bước 2"
+  },
+  "step3Desc": {
+    "message": "Chọn cách Magic Voice Scriber biến suy nghĩ của bạn thành văn bản rõ ràng.",
+    "description": "Mô tả bước 3"
+  },
+  "step3Label": {
+    "message": "Kiểu dáng & Phím tắt",
+    "description": "Nhãn bước 3"
+  },
+  "step3Title": {
+    "message": "3. Tùy chọn Nhập liệu Giọng nói & Tiện ích",
+    "description": "Tiêu đề bước 3"
+  },
+  "step4Desc": {
+    "message": "Hãy tự mình kiểm tra: đọc to câu này cùng các từ ngập ngừng để xem văn bản được làm sạch theo thời gian thực.",
+    "description": "Mô tả bước 4"
+  },
+  "step4Label": {
+    "message": "Thử nghiệm Phép màu",
+    "description": "Nhãn bước 4"
+  },
+  "step4Title": {
+    "message": "4. Trải nghiệm Phép màu trực tiếp! ✨",
+    "description": "Tiêu đề bước 4"
+  },
+  "step5Desc": {
+    "message": "Môi trường đọc chính tả ngữ nghĩa bằng giọng nói của bạn đã được thiết lập hoàn tất.",
+    "description": "Mô tả bước 5"
+  },
+  "step5Label": {
+    "message": "Sẵn sàng!",
+    "description": "Nhãn bước 5"
+  },
+  "step5Title": {
+    "message": "5. Tất cả đã sẵn sàng! 🎉",
+    "description": "Tiêu đề bước 5"
   }
 }

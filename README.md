@@ -21,8 +21,8 @@
   3. **📋 Synthèse / Puces** : Convertit vos idées dictées en points d'action structurés.
 - 🔌 **Architecture Multi-Moteurs Ouverte (BYOK & Souveraineté Locale)** :
   1. **Google Gemini (Par défaut — Recommandé)** : Supporte `gemini-3.5-transcribe` (Push-to-Talk REST) et `gemini-3.5-transcribe-live` (Streaming temps réel WebSocket) avec le mode natif `SMART`.
-  2. **OpenAI & Tiers Cloud** : Compatible OpenAI, **Groq** (Whisper ultra-rapide), **Mistral** et tout endpoint `/v1/audio/transcriptions` + `/v1/chat/completions`.
-  3. **100 % Local & Hors-Ligne** : Connectez directement votre serveur Whisper local (`whisper.cpp` / `faster-whisper-server` sur `:8000`) et **Ollama** (`:11434`) ou **LM Studio** (`:1234`) pour une confidentialité absolue.
+  2. **Mistral AI (Natif Voxtral)** : Modèle 1 passe `voxtral-mini-latest` pour une transcription ultra-rapide et souveraine.
+  3. **100 % Local & Hors-Ligne** : Connectez directement votre serveur Whisper local (`whisper.cpp` / `faster-whisper-server` sur `:8000`) pour une confidentialité absolue.
 - 🌍 **Multilingue Natif (6 langues)** : Interface intégralement traduite en Français, Anglais, Espagnol, Portugais, Allemand et Vietnamien.
 
 ---
@@ -30,14 +30,14 @@
 ## 🚀 Installation & Démarrage Rapide
 
 ### Depuis un fichier `.xpi`
-1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.3.3.xpi`.
+1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.4.0.xpi`.
 2. Dans Thunderbird, ouvrez **Outils > Modules complémentaires et thèmes** (`Ctrl+Maj+A`).
 3. Cliquez sur la roue dentée ⚙️ > **Installer un module depuis un fichier…** et sélectionnez le fichier `.xpi`.
 
 ### Assistant de Configuration & Diagnostic Automatique
 Dès l'installation, Magic Voice Scriber ouvre automatiquement son **Assistant de Configuration & Diagnostic** interactif en 5 étapes :
 1. **Diagnostic du Microphone & OS** : Teste le flux audio en direct avec un vumètre 5 barres et guide l'autorisation unique `media.navigator.permission.disabled` (avec diagnostic Linux Snap vs .deb).
-2. **Choix du Moteur d'IA (BYOK)** : Saisie et validation en 1 clic de votre clé API Google Gemini, Mistral, Groq, OpenAI ou de vos endpoints locaux.
+2. **Choix du Moteur d'IA (BYOK)** : Saisie et validation en 1 clic de votre clé API Google Gemini, Mistral AI ou de vos endpoints locaux.
 3. **Style & Ergonomie (100 % conditionnel)** : Présentation valorisante du mode natif **Gemini SMART** en 1 passe sans prompt artificiel, ou sélecteur à 3 cartes (Rambler, Pro, Puces) pour OpenAI/Local.
 4. **Bac à Sable Interactif (« Essayez la Magie en direct ! ✨ »)** : Faites le test immédiatement sur une phrase modèle avec hésitation et auto-correction pour voir votre texte nettoyé et ponctué en conditions réelles.
 5. **Prêt à dicter ! 🎉** : Enregistrement des préférences et rappel des raccourcis pour commencer dans votre fenêtre de rédaction.

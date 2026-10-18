@@ -3,6 +3,18 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.4.0] - 2026-10-18
+
+### Épuration des Permissions Réseau & Alignement sur le Trio Champion
+- **Principe du Moindre Privilège Réseau (`manifest.json`)** : Retrait formel de `https://api.openai.com/*` et `https://api.groq.com/*` des `host_permissions`. Le périmètre réseau est strictement restreint aux domaines indispensables (`generativelanguage.googleapis.com`, `api.mistral.ai`, `http://localhost:*` et `http://127.0.0.1:*`).
+- **Fournisseur Mistral AI Natif 1 Passe (`mvs-providers.js`, `background.js`)** : Intégration de `FournisseurMistral` exploitant le modèle 1-passe `voxtral-mini-latest` (transcription et restructuration directe sans reformulation LLM secondaire).
+- **Interface Utilisateur & Onboarding Simplifiés (`options/`, `setup/`)** :
+  - Remplacement de l'ancienne section OpenAI/Cloud complexe à double clé par la section épurée **Mistral AI**.
+  - Intégration dans le sélecteur du Trio Champion : Google Gemini (SMART 1 passe), Mistral AI (Voxtral 1 passe) et Modèle 100% Local (Whisper local).
+- **Internationalisation Complète (6 Langues)** : Ajout et harmonisation des clés de traduction Mistral dans `_locales/*/messages.json` (`fr`, `en`, `de`, `es`, `pt`, `vi`).
+- **Tests Unitaires & Conformité (`test/mvs.test.js`)** : Ajout des tests de validation pour `FournisseurMistral`, vérification automatique du moindre privilège dans `manifest.json`, et couverture complète de la parité i18n (23/23 tests passants).
+- **Documentation & Confidentialité** : Mise à jour de `PRIVACY_POLICY.md` et du kit de soumission ATN `submission_kit.md`.
+
 ## [1.3.3] - 2026-10-17
 
 ### Consolidation Post-Audit & Sécurisation Globale

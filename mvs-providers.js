@@ -490,7 +490,143 @@
     }
   };
 
-  // ── 4. FOURNISSEUR 2 : OPENAI & TIERS CLOUD (MISTRAL, GROQ, OPENAI) ────────
+  // ── 4. FOURNISSEUR 1 BIS : MISTRAL AI (VOXTRAL MINI 1-PASSE & REALTIME) ─────
+
+  const FournisseurMistral = {
+    id: "mistral",
+    label: "Mistral AI",
+    nomComplet: "Mistral AI (Voxtral)",
+
+    obtenirLabel(config = {}) {
+      return "Mistral AI";
+    },
+
+    /**
+     * Sollicite un jeton éphémère de session (rt_*) pour WebSocket sécurisé client-side (anti-leak).
+     * @param {string} apiKey - Clé API maîtresse Mistral
+     * @returns {Promise<string>} Jeton de session client_secret.value
+     */
+    async obtenirSessionRealtime(apiKey) {
+      const cle = (apiKey || "").trim();
+      if (!cle) {
+        throw new Error("UNAUTHORIZED");
+      }
+      let rep;
+      try {
+        rep = await fetch("https://api.mistral.ai/v1/client/sessions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${cle}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            purpose: "realtime",
+            model: "voxtral-mini-transcribe-realtime-2602"
+          }),
+          signal: AbortSignal.timeout(TIMEOUT_REQUETE_MS)
+        });
+      } catch (err) {
+        if (err && (err.name === "TimeoutError" || err.name === "AbortError")) {
+          throw new Error("TIMEOUT");
+        }
+        throw new Error("NETWORK");
+      }
+
+      if (!rep.ok) {
+        if (rep.status === 401 || rep.status === 403) throw new Error("UNAUTHORIZED");
+        if (rep.status === 429) throw new Error("RATE_LIMITED");
+        throw new Error("SERVICE_UNAVAILABLE");
+      }
+
+      const donnees = await rep.json();
+      const rawSecret = donnees && donnees.client_secret;
+      const token = typeof rawSecret === "string" ? rawSecret : (rawSecret && rawSecret.value);
+      if (!token) {
+        throw new Error("SERVICE_UNAVAILABLE");
+      }
+      return token;
+    },
+
+    /**
+     * Retourne l'URL WebSocket officielle pour Voxtral Realtime.
+     * @param {string} [token=''] - Jeton de session optionnel pour paramètre d'URL
+     * @returns {string}
+     */
+    obtenirUrlWebSocketRealtime(token = "") {
+      const base = "wss://api.mistral.ai/v1/audio/transcriptions/realtime?model=voxtral-mini-transcribe-realtime-2602";
+      if (token) {
+        return `${base}&client_secret=${encodeURIComponent(token)}`;
+      }
+      return base;
+    },
+
+    /**
+     * Transcription en 1 passe native via POST /v1/audio/transcriptions (Voxtral Mini).
+     * @param {string} audioBase64 - Audio encodé en Base64
+     * @param {string} [mimeType='audio/webm']
+     * @param {string} [_voiceMode='natural'] - Ignoré (Voxtral nettoie nativement)
+     * @param {Object} [config={}]
+     * @returns {Promise<{success: boolean, text: string}>}
+     */
+    async transcrire(audioBase64, mimeType = "audio/webm", _voiceMode = "natural", config = {}) {
+      const apiKey = (config.mistralApiKey || config.apiKey || config.sttApiKey || config.llmApiKey || "").trim();
+      if (!apiKey) {
+        throw new Error("UNAUTHORIZED");
+      }
+
+      const octets = base64VersUint8Array(audioBase64);
+      if (!octets || octets.length === 0) {
+        throw new Error("NO_AUDIO");
+      }
+
+      const ext = obtenirExtensionAudio(mimeType);
+      const typePropre = mimeType.split(";")[0].trim() || "audio/webm";
+      const blobAudio = new Blob([octets], { type: typePropre });
+
+      const formData = new FormData();
+      formData.append("file", blobAudio, `dictation.${ext}`);
+      formData.append("model", "voxtral-mini-latest");
+      formData.append("language", "fr");
+
+      let reponse;
+      try {
+        reponse = await fetch("https://api.mistral.ai/v1/audio/transcriptions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: formData,
+          signal: AbortSignal.timeout(TIMEOUT_REQUETE_MS)
+        });
+      } catch (erreur) {
+        if (erreur && (erreur.name === "TimeoutError" || erreur.name === "AbortError")) {
+          throw new Error("TIMEOUT");
+        }
+        throw new Error("NETWORK");
+      }
+
+      if (!reponse.ok) {
+        if (reponse.status === 401 || reponse.status === 403) throw new Error("UNAUTHORIZED");
+        if (reponse.status === 429) throw new Error("RATE_LIMITED");
+        throw new Error("SERVICE_UNAVAILABLE");
+      }
+
+      let donnees;
+      try {
+        donnees = await reponse.json();
+      } catch {
+        throw new Error("SERVICE_UNAVAILABLE");
+      }
+
+      const texteBrut = donnees && typeof donnees.text === "string" ? donnees.text.trim() : "";
+      return {
+        success: true,
+        text: texteBrut
+      };
+    }
+  };
+
+  // ── 4 BIS. FOURNISSEUR 2 : OPENAI & TIERS CLOUD (MISTRAL, GROQ, OPENAI) ────
 
   const PRESET_CLOUD_LABELS = {
     openai: "OpenAI",
@@ -629,6 +765,7 @@
   // ── 6. REGISTRE & GESTIONNAIRE GLOBAL MVSPROVIDERS ─────────────────────────
 
   const FOURNISSEURS = {
+    mistral: FournisseurMistral,
     gemini: FournisseurGemini,
     openai: FournisseurOpenAI,
     local: FournisseurLocal
@@ -674,6 +811,10 @@
       const provider = config.provider || "gemini";
       if (provider === "gemini") {
         return Boolean(config.geminiApiKey && config.geminiApiKey.trim().length > 0);
+      }
+      if (provider === "mistral") {
+        const cle = (config.mistralApiKey || config.apiKey || config.sttApiKey || config.llmApiKey || "").trim();
+        return cle.length > 0;
       }
       if (provider === "openai") {
         const llmOk = Boolean(config.llmApiKey && config.llmApiKey.trim().length > 0);
@@ -744,6 +885,40 @@
           return { success: true, message: "OK" };
         }
 
+        if (provider === "mistral") {
+          const apiKey = (config.mistralApiKey || config.apiKey || config.sttApiKey || config.llmApiKey || "").trim();
+          if (!apiKey) {
+            return { success: false, message: "UNAUTHORIZED" };
+          }
+          let rep;
+          try {
+            rep = await fetch("https://api.mistral.ai/v1/client/sessions", {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                purpose: "realtime",
+                model: "voxtral-mini-transcribe-realtime-2602"
+              }),
+              signal: AbortSignal.timeout(TIMEOUT_REQUETE_MS)
+            });
+          } catch (err) {
+            if (err && (err.name === "TimeoutError" || err.name === "AbortError")) {
+              return { success: false, message: "TIMEOUT" };
+            }
+            return { success: false, message: "NETWORK" };
+          }
+          if (!rep.ok) {
+            if (rep.status === 401 || rep.status === 403) {
+              return { success: false, message: "UNAUTHORIZED" };
+            }
+            return { success: false, message: `HTTP ${rep.status}` };
+          }
+          return { success: true, message: "OK" };
+        }
+
         if (provider === "openai") {
           const llmApiKey = (config.llmApiKey || "").trim();
           if (!llmApiKey) {
@@ -790,6 +965,9 @@
      * @returns {string} Pattern d'origine (ex: "https://generativelanguage.googleapis.com/*")
      */
     obtenirPatternOrigine(provider = "gemini", config = {}) {
+      if (provider === "mistral") {
+        return "https://api.mistral.ai/*";
+      }
       if (provider === "gemini") {
         return "https://generativelanguage.googleapis.com/*";
       }
@@ -824,7 +1002,9 @@
      */
     obtenirPatternsOrigines(provider = "gemini", config = {}) {
       const ensemble = new Set();
-      if (provider === "gemini") {
+      if (provider === "mistral") {
+        ensemble.add("https://api.mistral.ai/*");
+      } else if (provider === "gemini") {
         ensemble.add("https://generativelanguage.googleapis.com/*");
       } else if (provider === "openai") {
         const preset = config.openaiPreset || "openai";

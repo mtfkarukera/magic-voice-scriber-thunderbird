@@ -82,17 +82,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnToggleGeminiKey = document.getElementById("btn-toggle-gemini-key");
   const selectGeminiModel = document.getElementById("gemini-model");
 
-  // Section 1B : OpenAI / Tiers Cloud
-  const sectionOpenai = document.getElementById("section-openai");
-  const selectOpenaiPreset = document.getElementById("openai-preset");
-  const inputSttUrl = document.getElementById("stt-base-url");
-  const inputSttModel = document.getElementById("stt-model");
-  const inputSttKey = document.getElementById("stt-api-key");
-  const btnToggleSttKey = document.getElementById("btn-toggle-stt-key");
-  const inputLlmUrl = document.getElementById("llm-base-url");
-  const inputLlmModel = document.getElementById("llm-model");
-  const inputLlmKey = document.getElementById("llm-api-key");
-  const btnToggleLlmKey = document.getElementById("btn-toggle-llm-key");
+  // Section 1B : Mistral AI
+  const sectionMistral = document.getElementById("section-mistral");
+  const inputMistralKey = document.getElementById("mistral-api-key");
+  const btnToggleMistralKey = document.getElementById("btn-toggle-mistral-key");
 
   // Section 1C : Modèle Local
   const sectionLocal = document.getElementById("section-local");
@@ -123,13 +116,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     provider: "gemini",
     geminiApiKey: "",
     geminiModel: "gemini-3.5-transcribe-live",
-    openaiPreset: "openai",
-    sttBaseUrl: "https://api.openai.com",
-    sttApiKey: "",
-    sttModel: "whisper-1",
-    llmBaseUrl: "https://api.openai.com",
-    llmApiKey: "",
-    llmModel: "gpt-4o-mini",
+    mistralApiKey: "",
+    mistralModel: "voxtral-mini-latest",
     localSttUrl: "http://localhost:8000",
     localSttModel: "whisper-1",
     localLlmPreset: "ollama",
@@ -139,27 +127,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     voiceModePolicy: "remember",
     defaultVoiceMode: "natural",
     lastVoiceMode: "natural"
-  };
-
-  const PRESETS_CLOUD = {
-    openai: {
-      sttUrl: "https://api.openai.com",
-      sttModel: "whisper-1",
-      llmUrl: "https://api.openai.com",
-      llmModel: "gpt-4o-mini"
-    },
-    groq: {
-      sttUrl: "https://api.groq.com/openai",
-      sttModel: "whisper-large-v3-turbo",
-      llmUrl: "https://api.groq.com/openai",
-      llmModel: "llama-3.3-70b-versatile"
-    },
-    mistral: {
-      sttUrl: "https://api.groq.com/openai",
-      sttModel: "whisper-large-v3-turbo",
-      llmUrl: "https://api.mistral.ai",
-      llmModel: "mistral-small-latest"
-    }
   };
 
   const PRESETS_LOCAL = {
@@ -199,13 +166,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       provider: selectProvider.value,
       geminiApiKey: inputGeminiKey.value.trim(),
       geminiModel: selectGeminiModel.value,
-      openaiPreset: selectOpenaiPreset.value,
-      sttBaseUrl: inputSttUrl.value.trim() || "https://api.openai.com",
-      sttApiKey: inputSttKey.value.trim(),
-      sttModel: inputSttModel.value.trim() || "whisper-1",
-      llmBaseUrl: inputLlmUrl.value.trim() || "https://api.openai.com",
-      llmApiKey: inputLlmKey.value.trim(),
-      llmModel: inputLlmModel.value.trim() || "gpt-4o-mini",
+      mistralApiKey: inputMistralKey ? inputMistralKey.value.trim() : "",
+      mistralModel: "voxtral-mini-latest",
       localSttUrl: inputLocalSttUrl.value.trim() || "http://localhost:8000",
       localSttModel: inputLocalSttModel.value.trim() || "whisper-1",
       localLlmPreset: selectLocalLlmPreset.value,
@@ -224,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const provider = selectProvider.value;
 
     sectionGemini.classList.add("mvs-hidden");
-    sectionOpenai.classList.add("mvs-hidden");
+    if (sectionMistral) sectionMistral.classList.add("mvs-hidden");
     sectionLocal.classList.add("mvs-hidden");
 
     if (provider === "gemini") {
@@ -232,11 +194,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (sectionVoiceMode) sectionVoiceMode.classList.add("mvs-hidden");
       providerBadge.textContent = t("badgeDefault");
       helpProvider.textContent = t("helpProviderGemini");
-    } else if (provider === "openai") {
-      sectionOpenai.classList.remove("mvs-hidden");
-      if (sectionVoiceMode) sectionVoiceMode.classList.remove("mvs-hidden");
-      providerBadge.textContent = "OpenAI / Cloud";
-      helpProvider.textContent = t("helpProviderOpenai");
+    } else if (provider === "mistral") {
+      if (sectionMistral) sectionMistral.classList.remove("mvs-hidden");
+      if (sectionVoiceMode) sectionVoiceMode.classList.add("mvs-hidden");
+      providerBadge.textContent = "Mistral AI";
+      helpProvider.textContent = t("helpProviderMistral") || "Mistral AI (Voxtral)";
     } else if (provider === "local") {
       sectionLocal.classList.remove("mvs-hidden");
       if (sectionVoiceMode) sectionVoiceMode.classList.remove("mvs-hidden");
@@ -288,8 +250,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   lierBoutonVisibiliteCle(btnToggleGeminiKey, inputGeminiKey);
-  lierBoutonVisibiliteCle(btnToggleSttKey, inputSttKey);
-  lierBoutonVisibiliteCle(btnToggleLlmKey, inputLlmKey);
+  lierBoutonVisibiliteCle(btnToggleMistralKey, inputMistralKey);
   lierBoutonVisibiliteCle(btnToggleLocalKey, inputLocalKey);
 
   // ── Chargement initial depuis browser.storage.local ────────────────────────
@@ -298,16 +259,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cfg = { ...DEFAUTS, ...stocke };
 
     selectProvider.value = cfg.provider;
-    inputGeminiKey.value = cfg.geminiApiKey;
-    selectGeminiModel.value = cfg.geminiModel;
+    inputGeminiKey.value = cfg.geminiApiKey || "";
+    selectGeminiModel.value = cfg.geminiModel || "gemini-3.5-transcribe-live";
 
-    selectOpenaiPreset.value = cfg.openaiPreset;
-    inputSttUrl.value = cfg.sttBaseUrl;
-    inputSttKey.value = cfg.sttApiKey;
-    inputSttModel.value = cfg.sttModel;
-    inputLlmUrl.value = cfg.llmBaseUrl;
-    inputLlmKey.value = cfg.llmApiKey;
-    inputLlmModel.value = cfg.llmModel;
+    if (inputMistralKey) inputMistralKey.value = cfg.mistralApiKey || "";
 
     inputLocalSttUrl.value = cfg.localSttUrl;
     inputLocalSttModel.value = cfg.localSttModel;
@@ -327,17 +282,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ── Événements de Changement de Fournisseur & Presets ──────────────────────
   selectProvider.addEventListener("change", actualiserVisibiliteFournisseur);
 
-  selectOpenaiPreset.addEventListener("change", () => {
-    const preset = PRESETS_CLOUD[selectOpenaiPreset.value];
-    if (preset) {
-      inputSttUrl.value = preset.sttUrl;
-      inputSttModel.value = preset.sttModel;
-      inputLlmUrl.value = preset.llmUrl;
-      inputLlmModel.value = preset.llmModel;
-    }
-    verifierPermissionOrigine();
-  });
-
   selectLocalLlmPreset.addEventListener("change", () => {
     const preset = PRESETS_LOCAL[selectLocalLlmPreset.value];
     if (preset) {
@@ -347,7 +291,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     verifierPermissionOrigine();
   });
 
-  inputLlmUrl.addEventListener("input", verifierPermissionOrigine);
   inputLocalLlmUrl.addEventListener("input", verifierPermissionOrigine);
 
   // ── Autorisation Réseau 1-Clic ─────────────────────────────────────────────

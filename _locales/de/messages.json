@@ -1,159 +1,7 @@
 {
-  "extName": {
-    "message": "Magic Voice Scriber",
-    "description": "Name der Erweiterung"
-  },
-  "extDescription": {
-    "message": "Intelligentes semantisches Sprachdiktat inspiriert von Google Rambler für Thunderbird (Gemini, OpenAI/Mistral/Groq oder lokal mit Ollama/Whisper).",
-    "description": "Beschreibung der Erweiterung"
-  },
-  "composeActionLabel": {
-    "message": "Diktieren",
-    "description": "Kurze Beschriftung der Schaltfläche im Verfassen-Fenster"
-  },
-  "composeActionTitle": {
-    "message": "PC: Alt+Umschalt+S • Mac: ⌘⇧S oder ⌥⇧S",
-    "description": "Tooltip der Schaltfläche im Verfassen-Fenster"
-  },
-  "menuOptionsTitle": {
-    "message": "Magic Voice Scriber Einstellungen…",
-    "description": "Kontextmenüeintrag zum Öffnen der Einstellungen"
-  },
-  "onboardingMessage": {
-    "message": "Willkommen bei Magic Voice Scriber! Geben Sie mit 1 Klick Ihren Gemini- (empfohlen), OpenAI-/Drittanbieter- oder lokalen API-Schlüssel ein, um das intelligente Diktat zu aktivieren.",
-    "description": "Willkommensnachricht ohne API-Schlüssel"
-  },
-  "btnOpenSettings": {
-    "message": "Mit 1 Klick konfigurieren",
-    "description": "Schaltfläche zum Öffnen der Einstellungen"
-  },
-  "btnSettingsTitle": {
-    "message": "Einstellungen öffnen",
-    "description": "Tooltip für Einstellungen"
-  },
-  "modeNaturalLabel": {
-    "message": "Natürlich",
-    "description": "Sprachmodus 1: Natürlich"
-  },
-  "modeNaturalDesc": {
-    "message": "Entfernt Füllwörter und setzt Zeichensetzung, behält Ihre genauen Worte bei.",
-    "description": "Natürlicher Modus Beschreibung"
-  },
-  "modeProLabel": {
-    "message": "Professionell",
-    "description": "Sprachmodus 2: Professionell"
-  },
-  "modeProDesc": {
-    "message": "Formuliert Ihre diktierten Gedanken höflich, gewählt und förmlich um.",
-    "description": "Pro Modus Beschreibung"
-  },
-  "modeBulletsLabel": {
-    "message": "Zusammenfassung",
-    "description": "Sprachmodus 3: Stichpunkte"
-  },
-  "modeBulletsDesc": {
-    "message": "Wandelt laut gesprochene Gedanken in eine übersichtliche Aufgabenliste um.",
-    "description": "Aufzählungsmodus Beschreibung"
-  },
-  "modeBtnAriaLabel": {
-    "message": "Aktiver Diktiermodus. Klicken Sie, um zwischen Natürlich, Professionell und Zusammenfassung zu wechseln.",
-    "description": "Barrierefreies Label des Modus-Umschalters"
-  },
-  "statusReady": {
-    "message": "Bereit zum Zuhören",
-    "description": "Bereitschaftsstatus"
-  },
-  "statusRecording": {
-    "message": "Aufnahme läuft… (Leertaste: Pause)",
-    "description": "Aufnahmestatus"
-  },
-  "statusPaused": {
-    "message": "Pausiert — Leertaste drücken zum Fortsetzen",
-    "description": "Pausenstatus"
-  },
-  "statusThinking": {
-    "message": "Text wird bereinigt und formatiert…",
-    "description": "KI-Verarbeitungsstatus"
-  },
-  "statusLiveStreaming": {
-    "message": "Live-Transkription läuft…",
-    "description": "WebSocket-Live-Status"
-  },
-  "statusInserted": {
-    "message": "Text an Cursorposition eingefügt ✓",
-    "description": "Erfolgsstatus nach dem Einfügen"
-  },
-  "statusMaxDurationReached": {
-    "message": "Optimale Kapazität erreicht (5 Min.) — Wird abgeschlossen…",
-    "description": "Status bei Erreichen des 5-Minuten-Limits"
-  },
-  "statusPermissionRequired": {
-    "message": "Netzwerkberechtigung erforderlich — Klicken Sie auf das Engine-Badge",
-    "description": "Status bei fehlender Host-Berechtigung"
-  },
-  "btnPauseTitle": {
-    "message": "Aufnahme pausieren / fortsetzen (Leertaste)",
-    "description": "Tooltip für Pause"
-  },
-  "btnStopLabel": {
-    "message": "Fertigstellen & Einfügen",
-    "description": "Beschriftung für Fertigstellen"
-  },
-  "btnStopTitle": {
-    "message": "Aufnahme beenden und bereinigten Text einfügen (Eingabetaste)",
-    "description": "Tooltip für Fertigstellen"
-  },
-  "btnCancelLabel": {
-    "message": "Abbrechen",
-    "description": "Beschriftung für Abbrechen"
-  },
-  "btnCancelTitle": {
-    "message": "Aufnahme verwerfen und schließen (Escape)",
-    "description": "Tooltip für Abbrechen"
-  },
-  "hintShortcuts": {
-    "message": "Leertaste: Pause • Eingabe: Einfügen • Esc: Abbrechen",
-    "description": "Tastenkürzel-Hinweis"
-  },
-  "errorMicPermission": {
-    "message": "Mikrofonzugriff verweigert. Bitte erlauben Sie den Mikrofonzugriff.",
-    "description": "Mikrofonfehler"
-  },
-  "errorNoAudio": {
-    "message": "Kein Ton erkannt. Bitte sprechen Sie und versuchen Sie es erneut.",
-    "description": "Fehler bei leerem Audio"
-  },
-  "errorEmptyRecording": {
-    "message": "Aufnahme zu kurz oder stumm. Bitte erneut versuchen.",
-    "description": "Fehler wenn die Audioaufnahme keine verwertbaren Daten enthält"
-  },
-  "errorSessionLost": {
-    "message": "Aufnahmesitzung unterbrochen. Bitte Diktat neu starten.",
-    "description": "Fehler wenn die Hintergrund-Aufnahmesitzung verloren ging"
-  },
-  "errorUnauthorized": {
-    "message": "Ungültiger oder fehlender API-Schlüssel. Bitte prüfen Sie Ihre Einstellungen.",
-    "description": "Fehler 401/403"
-  },
-  "errorRateLimited": {
-    "message": "API-Kontingent oder Limit überschritten (429). Bitte kurz warten.",
-    "description": "Fehler 429"
-  },
-  "errorTimeout": {
-    "message": "Zeitüberschreitung der Anfrage. Bitte prüfen Sie Ihre Verbindung.",
-    "description": "Timeout-Fehler"
-  },
-  "errorNetwork": {
-    "message": "Netzwerkfehler. Prüfen Sie Ihre Internetverbindung oder Ihren lokalen Server.",
-    "description": "Netzwerkfehler"
-  },
-  "errorServiceUnavailable": {
-    "message": "Transkriptionsdienst vorübergehend nicht verfügbar.",
-    "description": "Allgemeiner Dienstfehler"
-  },
-  "errorInsertFailed": {
-    "message": "Text konnte nicht in den E-Mail-Editor eingefügt werden.",
-    "description": "DOM-Einfügefehler"
+  "badgeDefault": {
+    "message": "Standard",
+    "description": "Standard-Badge"
   },
   "badgePermissionWarnTitle": {
     "message": "Berechtigung erforderlich — Klicken für 1-Klick-Autorisierung",
@@ -163,237 +11,17 @@
     "message": "Aktive Engine (Klicken zum Ändern in den Einstellungen)",
     "description": "Tooltip des Engine-Badges"
   },
-  "optionsPageTitle": {
-    "message": "Einstellungen — Magic Voice Scriber",
-    "description": "Titel der Einstellungsseite"
+  "btnCancelLabel": {
+    "message": "Abbrechen",
+    "description": "Beschriftung für Abbrechen"
   },
-  "optionsHeaderSubtitle": {
-    "message": "Semantisches Sprachdiktat inspiriert von Google Rambler für Thunderbird",
-    "description": "Untertitel der Einstellungen"
+  "btnCancelTitle": {
+    "message": "Aufnahme verwerfen und schließen (Escape)",
+    "description": "Tooltip für Abbrechen"
   },
-  "sectionProviderTitle": {
-    "message": "1. Sprach-KI-Engine",
-    "description": "Überschrift Anbieter-Sektion"
-  },
-  "labelSelectProvider": {
-    "message": "Aktiver Anbieter",
-    "description": "Label Anbieterauswahl"
-  },
-  "providerOptionGemini": {
-    "message": "Google Gemini API (Empfohlen — Standard)",
-    "description": "Option Gemini"
-  },
-  "providerOptionOpenai": {
-    "message": "OpenAI / Drittanbieter-Cloud (Mistral, Groq, OpenAI…)",
-    "description": "Option OpenAI"
-  },
-  "providerOptionLocal": {
-    "message": "100 % Lokales Modell (Ollama, LM Studio, Lokales Whisper)",
-    "description": "Option Lokal"
-  },
-  "badgeDefault": {
-    "message": "Standard",
-    "description": "Standard-Badge"
-  },
-  "helpProviderGemini": {
-    "message": "Nutzt nativ die Gemini 3.5 Transcribe Modelle im SMART-Modus (Entfernung von Füllwörtern, Selbstkorrekturen und Formatierung in einem Durchgang).",
-    "description": "Hilfetext Gemini"
-  },
-  "helpProviderOpenai": {
-    "message": "Kombiniert schnelle Spracherkennung (Whisper auf OpenAI oder Groq) mit einem Sprachmodell (Mistral, OpenAI, Groq) zur Textbereinigung.",
-    "description": "Hilfetext OpenAI"
-  },
-  "helpProviderLocal": {
-    "message": "100 % Offline- und souveräne Verarbeitung auf Ihrem Computer über einen lokalen Whisper-Server und Ollama oder LM Studio.",
-    "description": "Hilfetext Lokal"
-  },
-  "sectionGeminiTitle": {
-    "message": "Google Gemini Konfiguration",
-    "description": "Überschrift Gemini"
-  },
-  "labelGeminiApiKey": {
-    "message": "Google AI Studio API-Schlüssel",
-    "description": "Label Gemini-Schlüssel"
-  },
-  "placeholderGeminiApiKey": {
-    "message": "AIzaSy...",
-    "description": "Platzhalter Gemini-Schlüssel"
-  },
-  "helpGeminiApiKey": {
-    "message": "Kostenlosen Schlüssel unter aistudio.google.com erstellen",
-    "description": "Hilfe Gemini-Schlüssel"
-  },
-  "labelGeminiModel": {
-    "message": "Gemini-Transkriptionsmodell",
-    "description": "Label Gemini-Modell"
-  },
-  "geminiModelBatch": {
-    "message": "gemini-3.5-transcribe — Vollständige Aufnahme (Push-to-Talk via REST)",
-    "description": "Option 1 Gemini-Modell"
-  },
-  "geminiModelLive": {
-    "message": "gemini-3.5-transcribe-live — Wörter beim Sprechen anzeigen (WebSocket)",
-    "description": "Option 2 Gemini-Modell"
-  },
-  "helpGeminiModel": {
-    "message": "Das REST-Modell verarbeitet die gesamte Aufnahme mit maximaler Stabilität. Das Live-Modell überträgt Wörter in Echtzeit über WebSocket.",
-    "description": "Hilfe Gemini-Modelle"
-  },
-  "sectionOpenaiTitle": {
-    "message": "OpenAI / Drittanbieter-Cloud Konfiguration",
-    "description": "Überschrift OpenAI"
-  },
-  "labelOpenaiPreset": {
-    "message": "Cloud-Voreinstellung",
-    "description": "Label Cloud-Preset"
-  },
-  "presetOpenai": {
-    "message": "OpenAI (Whisper-1 + GPT-4o-mini)",
-    "description": "Preset OpenAI"
-  },
-  "presetGroq": {
-    "message": "Groq (Whisper Large v3 Turbo + Llama 3.3 70B)",
-    "description": "Preset Groq"
-  },
-  "presetMistral": {
-    "message": "Mistral AI (Whisper/Groq STT + Mistral Small)",
-    "description": "Preset Mistral"
-  },
-  "presetCustomCloud": {
-    "message": "Benutzerdefiniert (OpenAI-kompatibel)",
-    "description": "Preset Benutzerdefiniert"
-  },
-  "labelSttEndpoint": {
-    "message": "Audio-Basis-URL (STT / Whisper)",
-    "description": "Label STT-URL"
-  },
-  "labelSttApiKey": {
-    "message": "Audio-API-Schlüssel (STT)",
-    "description": "Label STT-Schlüssel"
-  },
-  "labelSttModel": {
-    "message": "Audio-Modell (STT)",
-    "description": "Label STT-Modell"
-  },
-  "labelLlmEndpoint": {
-    "message": "Text-Basis-URL (Bereinigungs-LLM)",
-    "description": "Label LLM-URL"
-  },
-  "labelLlmApiKey": {
-    "message": "Text-API-Schlüssel (LLM)",
-    "description": "Label LLM-Schlüssel"
-  },
-  "labelLlmModel": {
-    "message": "Text-Modell (LLM)",
-    "description": "Label LLM-Modell"
-  },
-  "helpOpenaiPipeline": {
-    "message": "Tipp: Wenn Sie Mistral zur Textbereinigung nutzen, geben Sie für die Audio-Transkription einen Groq- oder OpenAI-Schlüssel (oder lokalen Whisper-Server) an.",
-    "description": "Tipp Pipeline"
-  },
-  "sectionLocalTitle": {
-    "message": "Konfiguration für 100 % Lokales Modell",
-    "description": "Überschrift Lokal"
-  },
-  "labelLocalSttUrl": {
-    "message": "Lokale STT-Server-URL (Whisper.cpp / Speaches / Faster-Whisper)",
-    "description": "Label lokale STT-URL"
-  },
-  "labelLocalSttModel": {
-    "message": "Name des lokalen STT-Modells",
-    "description": "Label lokales STT-Modell"
-  },
-  "labelLocalLlmPreset": {
-    "message": "Lokaler LLM-Server",
-    "description": "Label lokaler LLM-Server"
-  },
-  "presetOllama": {
-    "message": "Ollama (http://localhost:11434)",
-    "description": "Preset Ollama"
-  },
-  "presetLmStudio": {
-    "message": "LM Studio (http://localhost:1234)",
-    "description": "Preset LM Studio"
-  },
-  "presetCustomLocal": {
-    "message": "Benutzerdefinierter lokaler Server",
-    "description": "Preset lokal benutzerdefiniert"
-  },
-  "labelLocalLlmUrl": {
-    "message": "Basis-URL des lokalen LLM-Servers",
-    "description": "Label lokale LLM-URL"
-  },
-  "labelLocalLlmModel": {
-    "message": "Lokales LLM-Modell (z. B. llama3.2, qwen2.5, mistral)",
-    "description": "Label lokales LLM-Modell"
-  },
-  "labelLocalApiKey": {
-    "message": "Lokaler API-Schlüssel (optional)",
-    "description": "Label lokaler Schlüssel"
-  },
-  "placeholderLocalApiKey": {
-    "message": "Leer lassen, falls kein Schlüssel erforderlich ist",
-    "description": "Platzhalter lokaler Schlüssel"
-  },
-  "sectionVoiceModeTitle": {
-    "message": "2. Einstellungen des Diktiermodus",
-    "description": "Überschrift Modus-Einstellungen"
-  },
-  "labelVoiceModePolicy": {
-    "message": "Verhalten beim Öffnen der Kapsel",
-    "description": "Label Modus-Speicherung"
-  },
-  "policyRememberLast": {
-    "message": "Zuletzt gewählten Modus beibehalten (Empfohlen)",
-    "description": "Option letzten Modus merken"
-  },
-  "policyUseDefault": {
-    "message": "Immer auf den unten festgelegten Standardmodus zurücksetzen",
-    "description": "Option Standardmodus nutzen"
-  },
-  "labelDefaultVoiceMode": {
-    "message": "Standardmodus",
-    "description": "Label Standardmodus"
-  },
-  "btnToggleKeyTitle": {
-    "message": "API-Schlüssel anzeigen / verbergen",
-    "description": "Tooltip Schlüssel anzeigen"
-  },
-  "btnTestConnection": {
-    "message": "Verbindung testen",
-    "description": "Schaltfläche Verbindung testen"
-  },
-  "btnSaveOptions": {
-    "message": "Einstellungen speichern",
-    "description": "Schaltfläche Speichern"
-  },
-  "statusTesting": {
-    "message": "Verbindung wird getestet…",
-    "description": "Status beim Testen"
-  },
-  "statusTestSuccess": {
-    "message": "Verbindung zur Engine erfolgreich ✓",
-    "description": "Status Test erfolgreich"
-  },
-  "statusTestFailed": {
-    "message": "Verbindungstest fehlgeschlagen:",
-    "description": "Präfix Test fehlgeschlagen"
-  },
-  "statusSaved": {
-    "message": "Einstellungen erfolgreich gespeichert ✓",
-    "description": "Status gespeichert"
-  },
-  "permissionBannerText": {
-    "message": "Für die Verbindung zu dieser Domain ist eine Netzwerkberechtigung erforderlich:",
-    "description": "Banner-Text Berechtigung"
-  },
-  "btnGrantPermission": {
-    "message": "Mit 1 Klick autorisieren",
-    "description": "Schaltfläche Autorisieren"
-  },
-  "micPrefRequiredMessage": {
-    "message": "Einmalige Thunderbird-Einrichtung: Einstellungen (⌘, oder Extras > Einstellungen) → Tab Allgemein (ganz nach unten scrollen) → Schaltfläche «Konfiguration bearbeiten…», media.navigator.permission.disabled einfügen und auf true setzen.",
-    "description": "Einmaliger Hinweis zur Mikrofonaktivierung in Thunderbird"
+  "btnCopyCmd": {
+    "message": "Befehl kopieren",
+    "description": "Schaltfläche Befehl kopieren"
   },
   "btnCopyMicPref": {
     "message": "Einstellungsnamen kopieren",
@@ -403,185 +31,105 @@
     "message": "Kopiert ✓",
     "description": "Kopierbestätigung"
   },
-  "btnLaunchSetup": {
-    "message": "🚀 Einrichtungs- und Diagnose-Assistent neu starten",
-    "description": "Schaltfläche zum Öffnen des Assistenten"
+  "btnDemoRecord": {
+    "message": "Satz laut vorlesen",
+    "description": "Button Demo Aufnahme"
   },
-  "setupPageTitle": {
-    "message": "Magic Voice Scriber — Einrichtungs- & Diagnose-Assistent",
-    "description": "Reitertitel des Assistenten"
-  },
-  "setupHeaderTitle": {
-    "message": "Einrichtungs- & Diagnose-Assistent",
-    "description": "Hauptüberschrift des Assistenten"
-  },
-  "setupHeaderSubtitle": {
-    "message": "Richten Sie Ihre intelligente Sprach-Diktierfunktion in Thunderbird in wenigen Schritten ein.",
-    "description": "Untertitel des Assistenten"
-  },
-  "step1Label": {
-    "message": "Mikrofon & OS",
-    "description": "Schritt 1 Label"
-  },
-  "step2Label": {
-    "message": "KI-Modell",
-    "description": "Schritt 2 Label"
-  },
-  "step3Label": {
-    "message": "Stil & Tastenkürzel",
-    "description": "Schritt 3 Label"
-  },
-  "step4Label": {
-    "message": "Magie ausprobieren",
-    "description": "Schritt 4 Label"
-  },
-  "step1Title": {
-    "message": "1. Mikrofon-Diagnose & Systemkompatibilität",
-    "description": "Schritt 1 Titel"
-  },
-  "step1Desc": {
-    "message": "Überprüfen Sie vor dem Start, ob Thunderbird auf Ihr Mikrofon zugreifen darf.",
-    "description": "Schritt 1 Beschreibung"
-  },
-  "osDetecting": {
-    "message": "Betriebssystem wird erkannt…",
-    "description": "Betriebssystemerkennung"
-  },
-  "micStatusIdle": {
-    "message": "Klicken Sie auf «Mikrofon testen» und sprechen Sie zur Überprüfung.",
-    "description": "Mikrofonstatus Ruhezustand"
-  },
-  "btnTestMic": {
-    "message": "Mikrofon testen",
-    "description": "Schaltfläche Mikrofon testen"
-  },
-  "snapAlertTitle": {
-    "message": "Achtung Ubuntu Linux Benutzer (Snap-Paket)",
-    "description": "Snap-Warnung Titel"
-  },
-  "snapAlertBody": {
-    "message": "Das offizielle Thunderbird-Snap-Paket blockiert den Mikrofonzugriff (fehlender audio-record-Stecker). Um sauber auf die native .deb-Version umzusteigen, ohne dass Snap bei Updates neu installiert wird oder E-Mails verloren gehen:",
-    "description": "Corps alerte Snap"
-  },
-  "btnCopyCmd": {
-    "message": "Befehl kopieren",
-    "description": "Schaltfläche Befehl kopieren"
-  },
-  "prefGuideTitle": {
-    "message": "Einmalige Thunderbird-Einrichtung erforderlich:",
-    "description": "Titel Einstellungsanleitung"
-  },
-  "prefGuideBody": {
-    "message": "Damit WebExtensions Ton aufnehmen dürfen, öffnen Sie die Konfiguration (Einstellungen > Allgemein > Schaltfläche «Konfiguration bearbeiten…»), suchen Sie die Einstellung und setzen Sie sie auf true:",
-    "description": "Text Einstellungsanleitung"
-  },
-  "btnNext": {
-    "message": "Weiter →",
-    "description": "Schaltfläche Weiter"
-  },
-  "btnPrev": {
-    "message": "← Zurück",
-    "description": "Schaltfläche Zurück"
-  },
-  "step2Title": {
-    "message": "2. KI-Modell wählen (BYOK)",
-    "description": "Schritt 2 Titel"
-  },
-  "step2Desc": {
-    "message": "Wählen Sie Ihren KI-Anbieter und geben Sie Ihren persönlichen API-Schlüssel ein.",
-    "description": "Schritt 2 Beschreibung"
-  },
-  "helpGeminiGet": {
-    "message": "Kostenlosen Schlüssel in 30 Sekunden erhalten auf ",
-    "description": "Link zu Google AI Studio"
-  },
-  "helpLocalMode": {
-    "message": "Stellen Sie sicher, dass Ihr lokaler Whisper-Server und Ihr LLM gestartet sind.",
-    "description": "Lokaler Modus Hilfe"
-  },
-  "step3Title": {
-    "message": "3. Diktierstil & Ergonomie",
-    "description": "Schritt 3 Titel"
-  },
-  "step3Desc": {
-    "message": "Wählen Sie, wie Magic Voice Scriber Ihre gesprochenen Worte optimiert.",
-    "description": "Schritt 3 Beschreibung"
-  },
-  "modeNaturalTitle": {
-    "message": "Rambler-Modus (Originalgetreu)",
-    "description": "Natürlicher Modus Titel"
-  },
-  "modeProTitle": {
-    "message": "Professioneller Modus",
-    "description": "Pro Modus Titel"
-  },
-  "modeBulletsTitle": {
-    "message": "Zusammenfassung / Aufzählung",
-    "description": "Aufzählungsmodus Titel"
-  },
-  "shortcutLabel": {
-    "message": "Diktier-Tastenkürzel:",
-    "description": "Tastenkürzel Label"
-  },
-  "shortcutDesc": {
-    "message": "(oder Klick auf den orangen Stimmtropfen unter dem Cursor)",
-    "description": "Beschreibung Stimmtropfen"
-  },
-  "step4Title": {
-    "message": "4. Probieren Sie die Magie live aus! ✨",
-    "description": "Schritt 4 Titel"
-  },
-  "step4Desc": {
-    "message": "Machen Sie selbst den Test: Lesen Sie diesen Satz laut mit allen Zögerlichkeiten vor, um den bereinigten Text in Echtzeit zu sehen.",
-    "description": "Schritt 4 Beschreibung"
-  },
-  "readyHeading": {
-    "message": "Wie diktiere ich in meinen E-Mails?",
-    "description": "Anleitung Überschrift"
-  },
-  "readyStep1Title": {
-    "message": "1. E-Mail-Verfassen-Fenster öffnen",
-    "description": "Schritt 1 Nutzung"
-  },
-  "readyStep1Desc": {
-    "message": "Cursor im Text platzieren: Der orange Stimmtropfen erscheint direkt darunter.",
-    "description": "Beschreibung Schritt 1"
-  },
-  "readyStep2Title": {
-    "message": "2. Diktat starten",
-    "description": "Schritt 2 Nutzung"
-  },
-  "readyStep2Desc": {
-    "message": "Auf den Tropfen klicken oder Alt+Shift+S drücken (Mac: ⌘⇧S). Frei sprechen.",
-    "description": "Beschreibung Schritt 2"
-  },
-  "readyStep3Title": {
-    "message": "3. Sofortige Einfügung",
-    "description": "Schritt 3 Nutzung"
-  },
-  "readyStep3Desc": {
-    "message": "Eingabetaste drücken: Der bereinigte, punktierte Text wird direkt am Cursor eingefügt!",
-    "description": "Beschreibung Schritt 3"
+  "btnDemoStop": {
+    "message": "Beenden und Ergebnis anzeigen",
+    "description": "Button Demo Stopp"
   },
   "btnFinishSetup": {
     "message": "Speichern & Diktieren starten ✓",
     "description": "Schaltfläche Fertigstellen"
   },
-  "step5Label": {
-    "message": "Bereit!",
-    "description": "Schritt 5 Label"
+  "btnGrantPermission": {
+    "message": "Mit 1 Klick autorisieren",
+    "description": "Schaltfläche Autorisieren"
   },
-  "smartBadgeTitle": {
-    "message": "Native Gemini SMART-Technologie",
-    "description": "SMART Badge Titel"
+  "btnLaunchSetup": {
+    "message": "🚀 Einrichtungs- und Diagnose-Assistent neu starten",
+    "description": "Schaltfläche zum Öffnen des Assistenten"
   },
-  "smartExplanationText": {
-    "message": "Mit Google Gemini 3.5 wird Ihre Stimme in einem einzigen, ultraschnellen Durchgang verarbeitet. Das SMART-Modell entfernt automatisch Füllwörter ('äh', 'öh'), Fehlstarts und Wiederholungen ganz ohne künstliche Umformulierungs-Prompts.",
-    "description": "SMART Erklärung"
+  "btnNext": {
+    "message": "Weiter →",
+    "description": "Schaltfläche Weiter"
   },
-  "llmModesTitle": {
-    "message": "Umformatierungsstil für Ihr LLM-Modell:",
-    "description": "LLM Modi Titel"
+  "btnNextReady": {
+    "message": "Weiter: Alles bereit! →",
+    "description": "Button Weiter bereit"
+  },
+  "btnOpenSettings": {
+    "message": "Mit 1 Klick konfigurieren",
+    "description": "Schaltfläche zum Öffnen der Einstellungen"
+  },
+  "btnPauseTitle": {
+    "message": "Aufnahme pausieren / fortsetzen (Leertaste)",
+    "description": "Tooltip für Pause"
+  },
+  "btnPrev": {
+    "message": "← Zurück",
+    "description": "Schaltfläche Zurück"
+  },
+  "btnReadUbuntuTutorial": {
+    "message": "📖 Schritt-für-Schritt-Anleitung lesen (Profil-Backup & APT-Pinning) →",
+    "description": "Bouton tutoriel Ubuntu Snap deb"
+  },
+  "btnSaveOptions": {
+    "message": "Einstellungen speichern",
+    "description": "Schaltfläche Speichern"
+  },
+  "btnSettingsTitle": {
+    "message": "Einstellungen öffnen",
+    "description": "Tooltip für Einstellungen"
+  },
+  "btnSkipDemo": {
+    "message": "Test überspringen →",
+    "description": "Button Test überspringen"
+  },
+  "btnStopLabel": {
+    "message": "Fertigstellen & Einfügen",
+    "description": "Beschriftung für Fertigstellen"
+  },
+  "btnStopTitle": {
+    "message": "Aufnahme beenden und bereinigten Text einfügen (Eingabetaste)",
+    "description": "Tooltip für Fertigstellen"
+  },
+  "btnTestConnection": {
+    "message": "Verbindung testen",
+    "description": "Schaltfläche Verbindung testen"
+  },
+  "btnTestMic": {
+    "message": "Mikrofon testen",
+    "description": "Schaltfläche Mikrofon testen"
+  },
+  "btnToggleKeyTitle": {
+    "message": "API-Schlüssel anzeigen / verbergen",
+    "description": "Tooltip Schlüssel anzeigen"
+  },
+  "cmdCopied": {
+    "message": "Befehl kopiert ✓",
+    "description": "Notification copie commande bash"
+  },
+  "composeActionLabel": {
+    "message": "Diktieren",
+    "description": "Kurze Beschriftung der Schaltfläche im Verfassen-Fenster"
+  },
+  "composeActionTitle": {
+    "message": "PC: Alt+Umschalt+S • Mac: ⌘⇧S oder ⌥⇧S",
+    "description": "Tooltip der Schaltfläche im Verfassen-Fenster"
+  },
+  "demoBadgeAutocorrect": {
+    "message": "Selbstkorrektur aufgelöst ✓",
+    "description": "Badge Selbstkorrektur"
+  },
+  "demoBadgeHesitations": {
+    "message": "Füllwörter bereinigt ✓",
+    "description": "Badge Füllwörter"
+  },
+  "demoBadgePunctuation": {
+    "message": "Satzzeichen gesetzt ✓",
+    "description": "Badge Interpunktion"
   },
   "demoPromptLabel": {
     "message": "💬 Lesen Sie diesen Satz laut vor:",
@@ -591,68 +139,544 @@
     "message": "„Hallo Marc, äh... kannst du mir bitte eine Rückmeldung zum Kostenvoranschlag... nein Verzeihung, zum Finanzbericht bis Freitag um 14 Uhr geben? Vielen Dank im Voraus!“",
     "description": "Demo Beispielsatz"
   },
+  "demoResultTitle": {
+    "message": "Bereinigtes Ergebnis von Magic Voice Scriber:",
+    "description": "Demo Ergebnis Titel"
+  },
   "demoStatusIdle": {
     "message": "Klicken Sie auf „Satz vorlesen“ und sprechen Sie laut.",
     "description": "Demo Status Leerlauf"
-  },
-  "demoStatusRecording": {
-    "message": "Aufnahme läuft… Lesen Sie den Satz laut vor.",
-    "description": "Demo Status Aufnahme"
   },
   "demoStatusProcessing": {
     "message": "Semantische Bereinigung läuft… ✨",
     "description": "Demo Status Verarbeitung"
   },
-  "btnDemoRecord": {
-    "message": "Satz laut vorlesen",
-    "description": "Button Demo Aufnahme"
+  "demoStatusRecording": {
+    "message": "Aufnahme läuft… Lesen Sie den Satz laut vor.",
+    "description": "Demo Status Aufnahme"
   },
-  "btnDemoStop": {
-    "message": "Beenden und Ergebnis anzeigen",
-    "description": "Button Demo Stopp"
+  "errorEmptyRecording": {
+    "message": "Aufnahme zu kurz oder stumm. Bitte erneut versuchen.",
+    "description": "Fehler wenn die Audioaufnahme keine verwertbaren Daten enthält"
   },
-  "demoResultTitle": {
-    "message": "Bereinigtes Ergebnis von Magic Voice Scriber:",
-    "description": "Demo Ergebnis Titel"
+  "errorInsertFailed": {
+    "message": "Text konnte nicht in den E-Mail-Editor eingefügt werden.",
+    "description": "DOM-Einfügefehler"
   },
-  "demoBadgeHesitations": {
-    "message": "Füllwörter bereinigt ✓",
-    "description": "Badge Füllwörter"
+  "errorMicPermission": {
+    "message": "Mikrofonzugriff verweigert. Bitte erlauben Sie den Mikrofonzugriff.",
+    "description": "Mikrofonfehler"
   },
-  "demoBadgeAutocorrect": {
-    "message": "Selbstkorrektur aufgelöst ✓",
-    "description": "Badge Selbstkorrektur"
+  "errorNetwork": {
+    "message": "Netzwerkfehler. Prüfen Sie Ihre Internetverbindung oder Ihren lokalen Server.",
+    "description": "Netzwerkfehler"
   },
-  "demoBadgePunctuation": {
-    "message": "Satzzeichen gesetzt ✓",
-    "description": "Badge Interpunktion"
+  "errorNoAudio": {
+    "message": "Kein Ton erkannt. Bitte sprechen Sie und versuchen Sie es erneut.",
+    "description": "Fehler bei leerem Audio"
   },
-  "btnSkipDemo": {
-    "message": "Test überspringen →",
-    "description": "Button Test überspringen"
+  "errorRateLimited": {
+    "message": "API-Kontingent oder Limit überschritten (429). Bitte kurz warten.",
+    "description": "Fehler 429"
   },
-  "btnNextReady": {
-    "message": "Weiter: Alles bereit! →",
-    "description": "Button Weiter bereit"
+  "errorServiceUnavailable": {
+    "message": "Transkriptionsdienst vorübergehend nicht verfügbar.",
+    "description": "Allgemeiner Dienstfehler"
   },
-  "step5Title": {
-    "message": "5. Alles bereit! 🎉",
-    "description": "Schritt 5 Titel"
+  "errorSessionLost": {
+    "message": "Aufnahmesitzung unterbrochen. Bitte Diktat neu starten.",
+    "description": "Fehler wenn die Hintergrund-Aufnahmesitzung verloren ging"
   },
-  "step5Desc": {
-    "message": "Ihre semantische Spracheingabe-Umgebung ist vollständig eingerichtet.",
-    "description": "Schritt 5 Beschreibung"
+  "errorTimeout": {
+    "message": "Zeitüberschreitung der Anfrage. Bitte prüfen Sie Ihre Verbindung.",
+    "description": "Timeout-Fehler"
   },
-  "btnReadUbuntuTutorial": {
-    "message": "📖 Schritt-für-Schritt-Anleitung lesen (Profil-Backup & APT-Pinning) →",
-    "description": "Bouton tutoriel Ubuntu Snap deb"
+  "errorUnauthorized": {
+    "message": "Ungültiger oder fehlender API-Schlüssel. Bitte prüfen Sie Ihre Einstellungen.",
+    "description": "Fehler 401/403"
+  },
+  "extDescription": {
+    "message": "Intelligentes semantisches Sprachdiktat inspiriert von Google Rambler für Thunderbird (Gemini, OpenAI/Mistral/Groq oder lokal mit Ollama/Whisper).",
+    "description": "Beschreibung der Erweiterung"
+  },
+  "extName": {
+    "message": "Magic Voice Scriber",
+    "description": "Name der Erweiterung"
+  },
+  "geminiModelBatch": {
+    "message": "gemini-3.5-transcribe — Vollständige Aufnahme (Push-to-Talk via REST)",
+    "description": "Option 1 Gemini-Modell"
+  },
+  "geminiModelLive": {
+    "message": "gemini-3.5-transcribe-live — Wörter beim Sprechen anzeigen (WebSocket)",
+    "description": "Option 2 Gemini-Modell"
+  },
+  "helpGeminiApiKey": {
+    "message": "Kostenlosen Schlüssel unter aistudio.google.com erstellen",
+    "description": "Hilfe Gemini-Schlüssel"
+  },
+  "helpGeminiGet": {
+    "message": "Kostenlosen Schlüssel in 30 Sekunden erhalten auf ",
+    "description": "Link zu Google AI Studio"
+  },
+  "helpGeminiModel": {
+    "message": "Das REST-Modell verarbeitet die gesamte Aufnahme mit maximaler Stabilität. Das Live-Modell überträgt Wörter in Echtzeit über WebSocket.",
+    "description": "Hilfe Gemini-Modelle"
+  },
+  "helpLocalMode": {
+    "message": "Stellen Sie sicher, dass Ihr lokaler Whisper-Server und Ihr LLM gestartet sind.",
+    "description": "Lokaler Modus Hilfe"
+  },
+  "helpMistralKey": {
+    "message": "Holen Sie sich Ihren persönlichen API-Schlüssel auf console.mistral.ai.",
+    "description": "Key helpMistralKey"
+  },
+  "helpOpenaiPipeline": {
+    "message": "Tipp: Wenn Sie Mistral zur Textbereinigung nutzen, geben Sie für die Audio-Transkription einen Groq- oder OpenAI-Schlüssel (oder lokalen Whisper-Server) an.",
+    "description": "Tipp Pipeline"
+  },
+  "helpProviderGemini": {
+    "message": "Nutzt nativ die Gemini 3.5 Transcribe Modelle im SMART-Modus (Entfernung von Füllwörtern, Selbstkorrekturen und Formatierung in einem Durchgang).",
+    "description": "Hilfetext Gemini"
+  },
+  "helpProviderLocal": {
+    "message": "100 % Offline- und souveräne Verarbeitung auf Ihrem Computer über einen lokalen Whisper-Server und Ollama oder LM Studio.",
+    "description": "Hilfetext Lokal"
+  },
+  "helpProviderMistral": {
+    "message": "Ultraschnelle Transkription mit hoher Wiedergabetreue über Voxtral Mini Realtime (WebSocket) oder Mini (REST).",
+    "description": "Aide pour Mistral"
+  },
+  "helpProviderOpenai": {
+    "message": "Kombiniert schnelle Spracherkennung (Whisper auf OpenAI oder Groq) mit einem Sprachmodell (Mistral, OpenAI, Groq) zur Textbereinigung.",
+    "description": "Hilfetext OpenAI"
+  },
+  "hintShortcuts": {
+    "message": "Leertaste: Pause • Eingabe: Einfügen • Esc: Abbrechen",
+    "description": "Tastenkürzel-Hinweis"
+  },
+  "labelDefaultVoiceMode": {
+    "message": "Standardmodus",
+    "description": "Label Standardmodus"
+  },
+  "labelGeminiApiKey": {
+    "message": "Google AI Studio API-Schlüssel",
+    "description": "Label Gemini-Schlüssel"
+  },
+  "labelGeminiModel": {
+    "message": "Gemini-Transkriptionsmodell",
+    "description": "Label Gemini-Modell"
+  },
+  "labelLlmApiKey": {
+    "message": "Text-API-Schlüssel (LLM)",
+    "description": "Label LLM-Schlüssel"
+  },
+  "labelLlmEndpoint": {
+    "message": "Text-Basis-URL (Bereinigungs-LLM)",
+    "description": "Label LLM-URL"
+  },
+  "labelLlmModel": {
+    "message": "Text-Modell (LLM)",
+    "description": "Label LLM-Modell"
+  },
+  "labelLocalApiKey": {
+    "message": "Lokaler API-Schlüssel (optional)",
+    "description": "Label lokaler Schlüssel"
+  },
+  "labelLocalLlmModel": {
+    "message": "Lokales LLM-Modell (z. B. llama3.2, qwen2.5, mistral)",
+    "description": "Label lokales LLM-Modell"
+  },
+  "labelLocalLlmPreset": {
+    "message": "Lokaler LLM-Server",
+    "description": "Label lokaler LLM-Server"
+  },
+  "labelLocalLlmUrl": {
+    "message": "Basis-URL des lokalen LLM-Servers",
+    "description": "Label lokale LLM-URL"
+  },
+  "labelLocalSttModel": {
+    "message": "Name des lokalen STT-Modells",
+    "description": "Label lokales STT-Modell"
+  },
+  "labelLocalSttUrl": {
+    "message": "Lokale STT-Server-URL (Whisper.cpp / Speaches / Faster-Whisper)",
+    "description": "Label lokale STT-URL"
+  },
+  "labelMistralApiKey": {
+    "message": "Mistral-API-Schlüssel:",
+    "description": "Key labelMistralApiKey"
+  },
+  "labelOpenaiPreset": {
+    "message": "Cloud-Voreinstellung",
+    "description": "Label Cloud-Preset"
+  },
+  "labelSelectProvider": {
+    "message": "Aktiver Anbieter",
+    "description": "Label Anbieterauswahl"
+  },
+  "labelSttApiKey": {
+    "message": "Audio-API-Schlüssel (STT)",
+    "description": "Label STT-Schlüssel"
+  },
+  "labelSttEndpoint": {
+    "message": "Audio-Basis-URL (STT / Whisper)",
+    "description": "Label STT-URL"
+  },
+  "labelSttModel": {
+    "message": "Audio-Modell (STT)",
+    "description": "Label STT-Modell"
+  },
+  "labelVoiceModePolicy": {
+    "message": "Verhalten beim Öffnen der Kapsel",
+    "description": "Label Modus-Speicherung"
+  },
+  "llmModesTitle": {
+    "message": "Umformatierungsstil für Ihr LLM-Modell:",
+    "description": "LLM Modi Titel"
+  },
+  "menuOptionsTitle": {
+    "message": "Magic Voice Scriber Einstellungen…",
+    "description": "Kontextmenüeintrag zum Öffnen der Einstellungen"
+  },
+  "micPrefRequiredMessage": {
+    "message": "Einmalige Thunderbird-Einrichtung: Einstellungen (⌘, oder Extras > Einstellungen) → Tab Allgemein (ganz nach unten scrollen) → Schaltfläche «Konfiguration bearbeiten…», media.navigator.permission.disabled einfügen und auf true setzen.",
+    "description": "Einmaliger Hinweis zur Mikrofonaktivierung in Thunderbird"
+  },
+  "micStatusIdle": {
+    "message": "Klicken Sie auf «Mikrofon testen» und sprechen Sie zur Überprüfung.",
+    "description": "Mikrofonstatus Ruhezustand"
+  },
+  "modeBtnAriaLabel": {
+    "message": "Aktiver Diktiermodus. Klicken Sie, um zwischen Natürlich, Professionell und Zusammenfassung zu wechseln.",
+    "description": "Barrierefreies Label des Modus-Umschalters"
+  },
+  "modeBulletsDesc": {
+    "message": "Wandelt laut gesprochene Gedanken in eine übersichtliche Aufgabenliste um.",
+    "description": "Aufzählungsmodus Beschreibung"
+  },
+  "modeBulletsLabel": {
+    "message": "Zusammenfassung",
+    "description": "Sprachmodus 3: Stichpunkte"
+  },
+  "modeBulletsTitle": {
+    "message": "Zusammenfassung / Aufzählung",
+    "description": "Aufzählungsmodus Titel"
+  },
+  "modeNaturalDesc": {
+    "message": "Entfernt Füllwörter und setzt Zeichensetzung, behält Ihre genauen Worte bei.",
+    "description": "Natürlicher Modus Beschreibung"
+  },
+  "modeNaturalLabel": {
+    "message": "Natürlich",
+    "description": "Sprachmodus 1: Natürlich"
+  },
+  "modeNaturalTitle": {
+    "message": "Rambler-Modus (Originalgetreu)",
+    "description": "Natürlicher Modus Titel"
+  },
+  "modeProDesc": {
+    "message": "Formuliert Ihre diktierten Gedanken höflich, gewählt und förmlich um.",
+    "description": "Pro Modus Beschreibung"
+  },
+  "modeProLabel": {
+    "message": "Professionell",
+    "description": "Sprachmodus 2: Professionell"
+  },
+  "modeProTitle": {
+    "message": "Professioneller Modus",
+    "description": "Pro Modus Titel"
+  },
+  "onboardingMessage": {
+    "message": "Willkommen bei Magic Voice Scriber! Geben Sie mit 1 Klick Ihren Gemini- (empfohlen), OpenAI-/Drittanbieter- oder lokalen API-Schlüssel ein, um das intelligente Diktat zu aktivieren.",
+    "description": "Willkommensnachricht ohne API-Schlüssel"
+  },
+  "optionsHeaderSubtitle": {
+    "message": "Semantisches Sprachdiktat inspiriert von Google Rambler für Thunderbird",
+    "description": "Untertitel der Einstellungen"
+  },
+  "optionsPageTitle": {
+    "message": "Einstellungen — Magic Voice Scriber",
+    "description": "Titel der Einstellungsseite"
+  },
+  "osDetecting": {
+    "message": "Betriebssystem wird erkannt…",
+    "description": "Betriebssystemerkennung"
+  },
+  "permissionBannerText": {
+    "message": "Für die Verbindung zu dieser Domain ist eine Netzwerkberechtigung erforderlich:",
+    "description": "Banner-Text Berechtigung"
+  },
+  "placeholderGeminiApiKey": {
+    "message": "AIzaSy...",
+    "description": "Platzhalter Gemini-Schlüssel"
+  },
+  "placeholderLocalApiKey": {
+    "message": "Leer lassen, falls kein Schlüssel erforderlich ist",
+    "description": "Platzhalter lokaler Schlüssel"
+  },
+  "placeholderMistralApiKey": {
+    "message": "Ihr Mistral-API-Schlüssel...",
+    "description": "Key placeholderMistralApiKey"
+  },
+  "policyRememberLast": {
+    "message": "Zuletzt gewählten Modus beibehalten (Empfohlen)",
+    "description": "Option letzten Modus merken"
+  },
+  "policyUseDefault": {
+    "message": "Immer auf den unten festgelegten Standardmodus zurücksetzen",
+    "description": "Option Standardmodus nutzen"
+  },
+  "prefGuideBody": {
+    "message": "Damit WebExtensions Ton aufnehmen dürfen, öffnen Sie die Konfiguration (Einstellungen > Allgemein > Schaltfläche «Konfiguration bearbeiten…»), suchen Sie die Einstellung und setzen Sie sie auf true:",
+    "description": "Text Einstellungsanleitung"
+  },
+  "prefGuideTitle": {
+    "message": "Einmalige Thunderbird-Einrichtung erforderlich:",
+    "description": "Titel Einstellungsanleitung"
+  },
+  "presetCustomCloud": {
+    "message": "Benutzerdefiniert (OpenAI-kompatibel)",
+    "description": "Preset Benutzerdefiniert"
+  },
+  "presetCustomLocal": {
+    "message": "Benutzerdefinierter lokaler Server",
+    "description": "Preset lokal benutzerdefiniert"
+  },
+  "presetGroq": {
+    "message": "Groq (Whisper Large v3 Turbo + Llama 3.3 70B)",
+    "description": "Preset Groq"
+  },
+  "presetLmStudio": {
+    "message": "LM Studio (http://localhost:1234)",
+    "description": "Preset LM Studio"
+  },
+  "presetMistral": {
+    "message": "Mistral AI (Whisper/Groq STT + Mistral Small)",
+    "description": "Preset Mistral"
+  },
+  "presetOllama": {
+    "message": "Ollama (http://localhost:11434)",
+    "description": "Preset Ollama"
+  },
+  "presetOpenai": {
+    "message": "OpenAI (Whisper-1 + GPT-4o-mini)",
+    "description": "Preset OpenAI"
+  },
+  "providerOptionGemini": {
+    "message": "Google Gemini API (Empfohlen — Standard)",
+    "description": "Option Gemini"
+  },
+  "providerOptionLocal": {
+    "message": "100 % Lokales Modell (Ollama, LM Studio, Lokales Whisper)",
+    "description": "Option Lokal"
+  },
+  "providerOptionMistral": {
+    "message": "Mistral AI (Hohe Wiedergabetreue — Voxtral Mini Realtime & Mini)",
+    "description": "Key providerOptionMistral"
+  },
+  "providerOptionOpenai": {
+    "message": "OpenAI / Drittanbieter-Cloud (Mistral, Groq, OpenAI…)",
+    "description": "Option OpenAI"
+  },
+  "readyHeading": {
+    "message": "Wie diktiere ich in meinen E-Mails?",
+    "description": "Anleitung Überschrift"
+  },
+  "readyStep1Desc": {
+    "message": "Cursor im Text platzieren: Der orange Stimmtropfen erscheint direkt darunter.",
+    "description": "Beschreibung Schritt 1"
+  },
+  "readyStep1Title": {
+    "message": "1. E-Mail-Verfassen-Fenster öffnen",
+    "description": "Schritt 1 Nutzung"
+  },
+  "readyStep2Desc": {
+    "message": "Auf den Tropfen klicken oder Alt+Shift+S drücken (Mac: ⌘⇧S). Frei sprechen.",
+    "description": "Beschreibung Schritt 2"
+  },
+  "readyStep2Title": {
+    "message": "2. Diktat starten",
+    "description": "Schritt 2 Nutzung"
+  },
+  "readyStep3Desc": {
+    "message": "Eingabetaste drücken: Der bereinigte, punktierte Text wird direkt am Cursor eingefügt!",
+    "description": "Beschreibung Schritt 3"
+  },
+  "readyStep3Title": {
+    "message": "3. Sofortige Einfügung",
+    "description": "Schritt 3 Nutzung"
+  },
+  "sectionGeminiTitle": {
+    "message": "Google Gemini Konfiguration",
+    "description": "Überschrift Gemini"
+  },
+  "sectionLocalTitle": {
+    "message": "Konfiguration für 100 % Lokales Modell",
+    "description": "Überschrift Lokal"
+  },
+  "sectionMistralTitle": {
+    "message": "Mistral AI-Konfiguration (Empfohlen)",
+    "description": "Key sectionMistralTitle"
+  },
+  "sectionOpenaiTitle": {
+    "message": "OpenAI / Drittanbieter-Cloud Konfiguration",
+    "description": "Überschrift OpenAI"
+  },
+  "sectionProviderTitle": {
+    "message": "1. Sprach-KI-Engine",
+    "description": "Überschrift Anbieter-Sektion"
+  },
+  "sectionVoiceModeTitle": {
+    "message": "2. Einstellungen des Diktiermodus",
+    "description": "Überschrift Modus-Einstellungen"
+  },
+  "setupHeaderSubtitle": {
+    "message": "Richten Sie Ihre intelligente Sprach-Diktierfunktion in Thunderbird in wenigen Schritten ein.",
+    "description": "Untertitel des Assistenten"
+  },
+  "setupHeaderTitle": {
+    "message": "Einrichtungs- & Diagnose-Assistent",
+    "description": "Hauptüberschrift des Assistenten"
+  },
+  "setupPageTitle": {
+    "message": "Magic Voice Scriber — Einrichtungs- & Diagnose-Assistent",
+    "description": "Reitertitel des Assistenten"
+  },
+  "shortcutDesc": {
+    "message": "(oder Klick auf den orangen Stimmtropfen unter dem Cursor)",
+    "description": "Beschreibung Stimmtropfen"
+  },
+  "shortcutLabel": {
+    "message": "Diktier-Tastenkürzel:",
+    "description": "Tastenkürzel Label"
+  },
+  "smartBadgeTitle": {
+    "message": "Native Gemini SMART-Technologie",
+    "description": "SMART Badge Titel"
+  },
+  "smartExplanationText": {
+    "message": "Mit Google Gemini 3.5 wird Ihre Stimme in einem einzigen, ultraschnellen Durchgang verarbeitet. Das SMART-Modell entfernt automatisch Füllwörter ('äh', 'öh'), Fehlstarts und Wiederholungen ganz ohne künstliche Umformulierungs-Prompts.",
+    "description": "SMART Erklärung"
+  },
+  "snapAlertBody": {
+    "message": "Das offizielle Thunderbird-Snap-Paket blockiert den Mikrofonzugriff (fehlender audio-record-Stecker). Um sauber auf die native .deb-Version umzusteigen, ohne dass Snap bei Updates neu installiert wird oder E-Mails verloren gehen:",
+    "description": "Corps alerte Snap"
   },
   "snapAlertTerminalSubtext": {
     "message": "Oder führen Sie als fortgeschrittener Benutzer den vollständigen Migrationsbefehl mit APT-Priorität 1001 aus:",
     "description": "Sous-texte commande terminal Ubuntu"
   },
-  "cmdCopied": {
-    "message": "Befehl kopiert ✓",
-    "description": "Notification copie commande bash"
+  "snapAlertTitle": {
+    "message": "Achtung Ubuntu Linux Benutzer (Snap-Paket)",
+    "description": "Snap-Warnung Titel"
+  },
+  "statusInserted": {
+    "message": "Text an Cursorposition eingefügt ✓",
+    "description": "Erfolgsstatus nach dem Einfügen"
+  },
+  "statusLiveStreaming": {
+    "message": "Live-Transkription läuft…",
+    "description": "WebSocket-Live-Status"
+  },
+  "statusMaxDurationReached": {
+    "message": "Optimale Kapazität erreicht (5 Min.) — Wird abgeschlossen…",
+    "description": "Status bei Erreichen des 5-Minuten-Limits"
+  },
+  "statusPaused": {
+    "message": "Pausiert — Leertaste drücken zum Fortsetzen",
+    "description": "Pausenstatus"
+  },
+  "statusPermissionRequired": {
+    "message": "Netzwerkberechtigung erforderlich — Klicken Sie auf das Engine-Badge",
+    "description": "Status bei fehlender Host-Berechtigung"
+  },
+  "statusReady": {
+    "message": "Bereit zum Zuhören",
+    "description": "Bereitschaftsstatus"
+  },
+  "statusRecording": {
+    "message": "Aufnahme läuft… (Leertaste: Pause)",
+    "description": "Aufnahmestatus"
+  },
+  "statusSaved": {
+    "message": "Einstellungen erfolgreich gespeichert ✓",
+    "description": "Status gespeichert"
+  },
+  "statusTestFailed": {
+    "message": "Verbindungstest fehlgeschlagen:",
+    "description": "Präfix Test fehlgeschlagen"
+  },
+  "statusTestSuccess": {
+    "message": "Verbindung zur Engine erfolgreich ✓",
+    "description": "Status Test erfolgreich"
+  },
+  "statusTesting": {
+    "message": "Verbindung wird getestet…",
+    "description": "Status beim Testen"
+  },
+  "statusThinking": {
+    "message": "Text wird bereinigt und formatiert…",
+    "description": "KI-Verarbeitungsstatus"
+  },
+  "step1Desc": {
+    "message": "Überprüfen Sie vor dem Start, ob Thunderbird auf Ihr Mikrofon zugreifen darf.",
+    "description": "Schritt 1 Beschreibung"
+  },
+  "step1Label": {
+    "message": "Mikrofon & OS",
+    "description": "Schritt 1 Label"
+  },
+  "step1Title": {
+    "message": "1. Mikrofon-Diagnose & Systemkompatibilität",
+    "description": "Schritt 1 Titel"
+  },
+  "step2Desc": {
+    "message": "Wählen Sie Ihren KI-Anbieter und geben Sie Ihren persönlichen API-Schlüssel ein.",
+    "description": "Schritt 2 Beschreibung"
+  },
+  "step2Label": {
+    "message": "KI-Modell",
+    "description": "Schritt 2 Label"
+  },
+  "step2Title": {
+    "message": "2. KI-Modell wählen (BYOK)",
+    "description": "Schritt 2 Titel"
+  },
+  "step3Desc": {
+    "message": "Wählen Sie, wie Magic Voice Scriber Ihre gesprochenen Worte optimiert.",
+    "description": "Schritt 3 Beschreibung"
+  },
+  "step3Label": {
+    "message": "Stil & Tastenkürzel",
+    "description": "Schritt 3 Label"
+  },
+  "step3Title": {
+    "message": "3. Diktierstil & Ergonomie",
+    "description": "Schritt 3 Titel"
+  },
+  "step4Desc": {
+    "message": "Machen Sie selbst den Test: Lesen Sie diesen Satz laut mit allen Zögerlichkeiten vor, um den bereinigten Text in Echtzeit zu sehen.",
+    "description": "Schritt 4 Beschreibung"
+  },
+  "step4Label": {
+    "message": "Magie ausprobieren",
+    "description": "Schritt 4 Label"
+  },
+  "step4Title": {
+    "message": "4. Probieren Sie die Magie live aus! ✨",
+    "description": "Schritt 4 Titel"
+  },
+  "step5Desc": {
+    "message": "Ihre semantische Spracheingabe-Umgebung ist vollständig eingerichtet.",
+    "description": "Schritt 5 Beschreibung"
+  },
+  "step5Label": {
+    "message": "Bereit!",
+    "description": "Schritt 5 Label"
+  },
+  "step5Title": {
+    "message": "5. Alles bereit! 🎉",
+    "description": "Schritt 5 Titel"
   }
 }

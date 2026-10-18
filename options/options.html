@@ -49,7 +49,7 @@
           <label for="select-provider" data-i18n="labelSelectProvider"></label>
           <select id="select-provider" class="mvs-select">
             <option value="gemini" data-i18n="providerOptionGemini"></option>
-            <option value="openai" data-i18n="providerOptionOpenai"></option>
+            <option value="mistral" data-i18n="providerOptionMistral"></option>
             <option value="local" data-i18n="providerOptionLocal"></option>
           </select>
           <p id="help-provider" class="mvs-help" data-i18n="helpProviderGemini"></p>
@@ -78,59 +78,17 @@
           </div>
         </div>
 
-        <!-- ── SOUS-SECTION 1B : OPENAI & TIERS CLOUD (MISTRAL, GROQ, OPENAI) ── -->
-        <div id="section-openai" class="mvs-provider-panel mvs-hidden">
-          <h3 class="mvs-panel-title" data-i18n="sectionOpenaiTitle"></h3>
+        <!-- ── SOUS-SECTION 1B : MISTRAL AI (VOXTRAL MINI & REALTIME) ── -->
+        <div id="section-mistral" class="mvs-provider-panel mvs-hidden">
+          <h3 class="mvs-panel-title" data-i18n="sectionMistralTitle"></h3>
 
           <div class="mvs-field">
-            <label for="openai-preset" data-i18n="labelOpenaiPreset"></label>
-            <select id="openai-preset" class="mvs-select">
-              <option value="openai" data-i18n="presetOpenai"></option>
-              <option value="groq" data-i18n="presetGroq"></option>
-              <option value="mistral" data-i18n="presetMistral"></option>
-              <option value="custom" data-i18n="presetCustomCloud"></option>
-            </select>
-            <p class="mvs-help" data-i18n="helpOpenaiPipeline"></p>
-          </div>
-
-          <div class="mvs-grid-2">
-            <div class="mvs-field">
-              <label for="stt-base-url" data-i18n="labelSttEndpoint"></label>
-              <input type="url" id="stt-base-url" class="mvs-input">
-            </div>
-            <div class="mvs-field">
-              <label for="stt-model" data-i18n="labelSttModel"></label>
-              <input type="text" id="stt-model" class="mvs-input">
-            </div>
-          </div>
-
-          <div class="mvs-field">
-            <label for="stt-api-key" data-i18n="labelSttApiKey"></label>
+            <label for="mistral-api-key" data-i18n="labelMistralApiKey"></label>
             <div class="mvs-input-group">
-              <input type="password" id="stt-api-key" class="mvs-input" autocomplete="off">
-              <button type="button" id="btn-toggle-stt-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
+              <input type="password" id="mistral-api-key" class="mvs-input" autocomplete="off" data-i18n-placeholder="placeholderMistralApiKey">
+              <button type="button" id="btn-toggle-mistral-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
             </div>
-          </div>
-
-          <hr class="mvs-divider">
-
-          <div class="mvs-grid-2">
-            <div class="mvs-field">
-              <label for="llm-base-url" data-i18n="labelLlmEndpoint"></label>
-              <input type="url" id="llm-base-url" class="mvs-input">
-            </div>
-            <div class="mvs-field">
-              <label for="llm-model" data-i18n="labelLlmModel"></label>
-              <input type="text" id="llm-model" class="mvs-input">
-            </div>
-          </div>
-
-          <div class="mvs-field">
-            <label for="llm-api-key" data-i18n="labelLlmApiKey"></label>
-            <div class="mvs-input-group">
-              <input type="password" id="llm-api-key" class="mvs-input" autocomplete="off">
-              <button type="button" id="btn-toggle-llm-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
-            </div>
+            <p class="mvs-help" data-i18n="helpMistralKey"></p>
           </div>
         </div>
 

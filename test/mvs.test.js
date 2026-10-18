@@ -376,6 +376,105 @@ describe("2. MVSProviders — Pipelines Gemini, OpenAI/Mistral & Local (Mock Fet
       globalThis.fetch = fetchOriginal;
     }
   });
+
+  it("exécute le pipeline Mistral Voxtral en 1 passe REST native (FournisseurMistral)", async () => {
+    const fetchOriginal = globalThis.fetch;
+
+    globalThis.fetch = async (url) => {
+      if (url.includes("/client/sessions")) {
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return {
+              client_secret: "rt_test_token_123",
+              purpose: "realtime"
+            };
+          }
+        };
+      }
+      if (url.includes("/v1/audio/transcriptions")) {
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return {
+              text: "Bonjour, ceci est une dictée Mistral Voxtral."
+            };
+          }
+        };
+      }
+      return { ok: false, status: 404 };
+    };
+
+    try {
+      const token = await MVSProviders.FOURNISSEURS.mistral.obtenirSessionRealtime("CLE_MISTRAL");
+      assert.equal(token, "rt_test_token_123");
+
+      const wsUrl = MVSProviders.FOURNISSEURS.mistral.obtenirUrlWebSocketRealtime("rt_test_token_123");
+      assert.ok(wsUrl.includes("wss://api.mistral.ai/v1/audio/transcriptions/realtime"));
+      assert.ok(wsUrl.includes("client_secret=rt_test_token_123"));
+
+      const res = await MVSProviders.transcrire(
+        {
+          provider: "mistral",
+          mistralApiKey: "CLE_MISTRAL"
+        },
+        "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=",
+        "audio/wav",
+        "natural"
+      );
+      assert.equal(res.success, true);
+      assert.equal(res.text, "Bonjour, ceci est une dictée Mistral Voxtral.");
+    } finally {
+      globalThis.fetch = fetchOriginal;
+    }
+  });
+
+  it("valide la méthode testerConnexion pour Mistral, Gemini et Local", async () => {
+    const fetchOriginal = globalThis.fetch;
+
+    globalThis.fetch = async (url) => {
+      if (url.includes("api.mistral.ai")) {
+        return { ok: true, status: 200, async json() { return { client_secret: "rt_123" }; } };
+      }
+      if (url.includes("googleapis.com")) {
+        return { ok: true, status: 200, async json() { return { models: [] }; } };
+      }
+      if (url.includes("localhost")) {
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return { choices: [{ message: { content: "Bonjour, test de connexion." } }] };
+          }
+        };
+      }
+      return { ok: true, status: 200, async json() { return {}; } };
+    };
+
+    try {
+      const resMistral = await MVSProviders.testerConnexion({
+        provider: "mistral",
+        mistralApiKey: "mistral-test-key"
+      });
+      assert.equal(resMistral.success, true);
+
+      const resGemini = await MVSProviders.testerConnexion({
+        provider: "gemini",
+        geminiApiKey: "AIzaTestKey"
+      });
+      assert.equal(resGemini.success, true);
+
+      const resLocal = await MVSProviders.testerConnexion({
+        provider: "local",
+        localLlmUrl: "http://localhost:11434"
+      });
+      assert.equal(resLocal.success, true);
+    } finally {
+      globalThis.fetch = fetchOriginal;
+    }
+  });
 });
 
 describe("3. Internationalisation (Parité des 6 langues & Zéro texte en dur)", () => {
@@ -470,6 +569,17 @@ describe("4. Sécurité DOM, CSP & Garde-fou DEBUG (Règles 11, 12, 14)", () => 
         `DEBUG = true détecté dans ${rel}`
       );
     }
+  });
+
+  it("respecte le principe du moindre privilège pour les host_permissions (Trio Champion uniquement)", () => {
+    const manifest = JSON.parse(fs.readFileSync(path.join(RACINE, "manifest.json"), "utf8"));
+    const hosts = manifest.host_permissions || [];
+    assert.equal(hosts.includes("https://api.openai.com/*"), false, "api.openai.com ne doit pas figurer dans manifest.json");
+    assert.equal(hosts.includes("https://api.groq.com/*"), false, "api.groq.com ne doit pas figurer dans manifest.json");
+    assert.equal(hosts.includes("https://generativelanguage.googleapis.com/*"), true, "Gemini doit figurer dans host_permissions");
+    assert.equal(hosts.includes("https://api.mistral.ai/*"), true, "Mistral doit figurer dans host_permissions");
+    assert.equal(hosts.includes("http://localhost/*"), true, "Localhost doit figurer dans host_permissions");
+    assert.equal(manifest.version, "1.4.0", "La version du manifest doit être 1.4.0");
   });
 });
 

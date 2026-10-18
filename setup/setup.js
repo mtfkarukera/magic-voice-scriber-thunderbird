@@ -459,46 +459,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const selectProvider = document.getElementById("setup-select-provider");
   const panelGemini = document.getElementById("setup-panel-gemini");
-  const panelOpenai = document.getElementById("setup-panel-openai");
+  const panelMistral = document.getElementById("setup-panel-mistral");
   const panelLocal = document.getElementById("setup-panel-local");
 
   const inputGeminiKey = document.getElementById("setup-gemini-key");
   const btnToggleGeminiKey = document.getElementById("btn-toggle-setup-gemini-key");
-  const inputOpenaiKey = document.getElementById("setup-openai-key");
-  const btnToggleOpenaiKey = document.getElementById("btn-toggle-setup-openai-key");
-  const selectOpenaiPreset = document.getElementById("setup-openai-preset");
+  const inputMistralKey = document.getElementById("setup-mistral-key");
+  const btnToggleMistralKey = document.getElementById("btn-toggle-setup-mistral-key");
   const selectLocalPreset = document.getElementById("setup-local-preset");
 
   const btnTestApi = document.getElementById("btn-test-api");
   const apiTestStatus = document.getElementById("api-test-status");
-
-  // Préréglages Cloud et Local identiques aux Options
-  const PRESETS_CLOUD = {
-    openai: {
-      sttUrl: "https://api.openai.com",
-      sttModel: "whisper-1",
-      llmUrl: "https://api.openai.com",
-      llmModel: "gpt-4o-mini"
-    },
-    groq: {
-      sttUrl: "https://api.groq.com/openai",
-      sttModel: "whisper-large-v3-turbo",
-      llmUrl: "https://api.groq.com/openai",
-      llmModel: "llama-3.3-70b-versatile"
-    },
-    mistral: {
-      sttUrl: "https://api.groq.com/openai",
-      sttModel: "whisper-large-v3-turbo",
-      llmUrl: "https://api.mistral.ai",
-      llmModel: "mistral-small-latest"
-    },
-    custom: {
-      sttUrl: "https://api.openai.com",
-      sttModel: "whisper-1",
-      llmUrl: "https://api.openai.com",
-      llmModel: "gpt-4o-mini"
-    }
-  };
 
   const PRESETS_LOCAL = {
     ollama: {
@@ -529,17 +500,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       geminiModel: modeleGemini
     };
 
-    if (provider === "openai") {
-      const presetKey = selectOpenaiPreset ? selectOpenaiPreset.value : "openai";
-      const preset = PRESETS_CLOUD[presetKey] || PRESETS_CLOUD.openai;
-      config.openaiPreset = presetKey;
-      config.sttBaseUrl = preset.sttUrl;
-      config.sttModel = preset.sttModel;
-      config.llmBaseUrl = preset.llmUrl;
-      config.llmModel = preset.llmModel;
-      const key = inputOpenaiKey ? inputOpenaiKey.value.trim() : "";
-      config.sttApiKey = key;
-      config.llmApiKey = key;
+    if (provider === "mistral") {
+      config.mistralApiKey = inputMistralKey ? inputMistralKey.value.trim() : "";
+      config.mistralModel = "voxtral-mini-latest";
     } else if (provider === "local") {
       const presetKey = selectLocalPreset ? selectLocalPreset.value : "ollama";
       const preset = PRESETS_LOCAL[presetKey] || PRESETS_LOCAL.ollama;
@@ -561,25 +524,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       btnToggleGeminiKey.setAttribute("aria-pressed", estMasque ? "true" : "false");
     });
   }
-  if (btnToggleOpenaiKey && inputOpenaiKey) {
-    btnToggleOpenaiKey.addEventListener("click", () => {
-      const estMasque = inputOpenaiKey.type === "password";
-      inputOpenaiKey.type = estMasque ? "text" : "password";
-      btnToggleOpenaiKey.setAttribute("aria-pressed", estMasque ? "true" : "false");
+  if (btnToggleMistralKey && inputMistralKey) {
+    btnToggleMistralKey.addEventListener("click", () => {
+      const estMasque = inputMistralKey.type === "password";
+      inputMistralKey.type = estMasque ? "text" : "password";
+      btnToggleMistralKey.setAttribute("aria-pressed", estMasque ? "true" : "false");
     });
   }
 
   function actualiserAffichageFournisseur() {
     const val = selectProvider ? selectProvider.value : "gemini";
     if (panelGemini) panelGemini.classList.toggle("mvs-hidden", val !== "gemini");
-    if (panelOpenai) panelOpenai.classList.toggle("mvs-hidden", val !== "openai");
+    if (panelMistral) panelMistral.classList.toggle("mvs-hidden", val !== "mistral");
     if (panelLocal) panelLocal.classList.toggle("mvs-hidden", val !== "local");
 
-    // Invariant Strict #1 : Gemini SMART = Zéro mode de style. Panneau conditionnel.
+    // Invariant Strict #1 : Moteurs 1 passe (Gemini SMART & Mistral Voxtral) = Zéro prompt de style artificiel
+    const estMoteurUnPasse = val === "gemini" || val === "mistral";
     const panelGeminiSmart = document.getElementById("setup-gemini-smart-panel");
     const panelLlmModes = document.getElementById("setup-llm-modes-panel");
-    if (panelGeminiSmart) panelGeminiSmart.classList.toggle("mvs-hidden", val !== "gemini");
-    if (panelLlmModes) panelLlmModes.classList.toggle("mvs-hidden", val === "gemini");
+    if (panelGeminiSmart) panelGeminiSmart.classList.toggle("mvs-hidden", !estMoteurUnPasse);
+    if (panelLlmModes) panelLlmModes.classList.toggle("mvs-hidden", estMoteurUnPasse);
 
     if (apiTestStatus) {
       apiTestStatus.textContent = "";
@@ -596,9 +560,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const configExistante = await api.storage.local.get([
       "provider",
       "geminiApiKey",
-      "sttApiKey",
-      "llmApiKey",
-      "openaiPreset",
+      "mistralApiKey",
       "localLlmPreset",
       "defaultVoiceMode"
     ]);
@@ -609,11 +571,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (configExistante.geminiApiKey && inputGeminiKey) {
       inputGeminiKey.value = configExistante.geminiApiKey;
     }
-    if (configExistante.sttApiKey && inputOpenaiKey) {
-      inputOpenaiKey.value = configExistante.sttApiKey;
-    }
-    if (configExistante.openaiPreset && selectOpenaiPreset) {
-      selectOpenaiPreset.value = configExistante.openaiPreset;
+    if (configExistante.mistralApiKey && inputMistralKey) {
+      inputMistralKey.value = configExistante.mistralApiKey;
     }
     if (configExistante.localLlmPreset && selectLocalPreset) {
       selectLocalPreset.value = configExistante.localLlmPreset;

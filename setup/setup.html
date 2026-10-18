@@ -140,7 +140,7 @@
             <label for="setup-select-provider" data-i18n="labelSelectProvider">Moteur d'intelligence vocale :</label>
             <select id="setup-select-provider" class="mvs-select">
               <option value="gemini" data-i18n="providerOptionGemini">Google Gemini (Recommandé — Rapide, gratuit & streaming Live)</option>
-              <option value="openai" data-i18n="providerOptionOpenai">OpenAI &amp; Tiers Cloud (Mistral, Groq, OpenAI)</option>
+              <option value="mistral" data-i18n="providerOptionMistral">Mistral AI (Voxtral haute fidélité)</option>
               <option value="local" data-i18n="providerOptionLocal">100 % Local &amp; Souverain (Whisper local + Ollama / LM Studio)</option>
             </select>
           </div>
@@ -160,23 +160,18 @@
             </div>
           </div>
 
-          <!-- Panneau 2B : Cloud OpenAI / Mistral / Groq -->
-          <div id="setup-panel-openai" class="mvs-provider-box mvs-hidden">
+          <!-- Panneau 2B : Mistral AI -->
+          <div id="setup-panel-mistral" class="mvs-provider-box mvs-hidden">
             <div class="mvs-field">
-              <label for="setup-openai-preset" data-i18n="labelOpenaiPreset">Service Cloud :</label>
-              <select id="setup-openai-preset" class="mvs-select">
-                <option value="openai">OpenAI (Whisper + GPT-4o-mini)</option>
-                <option value="groq">Groq (Whisper turbo ultra-rapide)</option>
-                <option value="mistral">Mistral AI (Souveraineté européenne)</option>
-                <option value="custom">Autre service compatible OpenAI</option>
-              </select>
-            </div>
-            <div class="mvs-field">
-              <label for="setup-openai-key" data-i18n="labelSttApiKey">Clé API :</label>
+              <label for="setup-mistral-key" data-i18n="labelMistralApiKey">Clé API Mistral AI :</label>
               <div class="mvs-input-group">
-                <input type="password" id="setup-openai-key" class="mvs-input" placeholder="sk-..." autocomplete="off">
-                <button type="button" id="btn-toggle-setup-openai-key" class="mvs-btn-icon" title="Afficher/Masquer" aria-label="Afficher ou masquer la clé API Cloud" aria-pressed="false">👁</button>
+                <input type="password" id="setup-mistral-key" class="mvs-input" data-i18n-placeholder="placeholderMistralApiKey" placeholder="Votre clé API Mistral..." autocomplete="off">
+                <button type="button" id="btn-toggle-setup-mistral-key" class="mvs-btn-icon" title="Afficher/Masquer" aria-label="Afficher ou masquer la clé API Mistral" aria-pressed="false">👁</button>
               </div>
+              <p class="mvs-help">
+                <span data-i18n="helpMistralKey">Obtenez votre clé sur console.mistral.ai</span>
+                (<a href="https://console.mistral.ai/api-keys" target="_blank" rel="noopener">console.mistral.ai</a>).
+              </p>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 {
   "name": "magic-voice-scriber-thunderbird",
-  "version": "1.3.3",
-  "description": "Smart semantic voice dictation inspired by Google Rambler for Thunderbird 128+ ESR (Gemini, OpenAI/Mistral/Groq, Local Ollama/Whisper).",
+  "version": "1.4.0",
+  "description": "Smart semantic voice dictation inspired by Google Rambler for Thunderbird 128+ ESR (Gemini, Mistral Voxtral, Local Whisper).",
   "author": "MTF Karukera",
   "license": "MPL-2.0",
   "scripts": {

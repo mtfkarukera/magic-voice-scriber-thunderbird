@@ -32,14 +32,18 @@ const CONFIG_DEFAUT = {
   geminiApiKey: "",
   geminiModel: "gemini-3.5-transcribe-live",
 
-  // 2. Paramètres OpenAI / Tiers Cloud (Mistral, Groq, OpenAI)
-  openaiPreset: "openai",
-  sttBaseUrl: "https://api.openai.com",
+  // 2. Paramètres Mistral AI (Voxtral 1 passe REST & Realtime)
+  mistralApiKey: "",
+  mistralModel: "voxtral-mini-latest",
+
+  // 2 bis. Paramètres Tiers Cloud compatibles (conservation rétro-compatible)
+  openaiPreset: "mistral",
+  sttBaseUrl: "https://api.mistral.ai",
   sttApiKey: "",
-  sttModel: "whisper-1",
-  llmBaseUrl: "https://api.openai.com",
+  sttModel: "voxtral-mini-latest",
+  llmBaseUrl: "https://api.mistral.ai",
   llmApiKey: "",
-  llmModel: "gpt-4o-mini",
+  llmModel: "mistral-small-latest",
 
   // 3. Paramètres Modèle 100 % Local (Whisper local + Ollama / LM Studio)
   localSttUrl: "http://localhost:8000",
