@@ -32,7 +32,7 @@
         <span class="mvs-step-line" aria-hidden="true"></span>
         <button type="button" class="mvs-step-indicator" data-step="3" id="step-btn-3">
           <span class="mvs-step-num">3</span>
-          <span class="mvs-step-label" data-i18n="step3Label">Style & Raccourcis</span>
+          <span class="mvs-step-label" data-i18n="step3Label">Ergonomie &amp; Raccourcis</span>
         </button>
         <span class="mvs-step-line" aria-hidden="true"></span>
         <button type="button" class="mvs-step-indicator" data-step="4" id="step-btn-4">
@@ -178,12 +178,8 @@
           <!-- Panneau 2C : Modèle Local -->
           <div id="setup-panel-local" class="mvs-provider-box mvs-hidden">
             <div class="mvs-field">
-              <label for="setup-local-preset" data-i18n="labelLocalLlmPreset">Serveur Local :</label>
-              <select id="setup-local-preset" class="mvs-select">
-                <option value="ollama">Ollama (localhost:11434)</option>
-                <option value="lmstudio">LM Studio (localhost:1234)</option>
-                <option value="custom">Personnalisé</option>
-              </select>
+              <label for="setup-local-url" data-i18n="labelLocalSttUrl">URL du serveur STT local (Whisper) :</label>
+              <input type="url" id="setup-local-url" class="mvs-input" value="http://localhost:8000">
             </div>
             <p class="mvs-help" data-i18n="helpLocalMode">Assurez-vous que votre serveur Whisper (ex: faster-whisper sur :8000) et votre LLM sont démarrés.</p>
           </div>
@@ -202,63 +198,44 @@
             <span data-i18n="btnPrev">← Retour</span>
           </button>
           <button type="button" class="mvs-btn mvs-btn-primary mvs-btn-next" data-next="3">
-            <span data-i18n="btnNext">Suivant : Style &amp; Raccourcis →</span>
+            <span data-i18n="btnNext">Suivant : Ergonomie &amp; Raccourcis →</span>
           </button>
         </footer>
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════════ -->
-      <!-- ÉTAPE 3 : STYLE & RACCOURCIS (100 % CONDITIONNEL)                  -->
+      <!-- ÉTAPE 3 : ERGONOMIE & RACCOURCIS (1 PASSE NATIVE SANS LATENCE)    -->
       <!-- ══════════════════════════════════════════════════════════════════ -->
       <section id="step-panel-3" class="mvs-step-panel" role="region" aria-labelledby="step-btn-3">
         <div class="mvs-panel-intro">
           <h2 data-i18n="step3Title">3. Préférences de Dictée &amp; Ergonomie</h2>
-          <p class="mvs-panel-desc" data-i18n="step3Desc">Votre configuration vocale s'adapte automatiquement à votre moteur d'IA.</p>
+          <p class="mvs-panel-desc" data-i18n="step3Desc">Votre voix est nettoyée et structurée en 1 passe native (&lt; 250 ms) sans latence.</p>
         </div>
 
         <div class="mvs-card">
-          <!-- ── SOUS-SECTION 3A : GEMINI SMART NATIVE (PAR DÉFAUT) ── -->
-          <div id="setup-gemini-smart-panel" class="mvs-smart-box">
+          <!-- ── SOUS-SECTION 3A : DICTÉE 1-PASSE FLUIDE ── -->
+          <div class="mvs-smart-box">
             <div class="mvs-smart-badge">
               <span class="mvs-badge-icon" aria-hidden="true">✨</span>
-              <strong data-i18n="smartBadgeTitle">Technologie Native Gemini SMART</strong>
+              <strong data-i18n="smartBadgeTitle">Dictée Fluide en 1 Passe Native</strong>
             </div>
             <p class="mvs-smart-explanation" data-i18n="smartExplanationText">
-              Avec Google Gemini 3.5, votre voix est traitée en une seule passe ultra-rapide. Le modèle SMART élimine automatiquement les hésitations (« euh », « ben »), faux départs et répétitions sans nécessiter de prompt de reformulation artificielle.
+              Inspiré d'outils comme Google Rambler et Mistral Voxtral, vos hésitations (« euh », « ben »), faux départs et répétitions sont gommés naturellement dès la transcription, sans latence ni reformulation artificielle.
             </p>
           </div>
 
-          <!-- ── SOUS-SECTION 3B : MODES LLM (UNIQUEMENT OPENAI / LOCAL) ── -->
-          <div id="setup-llm-modes-panel" class="mvs-llm-modes-box mvs-hidden">
-            <h3 class="mvs-llm-modes-title" data-i18n="llmModesTitle">Style de reformulation par votre modèle LLM :</h3>
-            <div class="mvs-modes-selection">
-              <label class="mvs-mode-option selected">
-                <input type="radio" name="setup-voice-mode" value="natural" checked>
-                <div class="mvs-mode-card">
-                  <span class="mvs-mode-icon" aria-hidden="true">🎙️</span>
-                  <strong data-i18n="modeNaturalTitle">Mode Rambler (Fidèle)</strong>
-                  <p data-i18n="modeNaturalDesc">Supprime les hésitations et ponctue tout en conservant vos mots exacts.</p>
-                </div>
-              </label>
+          <hr class="mvs-divider">
 
-              <label class="mvs-mode-option">
-                <input type="radio" name="setup-voice-mode" value="pro">
-                <div class="mvs-mode-card">
-                  <span class="mvs-mode-icon" aria-hidden="true">👔</span>
-                  <strong data-i18n="modeProTitle">Mode Professionnel</strong>
-                  <p data-i18n="modeProDesc">Reformule vos idées dictées avec un ton courtois, soigné et formel.</p>
-                </div>
-              </label>
-
-              <label class="mvs-mode-option">
-                <input type="radio" name="setup-voice-mode" value="bullets">
-                <div class="mvs-mode-card">
-                  <span class="mvs-mode-icon" aria-hidden="true">📋</span>
-                  <strong data-i18n="modeBulletsTitle">Mode Synthèse / Puces</strong>
-                  <p data-i18n="modeBulletsDesc">Transforme vos pensées exprimées à voix haute en liste d'actions ordonnée.</p>
-                </div>
-              </label>
+          <!-- ── SOUS-SECTION 3B : GOUTTE VOCALE ── -->
+          <div class="mvs-field mvs-switch-field">
+            <div class="mvs-field-info">
+              <label for="setup-caret-gem-enabled" data-i18n="labelCaretGemEnabled">Afficher la Goutte Vocale au repos sous le curseur</label>
+              <p class="mvs-help" data-i18n="helpCaretGemEnabled">Par défaut, l'extension est furtive et n'apparaît que lors du raccourci clavier.</p>
             </div>
+            <label class="mvs-switch" aria-label="Afficher la Goutte Vocale au repos sous le curseur">
+              <input type="checkbox" id="setup-caret-gem-enabled">
+              <span class="mvs-slider"></span>
+            </label>
           </div>
 
           <hr class="mvs-divider">
@@ -267,7 +244,7 @@
             <span class="mvs-shortcut-icon" aria-hidden="true">⌨️</span>
             <div>
               <strong data-i18n="shortcutLabel">Raccourci de dictée rapide :</strong>
-              <kbd id="setup-shortcut-badge">Alt + Shift + S</kbd>
+              <kbd id="setup-shortcut-badge">Alt + Shift + D</kbd>
               <span class="mvs-text-muted" data-i18n="shortcutDesc">(ou clic sur la Goutte Vocale orange sous votre curseur)</span>
             </div>
           </div>

@@ -29,13 +29,6 @@ const DEBUG = false;
 
   const api = globalThis.browser || globalThis.messenger;
   const DUREE_OPTIMALE_MAX_SEC = 300; // 5 minutes par segment optimal
-  const ORDRE_MODES_VOIX = ["natural", "pro", "bullets"];
-
-  const META_MODES_VOIX = {
-    natural: { icone: "🎙️", cleLabel: "modeNaturalLabel", cleDesc: "modeNaturalDesc", codeCouleur: "#a78bfa" },
-    pro: { icone: "👔", cleLabel: "modeProLabel", cleDesc: "modeProDesc", codeCouleur: "#38bdf8" },
-    bullets: { icone: "📋", cleLabel: "modeBulletsLabel", cleDesc: "modeBulletsDesc", codeCouleur: "#34d399" }
-  };
 
   // ── État interne du widget flottant ───────────────────────────────────────
   // "IDLE_FLOATING" | "ONBOARDING" | "MIC_PREF_GUIDE" | "RECORDING" | "PAUSED" | "THINKING" | "DONE" | "ERROR"
@@ -72,9 +65,6 @@ const DEBUG = false;
   let barresBlanchesEls = [];
   let timerEl = null;
   let statutCourtEl = null;
-  let btnModeMorphing = null;
-  let iconeModeEl = null;
-  let labelModeEl = null;
   let btnPause = null;
   let btnAnnuler = null;
 
@@ -349,7 +339,6 @@ const DEBUG = false;
                     top 0.10s cubic-bezier(0.22, 1, 0.36, 1);
       }
       .mvs-red-wave-btn,
-      .mvs-mode-btn,
       .mvs-mini-btn,
       .mvs-onboarding-btn {
         pointer-events: auto !important;
@@ -518,30 +507,6 @@ const DEBUG = false;
       .mvs-status-short.is-error {
         color: #fda4af;
       }
-      /* ── Sélecteur de Mode Morphing à 3 états (🎙️ / 👔 / 📋 — uniquement hors Gemini) ── */
-      .mvs-mode-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        height: 24px;
-        padding: 0 8px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.25);
-        background: rgba(30, 41, 59, 0.85);
-        color: #f1f5f9;
-        font-size: 11px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s ease, transform 0.14s ease, border-color 0.15s ease;
-        white-space: nowrap;
-      }
-      .mvs-mode-btn:hover {
-        background: rgba(51, 65, 85, 0.95);
-        border-color: rgba(167, 139, 250, 0.55);
-      }
-      .mvs-mode-btn.is-morphing {
-        transform: scale(0.92);
-      }
       /* ── Petits boutons icônes (Pause ⏸, Annuler ✕) ── */
       .mvs-mini-btn {
         width: 24px;
@@ -605,7 +570,6 @@ const DEBUG = false;
       /* Visibilité du focus clavier WCAG 2.1 AA */
       button:focus-visible,
       .mvs-red-wave-btn:focus-visible,
-      .mvs-mode-btn:focus-visible,
       .mvs-mini-btn:focus-visible,
       .mvs-onboarding-btn:focus-visible {
         outline: 2px solid #ea6512 !important;
@@ -628,8 +592,7 @@ const DEBUG = false;
         .mvs-floating-root,
         .mvs-wave-bar,
         .mvs-red-wave-btn,
-        .mvs-mini-btn,
-        .mvs-mode-btn {
+        .mvs-mini-btn {
           transition: none !important;
           animation: none !important;
         }
@@ -735,25 +698,6 @@ const DEBUG = false;
     statutCourtEl.className = "mvs-status-short";
     statutCourtEl.style.display = "none";
 
-    // Sélecteur de Mode Morphing à 3 états (🎙️ / 👔 / 📋 — affiché uniquement pour OpenAI/Local)
-    btnModeMorphing = document.createElement("button");
-    btnModeMorphing.type = "button";
-    btnModeMorphing.tabIndex = -1;
-    btnModeMorphing.setAttribute("tabindex", "-1");
-    btnModeMorphing.className = "mvs-mode-btn";
-    btnModeMorphing.style.display = "none";
-
-    iconeModeEl = document.createElement("span");
-    labelModeEl = document.createElement("span");
-    btnModeMorphing.appendChild(iconeModeEl);
-    btnModeMorphing.appendChild(labelModeEl);
-
-    btnModeMorphing.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      basculerModeVoixSuivant();
-    });
-
     // Bouton Pause / Reprise (⏸ / ▶)
     btnPause = document.createElement("button");
     btnPause.type = "button";
@@ -790,7 +734,6 @@ const DEBUG = false;
     vueCapsule.appendChild(btnOndeRouge);
     vueCapsule.appendChild(timerEl);
     vueCapsule.appendChild(statutCourtEl);
-    vueCapsule.appendChild(btnModeMorphing);
     vueCapsule.appendChild(btnPause);
     vueCapsule.appendChild(btnAnnuler);
 
@@ -882,48 +825,12 @@ const DEBUG = false;
     racineShadow.appendChild(styleEl);
     racineShadow.appendChild(conteneurFlottant);
 
-    appliquerVisuelModeVoix(modeVoixActif, false);
     positionnerPresDuCurseur();
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // 4. ANIMATION DES 5 BARRES BLANCHES & SÉLECTEUR DE MODE MORPHING
+  // 4. ANIMATION DES 5 BARRES BLANCHES
   // ═══════════════════════════════════════════════════════════════════════════
-
-  /**
-   * Met à jour le bouton sélecteur de mode à 3 états (🎙️ Naturel, 👔 Pro, 📋 Synthèse).
-   * @param {string} mode
-   * @param {boolean} animer
-   */
-  function appliquerVisuelModeVoix(mode, animer = false) {
-    modeVoixActif = ORDRE_MODES_VOIX.includes(mode) ? mode : "natural";
-    const meta = META_MODES_VOIX[modeVoixActif] || META_MODES_VOIX.natural;
-
-    if (!btnModeMorphing || !iconeModeEl || !labelModeEl) return;
-
-    if (animer) {
-      btnModeMorphing.classList.add("is-morphing");
-      setTimeout(() => btnModeMorphing.classList.remove("is-morphing"), 140);
-    }
-
-    iconeModeEl.textContent = meta.icone;
-    const texteLabel = t(meta.cleLabel);
-    const texteDesc = t(meta.cleDesc);
-    labelModeEl.textContent = texteLabel;
-    labelModeEl.style.color = meta.codeCouleur;
-    btnModeMorphing.setAttribute("title", `${texteLabel} — ${texteDesc}`);
-    btnModeMorphing.setAttribute("aria-label", `${t("modeBtnAriaLabel")} (${texteLabel})`);
-  }
-
-  /**
-   * Passe au mode de dictée suivant au clic et mémorise le choix (pour OpenAI/Local).
-   */
-  function basculerModeVoixSuivant() {
-    const idx = ORDRE_MODES_VOIX.indexOf(modeVoixActif);
-    const suivant = ORDRE_MODES_VOIX[(idx + 1) % ORDRE_MODES_VOIX.length];
-    appliquerVisuelModeVoix(suivant, true);
-    api.runtime.sendMessage({ action: "saveVoiceMode", voiceMode: suivant }).catch(() => {});
-  }
 
   /**
    * Boucle d'animation 60 FPS des 5 barres verticales blanches à l'intérieur du bouton rouge.
@@ -1201,16 +1108,6 @@ const DEBUG = false;
       if (reponse && reponse.provider) {
         fournisseurActif = reponse.provider;
       }
-      if (reponse && reponse.activeVoiceMode) {
-        appliquerVisuelModeVoix(reponse.activeVoiceMode, false);
-      }
-
-      // Les 3 modes (🎙️/👔/📋) ne sont affichés que pour les moteurs hors Gemini (OpenAI/Tiers & Local)
-      if (fournisseurActif === "gemini") {
-        btnModeMorphing.style.display = "none";
-      } else {
-        btnModeMorphing.style.display = "inline-flex";
-      }
 
       if (!reponse || !reponse.success) {
         if (reponse && reponse.error === "NOT_CONFIGURED") {
@@ -1289,7 +1186,6 @@ const DEBUG = false;
 
     btnOndeRouge.className = "mvs-red-wave-btn state-thinking";
     timerEl.style.display = "none";
-    btnModeMorphing.style.display = "none";
     btnPause.style.display = "none";
     statutCourtEl.style.display = "inline";
     statutCourtEl.classList.remove("is-error");
@@ -1452,7 +1348,6 @@ const DEBUG = false;
     vueCapsule.classList.remove("mvs-hidden", "mvs-pill-idle");
     btnOndeRouge.className = "mvs-red-wave-btn state-paused";
     timerEl.style.display = "none";
-    btnModeMorphing.style.display = "none";
     btnPause.style.display = "none";
     btnAnnuler.style.display = "inline-flex";
     statutCourtEl.style.display = "inline";
@@ -1510,7 +1405,6 @@ const DEBUG = false;
       statutCourtEl.style.display = "none";
       statutCourtEl.removeAttribute("title");
     }
-    if (btnModeMorphing) btnModeMorphing.style.display = "none";
     if (btnPause) {
       btnPause.style.display = "none";
       btnPause.setAttribute("aria-pressed", "false");

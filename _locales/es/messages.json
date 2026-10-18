@@ -211,6 +211,10 @@
     "message": "gemini-3.5-transcribe-live — Mostrar palabras mientras hablas (WebSocket)",
     "description": "Opción 2 modelo Gemini"
   },
+  "helpCaretGemEnabled": {
+    "message": "Por defecto, la extensión es furtiva y solo aparece con el atajo de teclado.",
+    "description": "Aide option Goutte Vocale au repos"
+  },
   "helpGeminiApiKey": {
     "message": "Obtén una clave gratuita en aistudio.google.com",
     "description": "Ayuda clave Gemini"
@@ -254,6 +258,10 @@
   "hintShortcuts": {
     "message": "Espacio: Pausa • Intro: Insertar • Esc: Cancelar",
     "description": "Barra de atajos de teclado"
+  },
+  "labelCaretGemEnabled": {
+    "message": "Mostrar la Gota Vocal en reposo bajo el cursor",
+    "description": "Libellé option Goutte Vocale au repos"
   },
   "labelDefaultVoiceMode": {
     "message": "Modo por defecto",
@@ -526,6 +534,10 @@
   "sectionProviderTitle": {
     "message": "1. Motor de Inteligencia Vocal",
     "description": "Título sección proveedor"
+  },
+  "sectionTbErgonomicsTitle": {
+    "message": "2. Ergonomía & Visualización",
+    "description": "Titre de la section 2 ergonomie"
   },
   "sectionVoiceModeTitle": {
     "message": "2. Preferencias del Modo de Dictado",

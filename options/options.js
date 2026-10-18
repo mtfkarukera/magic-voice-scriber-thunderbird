@@ -91,16 +91,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const sectionLocal = document.getElementById("section-local");
   const inputLocalSttUrl = document.getElementById("local-stt-url");
   const inputLocalSttModel = document.getElementById("local-stt-model");
-  const selectLocalLlmPreset = document.getElementById("local-llm-preset");
-  const inputLocalLlmUrl = document.getElementById("local-llm-url");
-  const inputLocalLlmModel = document.getElementById("local-llm-model");
-  const inputLocalKey = document.getElementById("local-api-key");
-  const btnToggleLocalKey = document.getElementById("btn-toggle-local-key");
 
-  // Section 2 : Mode de Voix (réservée aux moteurs OpenAI/Tiers et Local)
-  const sectionVoiceMode = document.getElementById("section-voice-mode");
-  const selectVoiceModePolicy = document.getElementById("voice-mode-policy");
-  const selectDefaultVoiceMode = document.getElementById("default-voice-mode");
+  // Section 2 : Ergonomie & Affichage
+  const switchCaretGem = document.getElementById("caret-gem-enabled");
 
   // Bannière Permission & Statut
   const permissionBanner = document.getElementById("permission-warning-banner");
@@ -120,24 +113,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     mistralModel: "voxtral-mini-latest",
     localSttUrl: "http://localhost:8000",
     localSttModel: "whisper-1",
-    localLlmPreset: "ollama",
-    localLlmUrl: "http://localhost:11434",
-    localLlmModel: "llama3.2",
-    localApiKey: "",
-    voiceModePolicy: "remember",
+    caretGemEnabled: false,
+    voiceModePolicy: "default",
     defaultVoiceMode: "natural",
     lastVoiceMode: "natural"
-  };
-
-  const PRESETS_LOCAL = {
-    ollama: {
-      llmUrl: "http://localhost:11434",
-      llmModel: "llama3.2"
-    },
-    lmstudio: {
-      llmUrl: "http://localhost:1234",
-      llmModel: "local-model"
-    }
   };
 
   /**
@@ -170,12 +149,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       mistralModel: "voxtral-mini-latest",
       localSttUrl: inputLocalSttUrl.value.trim() || "http://localhost:8000",
       localSttModel: inputLocalSttModel.value.trim() || "whisper-1",
-      localLlmPreset: selectLocalLlmPreset.value,
-      localLlmUrl: inputLocalLlmUrl.value.trim() || "http://localhost:11434",
-      localLlmModel: inputLocalLlmModel.value.trim() || "llama3.2",
-      localApiKey: inputLocalKey.value.trim(),
-      voiceModePolicy: selectVoiceModePolicy.value,
-      defaultVoiceMode: selectDefaultVoiceMode.value
+      caretGemEnabled: switchCaretGem ? switchCaretGem.checked : false,
+      voiceModePolicy: "default",
+      defaultVoiceMode: "natural"
     };
   }
 
@@ -191,17 +167,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (provider === "gemini") {
       sectionGemini.classList.remove("mvs-hidden");
-      if (sectionVoiceMode) sectionVoiceMode.classList.add("mvs-hidden");
       providerBadge.textContent = t("badgeDefault");
       helpProvider.textContent = t("helpProviderGemini");
     } else if (provider === "mistral") {
       if (sectionMistral) sectionMistral.classList.remove("mvs-hidden");
-      if (sectionVoiceMode) sectionVoiceMode.classList.add("mvs-hidden");
       providerBadge.textContent = "Mistral AI";
       helpProvider.textContent = t("helpProviderMistral") || "Mistral AI (Voxtral)";
     } else if (provider === "local") {
       sectionLocal.classList.remove("mvs-hidden");
-      if (sectionVoiceMode) sectionVoiceMode.classList.remove("mvs-hidden");
       providerBadge.textContent = "Localhost";
       helpProvider.textContent = t("helpProviderLocal");
     }
@@ -251,7 +224,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   lierBoutonVisibiliteCle(btnToggleGeminiKey, inputGeminiKey);
   lierBoutonVisibiliteCle(btnToggleMistralKey, inputMistralKey);
-  lierBoutonVisibiliteCle(btnToggleLocalKey, inputLocalKey);
 
   // ── Chargement initial depuis browser.storage.local ────────────────────────
   try {
@@ -266,32 +238,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     inputLocalSttUrl.value = cfg.localSttUrl;
     inputLocalSttModel.value = cfg.localSttModel;
-    selectLocalLlmPreset.value = cfg.localLlmPreset;
-    inputLocalLlmUrl.value = cfg.localLlmUrl;
-    inputLocalLlmModel.value = cfg.localLlmModel;
-    inputLocalKey.value = cfg.localApiKey;
 
-    selectVoiceModePolicy.value = cfg.voiceModePolicy;
-    selectDefaultVoiceMode.value = cfg.defaultVoiceMode;
+    if (typeof cfg.caretGemEnabled === "boolean" && switchCaretGem) {
+      switchCaretGem.checked = cfg.caretGemEnabled;
+    }
   } catch (err) {
     if (DEBUG) console.warn("[MagicVoiceScriber] Erreur lecture options :", err);
   }
 
   actualiserVisibiliteFournisseur();
 
-  // ── Événements de Changement de Fournisseur & Presets ──────────────────────
+  // ── Événements de Changement de Fournisseur ──────────────────────────────
   selectProvider.addEventListener("change", actualiserVisibiliteFournisseur);
-
-  selectLocalLlmPreset.addEventListener("change", () => {
-    const preset = PRESETS_LOCAL[selectLocalLlmPreset.value];
-    if (preset) {
-      inputLocalLlmUrl.value = preset.llmUrl;
-      inputLocalLlmModel.value = preset.llmModel;
-    }
-    verifierPermissionOrigine();
-  });
-
-  inputLocalLlmUrl.addEventListener("input", verifierPermissionOrigine);
+  inputLocalSttUrl.addEventListener("input", verifierPermissionOrigine);
 
   // ── Autorisation Réseau 1-Clic ─────────────────────────────────────────────
   if (btnGrantPermission) {
@@ -382,13 +341,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-      // Si l'utilisateur force le mode par défaut à l'ouverture, on aligne aussi lastVoiceMode
-      const donneesASauvegarder = { ...config };
-      if (config.voiceModePolicy === "default") {
-        donneesASauvegarder.lastVoiceMode = config.defaultVoiceMode;
-      }
-
-      await api.storage.local.set(donneesASauvegarder);
+      await api.storage.local.set(config);
       afficherStatut("success", t("statusSaved"));
     } catch {
       afficherStatut("error", t("errorServiceUnavailable"));

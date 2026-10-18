@@ -211,6 +211,10 @@
     "message": "gemini-3.5-transcribe-live — Words displayed as you speak (WebSocket)",
     "description": "Option 2 in Gemini model dropdown"
   },
+  "helpCaretGemEnabled": {
+    "message": "By default, the extension is stealthy and only appears upon keyboard shortcut.",
+    "description": "Aide option Goutte Vocale au repos"
+  },
   "helpGeminiApiKey": {
     "message": "Get a free API key at aistudio.google.com",
     "description": "Helper text for Gemini key"
@@ -254,6 +258,10 @@
   "hintShortcuts": {
     "message": "Space: Pause • Enter: Insert • Esc: Cancel",
     "description": "Keyboard shortcuts helper bar"
+  },
+  "labelCaretGemEnabled": {
+    "message": "Show Voice Caret Gem at rest below the cursor",
+    "description": "Libellé option Goutte Vocale au repos"
   },
   "labelDefaultVoiceMode": {
     "message": "Default Voice Mode",
@@ -526,6 +534,10 @@
   "sectionProviderTitle": {
     "message": "1. Voice AI Engine",
     "description": "Heading for provider section"
+  },
+  "sectionTbErgonomicsTitle": {
+    "message": "2. Ergonomics & Display",
+    "description": "Titre de la section 2 ergonomie"
   },
   "sectionVoiceModeTitle": {
     "message": "2. Voice Mode Preferences",

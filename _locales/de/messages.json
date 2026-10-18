@@ -211,6 +211,10 @@
     "message": "gemini-3.5-transcribe-live — Wörter beim Sprechen anzeigen (WebSocket)",
     "description": "Option 2 Gemini-Modell"
   },
+  "helpCaretGemEnabled": {
+    "message": "Standardmäßig ist die Erweiterung unauffällig und erscheint nur bei Tastenkombination.",
+    "description": "Aide option Goutte Vocale au repos"
+  },
   "helpGeminiApiKey": {
     "message": "Kostenlosen Schlüssel unter aistudio.google.com erstellen",
     "description": "Hilfe Gemini-Schlüssel"
@@ -254,6 +258,10 @@
   "hintShortcuts": {
     "message": "Leertaste: Pause • Eingabe: Einfügen • Esc: Abbrechen",
     "description": "Tastenkürzel-Hinweis"
+  },
+  "labelCaretGemEnabled": {
+    "message": "Voice Caret Gem im Ruhezustand unter dem Cursor anzeigen",
+    "description": "Libellé option Goutte Vocale au repos"
   },
   "labelDefaultVoiceMode": {
     "message": "Standardmodus",
@@ -526,6 +534,10 @@
   "sectionProviderTitle": {
     "message": "1. Sprach-KI-Engine",
     "description": "Überschrift Anbieter-Sektion"
+  },
+  "sectionTbErgonomicsTitle": {
+    "message": "2. Ergonomie & Anzeige",
+    "description": "Titre de la section 2 ergonomie"
   },
   "sectionVoiceModeTitle": {
     "message": "2. Einstellungen des Diktiermodus",

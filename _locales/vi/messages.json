@@ -211,6 +211,10 @@
     "message": "gemini-3.5-transcribe-live — Hiển thị từng từ khi bạnพูด/nói (WebSocket)",
     "description": "Tùy chọn 2 mô hình Gemini"
   },
+  "helpCaretGemEnabled": {
+    "message": "Theo mặc định, tiện ích mở rộng ở chế độ ẩn và chỉ xuất hiện khi dùng phím tắt.",
+    "description": "Aide option Goutte Vocale au repos"
+  },
   "helpGeminiApiKey": {
     "message": "Nhận khóa miễn phí tại aistudio.google.com",
     "description": "Trợ giúp khóa Gemini"
@@ -254,6 +258,10 @@
   "hintShortcuts": {
     "message": "Phím cách: Tạm dừng • Enter: Chèn • Esc: Hủy",
     "description": "Thanh gợi ý phím tắt"
+  },
+  "labelCaretGemEnabled": {
+    "message": "Hiển thị Giọt Âm thanh khi nghỉ dưới con trỏ",
+    "description": "Libellé option Goutte Vocale au repos"
   },
   "labelDefaultVoiceMode": {
     "message": "Chế độ mặc định",
@@ -526,6 +534,10 @@
   "sectionProviderTitle": {
     "message": "1. Công cụ Trí tuệ Giọng nói",
     "description": "Tiêu đề phần nhà cung cấp"
+  },
+  "sectionTbErgonomicsTitle": {
+    "message": "2. Công thái học & Hiển thị",
+    "description": "Titre de la section 2 ergonomie"
   },
   "sectionVoiceModeTitle": {
     "message": "2. Tùy chọn Chế độ Giọng nói",

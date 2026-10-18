@@ -3,6 +3,22 @@
 Toutes les modifications notables de ce projet sont documentées dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.4.1] - 2026-10-18
+
+### Parité 1:1 Firefox & Épuration des Modes de Style Résiduels
+- **Suppression Définitive des Modes de Style LLM (`setup/`, `options/`, `compose/`)** :
+  - Élimination des 3 cartes radio (Mode Rambler, Professionnel, Puces) dans l'étape 3 du Wizard d'onboarding.
+  - Retrait du sélecteur de politique de mémorisation et des modes de dictée dans les Options.
+  - Retrait du bouton de métamorphose (`btnModeMorphing`) et de ses styles sur la capsule flottante du composeur, alignant l'interface sur l'expérience minimaliste de Firefox.
+- **Épuration du Fournisseur 100 % Local (Whisper natif)** :
+  - Remplacement du menu de presets complexes (Ollama, LM Studio) par le champ direct et unique STT Whisper local (`http://localhost:8000`).
+  - Suppression de tout deuxième étage LLM secondaire dans l'onboarding et les options.
+- **Ergonomie & Goutte Vocale au repos** :
+  - Intégration dans le Wizard (étape 3) et dans les Options (section 2) du commutateur permettant d'afficher ou masquer la Goutte Vocale au repos sous le curseur (`caretGemEnabled`).
+- **Internationalisation & Tests (`_locales/`, `test/mvs.test.js`)** :
+  - Ajout des clés d'ergonomie localisées dans les 6 langues (`fr`, `en`, `de`, `es`, `pt`, `vi`).
+  - Validation de la suite complète de 23 tests automatisés et 0 erreurs au linter `web-ext lint`.
+
 ## [1.4.0] - 2026-10-18
 
 ### Épuration des Permissions Réseau & Alignement sur le Trio Champion

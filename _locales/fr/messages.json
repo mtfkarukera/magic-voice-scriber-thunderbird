@@ -211,6 +211,10 @@
     "message": "gemini-3.5-transcribe-live — Afficher les mots au fur et à mesure (WebSocket)",
     "description": "Option 2 du modèle Gemini"
   },
+  "helpCaretGemEnabled": {
+    "message": "Par défaut, l'extension est furtive et n'apparaît que lors du raccourci clavier.",
+    "description": "Aide option Goutte Vocale au repos"
+  },
   "helpGeminiApiKey": {
     "message": "Obtenez une clé gratuite sur aistudio.google.com",
     "description": "Aide pour obtenir la clé Gemini"
@@ -254,6 +258,10 @@
   "hintShortcuts": {
     "message": "Espace : Pause • Entrée : Insérer • Échap : Annuler",
     "description": "Bandeau d'aide des raccourcis clavier"
+  },
+  "labelCaretGemEnabled": {
+    "message": "Afficher la Goutte Vocale au repos sous le curseur",
+    "description": "Libellé option Goutte Vocale au repos"
   },
   "labelDefaultVoiceMode": {
     "message": "Mode par défaut",
@@ -526,6 +534,10 @@
   "sectionProviderTitle": {
     "message": "1. Moteur d'Intelligence Vocale",
     "description": "Titre de la section fournisseur"
+  },
+  "sectionTbErgonomicsTitle": {
+    "message": "2. Ergonomie & Affichage",
+    "description": "Titre de la section 2 ergonomie"
   },
   "sectionVoiceModeTitle": {
     "message": "2. Préférences du Mode de Dictée",

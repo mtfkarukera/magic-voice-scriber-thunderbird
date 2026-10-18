@@ -92,76 +92,40 @@
           </div>
         </div>
 
-        <!-- ── SOUS-SECTION 1C : MODÈLE 100 % LOCAL (OLLAMA / LM STUDIO / WHISPER) ── -->
+        <!-- ── SOUS-SECTION 1C : MODÈLE 100 % LOCAL (WHISPER) ── -->
         <div id="section-local" class="mvs-provider-panel mvs-hidden">
           <h3 class="mvs-panel-title" data-i18n="sectionLocalTitle"></h3>
 
           <div class="mvs-grid-2">
             <div class="mvs-field">
               <label for="local-stt-url" data-i18n="labelLocalSttUrl"></label>
-              <input type="url" id="local-stt-url" class="mvs-input">
+              <input type="url" id="local-stt-url" class="mvs-input" value="http://localhost:8000">
             </div>
             <div class="mvs-field">
               <label for="local-stt-model" data-i18n="labelLocalSttModel"></label>
-              <input type="text" id="local-stt-model" class="mvs-input">
-            </div>
-          </div>
-
-          <hr class="mvs-divider">
-
-          <div class="mvs-field">
-            <label for="local-llm-preset" data-i18n="labelLocalLlmPreset"></label>
-            <select id="local-llm-preset" class="mvs-select">
-              <option value="ollama" data-i18n="presetOllama"></option>
-              <option value="lmstudio" data-i18n="presetLmStudio"></option>
-              <option value="custom" data-i18n="presetCustomLocal"></option>
-            </select>
-          </div>
-
-          <div class="mvs-grid-2">
-            <div class="mvs-field">
-              <label for="local-llm-url" data-i18n="labelLocalLlmUrl"></label>
-              <input type="url" id="local-llm-url" class="mvs-input">
-            </div>
-            <div class="mvs-field">
-              <label for="local-llm-model" data-i18n="labelLocalLlmModel"></label>
-              <input type="text" id="local-llm-model" class="mvs-input">
-            </div>
-          </div>
-
-          <div class="mvs-field">
-            <label for="local-api-key" data-i18n="labelLocalApiKey"></label>
-            <div class="mvs-input-group">
-              <input type="password" id="local-api-key" class="mvs-input" autocomplete="off" data-i18n-placeholder="placeholderLocalApiKey">
-              <button type="button" id="btn-toggle-local-key" class="mvs-btn-icon" data-i18n-title="btnToggleKeyTitle" data-i18n-aria-label="btnToggleKeyTitle">👁</button>
+              <input type="text" id="local-stt-model" class="mvs-input" value="whisper-1">
             </div>
           </div>
         </div>
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════════ -->
-      <!-- SECTION 2 : PRÉFÉRENCES DU MODE DE DICTÉE (HORS GEMINI)           -->
+      <!-- SECTION 2 : ERGONOMIE & AFFICHAGE                                 -->
       <!-- ══════════════════════════════════════════════════════════════════ -->
-      <section id="section-voice-mode" class="mvs-card mvs-hidden">
+      <section class="mvs-card">
         <div class="mvs-card-header">
-          <h2 data-i18n="sectionVoiceModeTitle"></h2>
+          <h2 data-i18n="sectionTbErgonomicsTitle">2. Ergonomie &amp; Affichage</h2>
         </div>
 
-        <div class="mvs-field">
-          <label for="voice-mode-policy" data-i18n="labelVoiceModePolicy"></label>
-          <select id="voice-mode-policy" class="mvs-select">
-            <option value="remember" data-i18n="policyRememberLast"></option>
-            <option value="default" data-i18n="policyUseDefault"></option>
-          </select>
-        </div>
-
-        <div class="mvs-field" id="field-default-voice-mode">
-          <label for="default-voice-mode" data-i18n="labelDefaultVoiceMode"></label>
-          <select id="default-voice-mode" class="mvs-select">
-            <option value="natural" data-i18n="modeNaturalLabel"></option>
-            <option value="pro" data-i18n="modeProLabel"></option>
-            <option value="bullets" data-i18n="modeBulletsLabel"></option>
-          </select>
+        <div class="mvs-field mvs-switch-field">
+          <div class="mvs-field-info">
+            <label for="caret-gem-enabled" data-i18n="labelCaretGemEnabled">Afficher la Goutte Vocale au repos sous le curseur</label>
+            <p class="mvs-help" data-i18n="helpCaretGemEnabled">Par défaut, l'extension est furtive et n'apparaît que lors du raccourci clavier.</p>
+          </div>
+          <label class="mvs-switch" aria-label="Afficher la Goutte Vocale au repos sous le curseur">
+            <input type="checkbox" id="caret-gem-enabled">
+            <span class="mvs-slider"></span>
+          </label>
         </div>
       </section>
 

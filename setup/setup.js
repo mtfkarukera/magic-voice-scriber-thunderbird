@@ -466,31 +466,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnToggleGeminiKey = document.getElementById("btn-toggle-setup-gemini-key");
   const inputMistralKey = document.getElementById("setup-mistral-key");
   const btnToggleMistralKey = document.getElementById("btn-toggle-setup-mistral-key");
-  const selectLocalPreset = document.getElementById("setup-local-preset");
+  const inputLocalUrl = document.getElementById("setup-local-url");
+  const switchCaretGem = document.getElementById("setup-caret-gem-enabled");
 
   const btnTestApi = document.getElementById("btn-test-api");
   const apiTestStatus = document.getElementById("api-test-status");
-
-  const PRESETS_LOCAL = {
-    ollama: {
-      sttUrl: "http://localhost:8000",
-      sttModel: "whisper-1",
-      llmUrl: "http://localhost:11434",
-      llmModel: "llama3.2"
-    },
-    lmstudio: {
-      sttUrl: "http://localhost:8000",
-      sttModel: "whisper-1",
-      llmUrl: "http://localhost:1234",
-      llmModel: "local-model"
-    },
-    custom: {
-      sttUrl: "http://localhost:8000",
-      sttModel: "whisper-1",
-      llmUrl: "http://localhost:11434",
-      llmModel: "llama3.2"
-    }
-  };
 
   function construireConfigActive(modeleGemini = "gemini-3.5-transcribe-live") {
     const provider = selectProvider ? selectProvider.value : "gemini";
@@ -504,14 +484,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       config.mistralApiKey = inputMistralKey ? inputMistralKey.value.trim() : "";
       config.mistralModel = "voxtral-mini-latest";
     } else if (provider === "local") {
-      const presetKey = selectLocalPreset ? selectLocalPreset.value : "ollama";
-      const preset = PRESETS_LOCAL[presetKey] || PRESETS_LOCAL.ollama;
-      config.localLlmPreset = presetKey;
-      config.localSttUrl = preset.sttUrl;
-      config.localSttModel = preset.sttModel;
-      config.localLlmUrl = preset.llmUrl;
-      config.localLlmModel = preset.llmModel;
-      config.localApiKey = "";
+      config.localSttUrl = inputLocalUrl && inputLocalUrl.value.trim() ? inputLocalUrl.value.trim() : "http://localhost:8000";
+      config.localSttModel = "whisper-1";
     }
     return config;
   }
@@ -538,13 +512,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (panelMistral) panelMistral.classList.toggle("mvs-hidden", val !== "mistral");
     if (panelLocal) panelLocal.classList.toggle("mvs-hidden", val !== "local");
 
-    // Invariant Strict #1 : Moteurs 1 passe (Gemini SMART & Mistral Voxtral) = Zéro prompt de style artificiel
-    const estMoteurUnPasse = val === "gemini" || val === "mistral";
-    const panelGeminiSmart = document.getElementById("setup-gemini-smart-panel");
-    const panelLlmModes = document.getElementById("setup-llm-modes-panel");
-    if (panelGeminiSmart) panelGeminiSmart.classList.toggle("mvs-hidden", !estMoteurUnPasse);
-    if (panelLlmModes) panelLlmModes.classList.toggle("mvs-hidden", estMoteurUnPasse);
-
     if (apiTestStatus) {
       apiTestStatus.textContent = "";
       apiTestStatus.className = "mvs-api-status";
@@ -561,8 +528,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       "provider",
       "geminiApiKey",
       "mistralApiKey",
-      "localLlmPreset",
-      "defaultVoiceMode"
+      "localSttUrl",
+      "caretGemEnabled"
     ]);
 
     if (configExistante.provider && selectProvider) {
@@ -574,20 +541,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (configExistante.mistralApiKey && inputMistralKey) {
       inputMistralKey.value = configExistante.mistralApiKey;
     }
-    if (configExistante.localLlmPreset && selectLocalPreset) {
-      selectLocalPreset.value = configExistante.localLlmPreset;
+    if (configExistante.localSttUrl && inputLocalUrl) {
+      inputLocalUrl.value = configExistante.localSttUrl;
+    }
+    if (typeof configExistante.caretGemEnabled === "boolean" && switchCaretGem) {
+      switchCaretGem.checked = configExistante.caretGemEnabled;
     }
     actualiserAffichageFournisseur();
-
-    if (configExistante.defaultVoiceMode) {
-      const radio = document.querySelector(`input[name="setup-voice-mode"][value="${configExistante.defaultVoiceMode}"]`);
-      if (radio) {
-        radio.checked = true;
-        document.querySelectorAll(".mvs-mode-option").forEach((opt) => {
-          opt.classList.toggle("selected", opt.contains(radio));
-        });
-      }
-    }
   } catch (errStockage) {
     if (DEBUG) console.warn("[Setup] Impossible de lire le storage :", errStockage);
   }
@@ -632,25 +592,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ═════════════════════════════════════════════════════════════════════════
-  // 4. ÉTAPE 3 : STYLES DE DICTÉE (CARDS RADIO)
+  // 4. ÉTAPE 3 : ERGONOMIE & GOUTTE VOCALE AU REPOS
   // ═════════════════════════════════════════════════════════════════════════
-
-  document.querySelectorAll(".mvs-mode-option").forEach((opt) => {
-    opt.addEventListener("click", () => {
-      document.querySelectorAll(".mvs-mode-option").forEach((o) => o.classList.remove("selected"));
-      opt.classList.add("selected");
-      const input = opt.querySelector("input");
-      if (input) input.checked = true;
-    });
-  });
-
-  document.querySelectorAll('input[name="setup-voice-mode"]').forEach((input) => {
-    input.addEventListener("change", () => {
-      document.querySelectorAll(".mvs-mode-option").forEach((opt) => {
-        opt.classList.toggle("selected", opt.contains(input));
-      });
-    });
-  });
+  // (Le toggle switchCaretGem est directement persisté à l'étape finale)
 
   // ═════════════════════════════════════════════════════════════════════════
   // 5. ÉTAPE 4 : BAC À SABLE INTERACTIF (ESSAYEZ LA MAGIE EN DIRECT !)
@@ -852,8 +796,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const base64Audio = await blobVersBase64(blobFinal);
-      const modeRadio = document.querySelector('input[name="setup-voice-mode"]:checked');
-      const voiceMode = modeRadio ? modeRadio.value : "natural";
+      const voiceMode = "natural";
       const configDemo = construireConfigActive("gemini-3.5-transcribe");
 
       let resultat;
@@ -915,13 +858,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       btnFinish.disabled = true;
       btnFinish.textContent = "Enregistrement en cours…";
 
-      const modeRadio = document.querySelector('input[name="setup-voice-mode"]:checked');
-      const voiceMode = modeRadio ? modeRadio.value : "natural";
-
       const configSauvegarde = {
         ...construireConfigActive("gemini-3.5-transcribe-live"),
-        defaultVoiceMode: voiceMode,
-        lastVoiceMode: voiceMode,
+        caretGemEnabled: switchCaretGem ? switchCaretGem.checked : false,
+        defaultVoiceMode: "natural",
+        lastVoiceMode: "natural",
         voiceModePolicy: "default"
       };
 

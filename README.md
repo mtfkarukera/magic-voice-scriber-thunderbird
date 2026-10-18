@@ -15,11 +15,8 @@
   - `Alt+Shift+S` (ou clic sur la Goutte / le bouton de barre d'outils) : Démarre / Termine la dictée.
   - `Espace` : Met en pause ou reprend l'enregistrement à tout moment pour vous laisser réfléchir sans stress.
   - `Échap` : Annule immédiatement la prise de parole sans rien insérer.
-- 🎭 **Sélecteur de Mode Morphing à 3 États** :
-  1. **🎙️ Naturel** : Nettoie les hésitations et corrige la ponctuation tout en gardant vos mots exacts.
-  2. **👔 Professionnel** : Adopte un ton courtois, fluide et soigné, idéal pour vos correspondances d'affaires.
-  3. **📋 Synthèse / Puces** : Convertit vos idées dictées en points d'action structurés.
-- 🔌 **Architecture Multi-Moteurs Ouverte (BYOK & Souveraineté Locale)** :
+- ⚡ **Dictée Fluide en 1 Passe Native (< 250 ms)** : Vos hésitations (« euh », « ben »), faux départs et répétitions sont gommés naturellement dès la transcription par le modèle (Gemini SMART, Mistral Voxtral ou Whisper local), sans latence ni reformulation artificielle.
+- 🔌 **Architecture Multi-Moteurs Ouverte (Trio Champion BYOK & Souveraineté Locale)** :
   1. **Google Gemini (Par défaut — Recommandé)** : Supporte `gemini-3.5-transcribe` (Push-to-Talk REST) et `gemini-3.5-transcribe-live` (Streaming temps réel WebSocket) avec le mode natif `SMART`.
   2. **Mistral AI (Natif Voxtral)** : Modèle 1 passe `voxtral-mini-latest` pour une transcription ultra-rapide et souveraine.
   3. **100 % Local & Hors-Ligne** : Connectez directement votre serveur Whisper local (`whisper.cpp` / `faster-whisper-server` sur `:8000`) pour une confidentialité absolue.
@@ -30,15 +27,15 @@
 ## 🚀 Installation & Démarrage Rapide
 
 ### Depuis un fichier `.xpi`
-1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.4.0.xpi`.
+1. Téléchargez ou compilez l'archive dans `dist/magic-voice-scriber-thunderbird-1.4.1.xpi`.
 2. Dans Thunderbird, ouvrez **Outils > Modules complémentaires et thèmes** (`Ctrl+Maj+A`).
 3. Cliquez sur la roue dentée ⚙️ > **Installer un module depuis un fichier…** et sélectionnez le fichier `.xpi`.
 
 ### Assistant de Configuration & Diagnostic Automatique
 Dès l'installation, Magic Voice Scriber ouvre automatiquement son **Assistant de Configuration & Diagnostic** interactif en 5 étapes :
 1. **Diagnostic du Microphone & OS** : Teste le flux audio en direct avec un vumètre 5 barres et guide l'autorisation unique `media.navigator.permission.disabled` (avec diagnostic Linux Snap vs .deb).
-2. **Choix du Moteur d'IA (BYOK)** : Saisie et validation en 1 clic de votre clé API Google Gemini, Mistral AI ou de vos endpoints locaux.
-3. **Style & Ergonomie (100 % conditionnel)** : Présentation valorisante du mode natif **Gemini SMART** en 1 passe sans prompt artificiel, ou sélecteur à 3 cartes (Rambler, Pro, Puces) pour OpenAI/Local.
+2. **Choix du Moteur d'IA (BYOK)** : Saisie et validation en 1 clic de votre clé API Google Gemini, Mistral AI ou de votre serveur Whisper local.
+3. **Ergonomie & Raccourcis** : Présentation de la dictée fluide en 1 passe native sans latence et configuration de l'affichage de la Goutte Vocale au repos sous votre curseur.
 4. **Bac à Sable Interactif (« Essayez la Magie en direct ! ✨ »)** : Faites le test immédiatement sur une phrase modèle avec hésitation et auto-correction pour voir votre texte nettoyé et ponctué en conditions réelles.
 5. **Prêt à dicter ! 🎉** : Enregistrement des préférences et rappel des raccourcis pour commencer dans votre fenêtre de rédaction.
 

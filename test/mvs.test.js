@@ -579,7 +579,7 @@ describe("4. Sécurité DOM, CSP & Garde-fou DEBUG (Règles 11, 12, 14)", () => 
     assert.equal(hosts.includes("https://generativelanguage.googleapis.com/*"), true, "Gemini doit figurer dans host_permissions");
     assert.equal(hosts.includes("https://api.mistral.ai/*"), true, "Mistral doit figurer dans host_permissions");
     assert.equal(hosts.includes("http://localhost/*"), true, "Localhost doit figurer dans host_permissions");
-    assert.equal(manifest.version, "1.4.0", "La version du manifest doit être 1.4.0");
+    assert.equal(manifest.version, "1.4.1", "La version du manifest doit être 1.4.1");
   });
 });
 
@@ -598,9 +598,10 @@ describe("5. Invariant Strict #1 & Stepper 5 Étapes (Setup & Gouvernance)", () 
       assert.ok(setupHtml.includes(`id="step-panel-${i}"`), `Panneau d'étape ${i} manquant dans setup.html`);
     }
 
-    // Séparation stricte du panneau SMART et des modes LLM
-    assert.ok(setupHtml.includes('id="setup-gemini-smart-panel"'), "Panneau SMART manquant");
-    assert.ok(setupHtml.includes('id="setup-llm-modes-panel"'), "Panneau modes LLM manquant");
+    // Invariant Strict #1 : Dictée 1 passe native sans modes de style artificiels
+    assert.ok(setupHtml.includes('data-i18n="smartBadgeTitle"'), "Badge Dictée 1-passe manquant");
+    assert.ok(setupHtml.includes('id="setup-caret-gem-enabled"'), "Switch Goutte Vocale au repos manquant");
+    assert.ok(!setupHtml.includes('id="setup-llm-modes-panel"'), "Les modes LLM résiduels ne doivent plus être présents");
 
     // Bac à sable interactif en étape 4
     assert.ok(setupHtml.includes('id="btn-demo-record"'), "Bouton d'enregistrement démo manquant");
@@ -611,12 +612,11 @@ describe("5. Invariant Strict #1 & Stepper 5 Étapes (Setup & Gouvernance)", () 
     assert.ok(setupHtml.includes('id="btn-finish-setup"'), "Bouton final de sauvegarde manquant");
   });
 
-  it("applique l'affichage conditionnel et la gestion 5 étapes dans setup.js", () => {
+  it("applique la gestion 5 étapes et l'absence de modes LLM dans setup.js", () => {
     const setupJs = fs.readFileSync(path.join(RACINE, "setup/setup.js"), "utf8");
     assert.ok(setupJs.includes("totalEtapes = 5"), "setup.js doit configurer totalEtapes = 5");
-    assert.ok(setupJs.includes("panelGeminiSmart.classList.toggle"), "setup.js doit basculer conditionnellement le panneau SMART");
-    assert.ok(setupJs.includes("panelLlmModes.classList.toggle"), "setup.js doit basculer conditionnellement les modes LLM");
-    assert.ok(setupJs.includes("traiterAudioDemo"), "setup.js doit contenir la fonction de traitement audio démo");
+    assert.ok(!setupJs.includes("setup-llm-modes-panel"), "setup.js ne doit plus manipuler panelLlmModes");
+    assert.ok(setupJs.includes("switchCaretGem"), "setup.js doit piloter switchCaretGem");
   });
 });
 
